@@ -3,11 +3,14 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
-  useEffect(() => {
-    console.log(auth);
-  }, [auth]);
+  const [persist, setPersist] = useState(
+    JSON.parse(localStorage.getItem("rememberMe")) || false
+  );
+  const [userInfo, setUserInfo] = useState({});
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider
+      value={{ auth, setAuth, persist, setPersist, userInfo, setUserInfo }}
+    >
       {children}
     </AuthContext.Provider>
   );

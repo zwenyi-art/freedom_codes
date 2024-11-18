@@ -1,4 +1,6 @@
 require("dotenv").config();
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const express = require("express");
 const { connectDb } = require("./configs/dbConn");
 const { verifyJWT } = require("./middleware/verifyJWT");
@@ -25,12 +27,13 @@ app.use(express.json());
 app.use(cookieParser());
 //good cron job
 app.use("/crons", require("./routes/cronRouter"));
-
+//telegram bot
+app.use("/bot", require("./routes/telegram_bot"));
 //authentication
 app.use("/auth", require("./routes/auth"));
-app.use("/register", require("./routes/register"));
+// app.use("/register", require("./routes/register"));
 app.use("/refresh", require("./routes/refresh"));
-
+app.use("/logout", require("./routes/logout"));
 // api return for singbox and detect with token
 app.use("/api/v1", require("./routes/api/singbox_config"));
 

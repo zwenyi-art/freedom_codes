@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const handleLogin = async (req, res) => {
   const { user_id, pwd } = req.body;
-  console.log(user_id, pwd);
   if (!user_id || !pwd) {
     return res
       .status(400)
@@ -21,7 +20,7 @@ const handleLogin = async (req, res) => {
     const accessToken = jwt.sign(
       { UserInfo: { user_id: foundUser.user_id, roles: roles } },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "60s" }
+      { expiresIn: "10s" }
     );
     //refresh token create
     const refreshToken = jwt.sign(

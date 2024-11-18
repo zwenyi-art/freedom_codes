@@ -1,82 +1,28 @@
 import React, { useState } from "react";
 import { BiPlusCircle } from "react-icons/bi";
+import VmessServers from "./VmessServers";
+import SshServers from "./SshServers";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 const AddNewServer = () => {
-  const [vmessContent, setVmessContent] = useState();
-  const [sshContent, setSshContent] = useState({
-    tag: "",
-    ip: "",
-    port: "",
-    username: "",
-    password: "",
-  });
   const [serverType, setServerType] = useState();
+  const [serverData, setServerData] = useState();
+  const axiosPrivate = useAxiosPrivate();
   function base64Decode(str) {
     return atob(str.replace(/_/g, "/").replace(/-/g, "+")); // Handle URL-safe Base64 encoding
   }
-  const handleChangevmess = (e) => {
-    const vmess = e.target.value;
-    const urlWithoutPrefix = vmess.replace("vmess://", "");
-    const decodedStr = base64Decode(urlWithoutPrefix);
-    const {
-      ps: tag,
-      add: server,
-      port: server_port,
-      id: uuid,
-      aid: alter_id,
-      tls: tls,
-      net: transport_type,
-      path: path,
-      host: host,
-      sni: sni,
-    } = JSON.parse(decodedStr);
-    const vmessConfig = {
-      type: "vmess",
-      tag: tag,
-      server: server,
-      server_port: Number(server_port),
-      uuid: uuid,
-      security: "auto",
-      alter_id: 0,
-      tls: tls
-        ? {
-            enabled: true,
-            insecure: true,
-            server_name: sni,
-          }
-        : "",
-      transport:
-        transport_type === "tcp"
-          ? ""
-          : {
-              type: transport_type,
-              path: path,
-              headers: {
-                host: host,
-              },
-            },
-    };
-    setVmessContent(vmessConfig);
-  };
 
   const handleServerType = (e) => {
     const type = e.target.value;
     setServerType(type);
-    setVmessContent("");
   };
 
-  const initialState = {
-    tag: "",
-    ip: "",
-    port: "",
-    username: "",
-    password: "",
+  const formHandle = async (e) => {
+    e.preventDefault();
+    const newData = { type: serverType, ...serverData };
+    console.log(JSON.stringify(newData, null, 2));
+    const response = await axiosPrivate.post("/", newData);
+    console.log(response);
   };
-  const [formData, setFormData] = useState(initialState);
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
   return (
     <article>
       <div className="bg-gray-800 border border-gray-700 rounded-lg shadow-md overflow-hidden px-8 py-10">
@@ -87,7 +33,7 @@ const AddNewServer = () => {
           </h3>
         </div>
         <div className="pt-3">
-          <form className="space-y-7">
+          <form action="post" onSubmit={formHandle} className="space-y-7">
             <div className="space-y-2">
               <label
                 htmlFor="serverType"
@@ -109,105 +55,10 @@ const AddNewServer = () => {
             </div>
             <div className="space-y-2">
               {serverType === "vmess" && (
-                <div className="w-full h-full flex flex-col">
-                  <textarea
-                    name=""
-                    className="w-full  h-14 py-2 custom-scrollbar bg-gray-800 bg-opacity-50 border rounded-md  inset-0 pl-3 "
-                    id=""
-                    onChange={handleChangevmess}
-                    placeholder="Enter URL Here ..."
-                  ></textarea>
-
-                  {/* content  */}
-                  <div
-                    className={
-                      vmessContent
-                        ? "w-full py-2 pt-3 custom-scrollbar  h-48 text-mono_blue overflow-auto"
-                        : "hidden"
-                    }
-                  >
-                    <pre>
-                      <code>{JSON.stringify(vmessContent, null, 2)}</code>
-                    </pre>
-                  </div>
-                </div>
+                <VmessServers setServerData={setServerData}></VmessServers>
               )}
               {serverType === "ssh" && (
-                <div className="w-full h-full flex flex-col gap-y-2 sm:flex-row gap-x-4">
-                  <form className=" w-full h-full flex flex-col gap-y-6 items-center ">
-                    <div className="w-full h-fit   flex items-center justify-center gap-x-3">
-                      <label htmlFor="tag" className="flex-none text-left w-20">
-                        Tag:
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.tag}
-                        placeholder="eg..SG"
-                        className="w-full bg-gray-700 border rounded-md py-1 pl-2"
-                        name="tag"
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="w-full h-fit   flex items-center justify-center gap-x-8">
-                      <label htmlFor="ip" className="flex-none w-16">
-                        IP:
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.ip}
-                        placeholder="Enter Server IP"
-                        className="w-full bg-gray-700 border rounded-md py-1 pl-2"
-                        name="ip"
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="w-full h-fit   flex items-center justify-center gap-x-8">
-                      <label htmlFor="port" className="flex-none w-16">
-                        Port:
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.port}
-                        placeholder="Enter Port"
-                        className="w-full bg-gray-700 border rounded-md py-1 pl-2"
-                        name="port"
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="w-full h-fit   flex items-center justify-center gap-x-8">
-                      <label htmlFor="username" className="flex-none w-16">
-                        UserName:
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.username}
-                        placeholder="Enter User Name"
-                        className="w-full bg-gray-700 border rounded-md py-1 pl-2"
-                        name="username"
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="w-full h-fit   flex items-center justify-center gap-x-8">
-                      <label htmlFor="password" className="flex-none w-16">
-                        Password:
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.password}
-                        placeholder="Enter Password"
-                        className="w-full bg-gray-700 border rounded-md py-1 pl-2"
-                        name="password"
-                        onChange={handleChange}
-                      />
-                    </div>
-                  </form>
-                  {/* content  */}
-                  <div className="w-full  custom-scrollbar  h-full text-mono_blue overflow-auto">
-                    <pre>
-                      <code>{JSON.stringify(sshContent, null, 2)}</code>
-                    </pre>
-                  </div>
-                </div>
+                <SshServers setServerData={setServerData}></SshServers>
               )}
             </div>
             {/* addserverbutton */}

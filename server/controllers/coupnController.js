@@ -15,6 +15,12 @@ const updateCoupon = async (req, res) => {
       runValidators: true,
     }
   );
-  res.status(200).send({ updated_data: result });
+  return result.coupon;
+  // res.status(200).send({ updated_data: result });
 };
-module.exports = { createCoupon, updateCoupon };
+
+const getCoupon = async (req, res) => {
+  const result = await Coupon.findOne({ type: "every_20" });
+  return result.coupon;
+};
+module.exports = { createCoupon, updateCoupon, getCoupon };

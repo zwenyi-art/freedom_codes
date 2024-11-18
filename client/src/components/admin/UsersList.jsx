@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegClock, FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin5Line, RiGroupLine } from "react-icons/ri";
 import { TbWorldBolt } from "react-icons/tb";
 import { RiCoinsLine } from "react-icons/ri";
-
-const UsersList = () => {
+const UsersList = ({ userList }) => {
   const [open, setOpen] = useState(false);
   return (
     <article className="bg-gray-800 rounded-lg w-full h-full px-5 sm:px-8 py-10">
@@ -34,161 +33,62 @@ const UsersList = () => {
             </tr>
           </thead>
           <tbody className="w-full h-full">
-            <tr className=" w-fit h-28 relative  border-b  border-gray-700 rtl:text-right">
-              <td
-                scope="row"
-                className=" font-medium  whitespace-nowrap text-white"
+            {userList?.map((data, index) => (
+              <tr
+                key={index}
+                className=" w-fit h-28 relative  border-b  border-gray-700 rtl:text-right"
               >
-                @dkafksajkaj
-              </td>
-              <td
-                scope="row"
-                className="font-medium w-fit h-full flex gap-x-1 sm:gap-x-2 items-center  justify-center whitespace-nowrap text-white"
-              >
-                <span>122</span>
-                <RiCoinsLine className="text-yellow-500" size={20} />
-              </td>
-              <td
-                scope="row"
-                className="px-2 w-fit h-fit  font-medium whitespace-nowrap text-white"
-              >
-                <span>12222333333332</span>
-              </td>
-              <td
-                scope="row"
-                className="px-2 w-fit h-fit  font-medium whitespace-nowrap text-white"
-              >
-                <span>Special</span>
-              </td>
-              <td scope="row" className="relative">
-                <div className="flex items-center justify-center w-fit h-full gap-x-2   font-medium whitespace-nowrap text-white">
-                  <button
-                    onClick={() => setOpen(!open)}
-                    disabled={open}
-                    className="bg-slate-500 w-fit h-fit px-2 py-1 rounded-md flex items-center justify-center"
-                  >
-                    <FaRegEdit size={20} />
-                  </button>
-                  <button className="bg-red-700 w-fit h-fit px-2 text-center py-1 rounded-md">
-                    <RiDeleteBin5Line size={20} />
-                  </button>
-                </div>
-                {open && (
-                  <div className="absolute top-0 right-0 w-full h-full bg-gray-700 rounded-t-md  flex flex-col gap-y-3 items-center justify-center">
-                    <div className="w-fit h-fit bg-lime-600 text-white py-1 px-2 rounded-md">
-                      Special
-                    </div>
-                    <div className="w-fit h-fit bg-gray-500 text-black py-1 px-2 rounded-md">
-                      Normal
-                    </div>
+                <td
+                  scope="row"
+                  className=" font-medium  whitespace-nowrap text-white"
+                >
+                  {data.user_name}
+                </td>
+                <td
+                  scope="row"
+                  className="font-medium w-fit h-full flex gap-x-1 sm:gap-x-2 items-center  justify-center whitespace-nowrap text-white"
+                >
+                  <span>{data.coins}</span>
+                  <RiCoinsLine className="text-yellow-500" size={20} />
+                </td>
+                <td
+                  scope="row"
+                  className="px-2 w-fit h-fit  font-medium whitespace-nowrap text-white"
+                >
+                  <span>{data.requestTime}</span>
+                </td>
+                <td
+                  scope="row"
+                  className="px-2 w-fit h-fit  font-medium whitespace-nowrap text-white"
+                >
+                  <span>Special</span>
+                </td>
+                <td scope="row" className="relative">
+                  <div className="flex items-center justify-center w-fit h-full gap-x-2   font-medium whitespace-nowrap text-white">
+                    <button
+                      onClick={() => setOpen(!open)}
+                      disabled={open}
+                      className="bg-slate-500 w-fit h-fit px-2 py-1 rounded-md flex items-center justify-center"
+                    >
+                      <FaRegEdit size={20} />
+                    </button>
+                    <button className="bg-red-700 w-fit h-fit px-2 text-center py-1 rounded-md">
+                      <RiDeleteBin5Line size={20} />
+                    </button>
                   </div>
-                )}
-              </td>
-            </tr>
-
-            <tr className=" w-fit h-28 relative  border-b  border-gray-700 rtl:text-right">
-              <td
-                scope="row"
-                className=" font-medium  whitespace-nowrap text-white"
-              >
-                @dkafksajkaj
-              </td>
-              <td
-                scope="row"
-                className="font-medium w-fit h-full flex gap-x-1 sm:gap-x-2 items-center  justify-center whitespace-nowrap text-white"
-              >
-                <span>122</span>
-                <RiCoinsLine className="text-yellow-500" size={20} />
-              </td>
-              <td
-                scope="row"
-                className="px-2 w-fit h-fit  font-medium whitespace-nowrap text-white"
-              >
-                <span>12222333333332</span>
-              </td>
-              <td
-                scope="row"
-                className="px-2 w-fit h-fit  font-medium whitespace-nowrap text-white"
-              >
-                <span>Special</span>
-              </td>
-              <td scope="row" className="relative">
-                <div className="flex items-center justify-center w-fit h-full gap-x-2   font-medium whitespace-nowrap text-white">
-                  <button
-                    onClick={() => setOpen(!open)}
-                    disabled={open}
-                    className="bg-slate-500 w-fit h-fit px-2 py-1 rounded-md flex items-center justify-center"
-                  >
-                    <FaRegEdit size={20} />
-                  </button>
-                  <button className="bg-red-700 w-fit h-fit px-2 text-center py-1 rounded-md">
-                    <RiDeleteBin5Line size={20} />
-                  </button>
-                </div>
-                {open && (
-                  <div className="absolute top-0 right-0 w-full h-full bg-gray-700 rounded-t-md  flex flex-col gap-y-3 items-center justify-center">
-                    <div className="w-fit h-fit bg-lime-600 text-white py-1 px-2 rounded-md">
-                      Special
+                  {open && (
+                    <div className="absolute top-0 right-0 w-full h-full bg-gray-700 rounded-t-md  flex flex-col gap-y-3 items-center justify-center">
+                      <div className="w-fit h-fit bg-lime-600 text-white py-1 px-2 rounded-md">
+                        Special
+                      </div>
+                      <div className="w-fit h-fit bg-gray-500 text-black py-1 px-2 rounded-md">
+                        Normal
+                      </div>
                     </div>
-                    <div className="w-fit h-fit bg-gray-500 text-black py-1 px-2 rounded-md">
-                      Normal
-                    </div>
-                  </div>
-                )}
-              </td>
-            </tr>
-
-            <tr className=" w-fit h-28 relative  border-b  border-gray-700 rtl:text-right">
-              <td
-                scope="row"
-                className=" font-medium  whitespace-nowrap text-white"
-              >
-                @dkafksajkaj
-              </td>
-              <td
-                scope="row"
-                className="font-medium w-fit h-full flex gap-x-1 sm:gap-x-2 items-center  justify-center whitespace-nowrap text-white"
-              >
-                <span>122</span>
-                <RiCoinsLine className="text-yellow-500" size={20} />
-              </td>
-              <td
-                scope="row"
-                className="px-2 w-fit h-fit  font-medium whitespace-nowrap text-white"
-              >
-                <span>12222333333332</span>
-              </td>
-              <td
-                scope="row"
-                className="px-2 w-fit h-fit  font-medium whitespace-nowrap text-white"
-              >
-                <span>Special</span>
-              </td>
-              <td scope="row" className="relative">
-                <div className="flex items-center justify-center w-fit h-full gap-x-2   font-medium whitespace-nowrap text-white">
-                  <button
-                    onClick={() => setOpen(!open)}
-                    disabled={open}
-                    className="bg-slate-500 w-fit h-fit px-2 py-1 rounded-md flex items-center justify-center"
-                  >
-                    <FaRegEdit size={20} />
-                  </button>
-                  <button className="bg-red-700 w-fit h-fit px-2 text-center py-1 rounded-md">
-                    <RiDeleteBin5Line size={20} />
-                  </button>
-                </div>
-                {open && (
-                  <div className="absolute top-0 right-0 w-full h-full bg-gray-700 rounded-t-md  flex flex-col gap-y-3 items-center justify-center">
-                    <div className="w-fit h-fit bg-lime-600 text-white py-1 px-2 rounded-md">
-                      Special
-                    </div>
-                    <div className="w-fit h-fit bg-gray-500 text-black py-1 px-2 rounded-md">
-                      Normal
-                    </div>
-                  </div>
-                )}
-              </td>
-            </tr>
+                  )}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

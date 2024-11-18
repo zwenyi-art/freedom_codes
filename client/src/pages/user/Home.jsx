@@ -1,13 +1,13 @@
-import { section } from "framer-motion/client";
 import React, { useState, useEffect } from "react";
 import { FaRegCopy } from "react-icons/fa";
 import { LuImport } from "react-icons/lu";
+import { useLocation, useNavigate } from "react-router-dom";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useAuth from "../../hooks/useAuth";
 
-const generateIP = () => {
-  return Array(4)
-    .fill(0)
-    .map(() => Math.floor(Math.random() * 256))
-    .join(".");
+const generateIP = (servers) => {
+  const shuffledIPs = [...servers].sort(() => 0.5 - Math.random());
+  return shuffledIPs.slice(0, 4);
 };
 
 const generateRandomString = () => {
@@ -15,14 +15,54 @@ const generateRandomString = () => {
 };
 
 const Home = () => {
-  const [servers, setServers] = useState(Array(4).fill("").map(generateIP));
-  const [config] = useState("singbox://example.com/config.json");
+  const { userInfo } = useAuth();
+  const [servers, setServers] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
+  const [randomServer, setRandomServer] = useState([]);
+  // const [servers, setServers] = useState(Array(4).fill("").map(generateIP));
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [config, setConfig] = useState("");
   const [copied, setCopied] = useState(false);
   const [activityCode, setActivityCode] = useState("");
 
   useEffect(() => {
+    let isMounted = true;
+    // const controller = new AbortController();
+
+    const getServers = async () => {
+      console.log("get server ip");
+      try {
+        const response = await axiosPrivate.get("/serverList");
+        isMounted && setServers(response.data.serverList);
+      } catch (error) {
+        console.error(error);
+        navigate("/login", { state: { from: location }, replace: true });
+      }
+    };
+    getServers();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [axiosPrivate]);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(config);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  useEffect(() => {
+    const token = userInfo?.token;
+    const user_id = userInfo?.user_id;
+    setConfig(() => `http://localhost:3500/api/v1/${user_id}?token=${token}`);
+  }, [userInfo?.token]);
+
+  useEffect(() => {
     const intervalId = setInterval(() => {
-      setServers((prev) => [generateIP(), ...prev.slice(0, -1)]);
+      setRandomServer(() => generateIP(servers));
     }, 2000);
 
     const activityId = setInterval(() => {
@@ -33,13 +73,7 @@ const Home = () => {
       clearInterval(intervalId);
       clearInterval(activityId);
     };
-  }, []);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(config);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  }, [servers]);
   return (
     <section className="z-30 w-full h-full">
       <div className="px-2 w-full h-full  flex items-center justify-center  font-mono">
@@ -58,7 +92,7 @@ const Home = () => {
                 Scanning for available VPN servers...
               </p>
             </div>
-            {servers.map((ip, index) => (
+            {randomServer?.map((ip, index) => (
               <div
                 key={index}
                 className="flex flex-col sm:flex-row sm:items-center space-x-2 mb-2"

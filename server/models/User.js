@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const { type } = require("os");
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
+  user_name: {
+    type: String,
+    require: true,
+  },
   user_id: {
     type: Number,
     require: true,
@@ -11,7 +15,6 @@ const userSchema = new Schema({
       type: Number,
       default: 2001,
     },
-    Editor: Number,
     Admin: Number,
   },
   password: {

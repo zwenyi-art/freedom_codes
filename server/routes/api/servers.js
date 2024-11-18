@@ -10,10 +10,15 @@ router.get(
 );
 //can access only admin for a while
 router.get(
-  "/",
+  "/privateServers",
   verifyRoles(ROLES_LIST.Admin),
   servers.getAllServers,
   servers.deleteServer
+);
+router.get(
+  "/publicServers",
+  verifyRoles(ROLES_LIST.Admin),
+  servers.getAllPublicServers
 );
 router.post("/", verifyRoles(ROLES_LIST.Admin), servers.createNewServer);
 router.delete("/", verifyRoles(ROLES_LIST.Admin), servers.deleteServer);

@@ -8,7 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const LOGIN_URL = "/auth";
 const Login = () => {
-  const { setAuth } = useAuth();
+  const { setAuth, persist, setPersist } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/home";
@@ -71,6 +71,14 @@ const Login = () => {
   useEffect(() => {
     console.log(errMsg);
   }, [errMsg]);
+
+  const togglePersist = () => {
+    setPersist((prev) => {
+      let newPrev = !prev;
+      localStorage.setItem("rememberMe", newPrev);
+      return newPrev;
+    });
+  };
   // const formik = useFormik({
   //   initialValues,
   //   onSubmit: (values) => {
@@ -138,9 +146,21 @@ const Login = () => {
               className="text-red-500 text-sm mt-1"
             ></ErrorMessage>
           </div>
+          <div className="ml-2 flex items-center justify-start gap-x-2 w-full h-fit">
+            <input
+              type="checkbox"
+              onChange={togglePersist}
+              checked={persist}
+              name="trustDevice"
+              id=""
+            />
+            <label htmlFor="trustDevice" className="text-white text-sm">
+              Remember Me
+            </label>
+          </div>
           <button
             type="submit"
-            className="bg-blue-400 mt-4 w-fit h-fit px-16 py-1 text-white rounded-sm"
+            className="bg-blue-400 mt-2 w-fit h-fit px-16 py-1 text-white rounded-sm"
           >
             LOGIN
           </button>

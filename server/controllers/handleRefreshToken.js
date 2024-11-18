@@ -16,7 +16,7 @@ const handleRefreshToken = async (req, res) => {
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "60s" }
     );
-    res.status(200).json({ accessToken: accessToken });
+    res.status(200).json({ roles: roles, accessToken: accessToken });
   });
 };
 module.exports = { handleRefreshToken };

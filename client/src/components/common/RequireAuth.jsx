@@ -21,9 +21,17 @@ const RequireAuth = ({ allowedRoles }) => {
     const result = auth?.roles?.find((role) => allowedRoles?.includes(role));
     if (result) {
       return <Outlet />;
+    } else {
+      if (auth?.accessToken) {
+        return (
+          <Navigate to="/unauthorize" state={{ from: location }} replace />
+        );
+      } else {
+        return <Navigate to="/login" state={{ from: location }} replace />;
+      }
     }
   } else {
-    return <Navigate to="/" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 };
 

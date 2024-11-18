@@ -12,6 +12,7 @@ import RequireAuth from "./components/common/RequireAuth";
 import LandingPage from "./pages/LandingPage";
 import UnauthorizePage from "./pages/UnauthorizePage";
 import NetSpeed from "./pages/user/NetSpeed";
+import PersistLogin from "./components/common/PersistLogin";
 const ROLES = {
   User: 2001,
   Admin: 5150,
@@ -28,28 +29,30 @@ const App = () => {
             element={<UnauthorizePage></UnauthorizePage>}
           ></Route>
 
-          {/* user layout */}
-          <Route
-            element={<RequireAuth allowedRoles={[ROLES.User]}></RequireAuth>}
-          >
-            <Route element={<UserLayout></UserLayout>}>
-              <Route path="home" element={<Home></Home>}></Route>
-              <Route path="add-coins" element={<AddCoin></AddCoin>}></Route>
-              <Route
-                path="servers"
-                element={<CustomServers></CustomServers>}
-              ></Route>
-              <Route
-                path="speed-test"
-                element={<SpeedTest></SpeedTest>}
-              ></Route>
+          <Route element={<PersistLogin></PersistLogin>}>
+            {/* user layout */}
+            <Route
+              element={<RequireAuth allowedRoles={[ROLES.User]}></RequireAuth>}
+            >
+              <Route element={<UserLayout></UserLayout>}>
+                <Route path="home" element={<Home></Home>}></Route>
+                <Route path="add-coins" element={<AddCoin></AddCoin>}></Route>
+                <Route
+                  path="servers"
+                  element={<CustomServers></CustomServers>}
+                ></Route>
+                <Route
+                  path="speed-test"
+                  element={<SpeedTest></SpeedTest>}
+                ></Route>
+              </Route>
             </Route>
-          </Route>
-          {/* admin layout */}
-          <Route
-            element={<RequireAuth allowedRoles={[ROLES.Admin]}></RequireAuth>}
-          >
-            <Route path="admin" element={<AdminLayout></AdminLayout>}></Route>
+            {/* admin layout */}
+            <Route
+              element={<RequireAuth allowedRoles={[ROLES.Admin]}></RequireAuth>}
+            >
+              <Route path="admin" element={<AdminLayout></AdminLayout>}></Route>
+            </Route>
           </Route>
         </Route>
       </Routes>

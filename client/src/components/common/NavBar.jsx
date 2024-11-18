@@ -11,10 +11,17 @@ import { IoSpeedometerSharp } from "react-icons/io5";
 import { CgDarkMode } from "react-icons/cg";
 import { TbServerBolt } from "react-icons/tb";
 import { RiLogoutBoxLine } from "react-icons/ri";
-import { NavLink } from "react-router-dom";
-import { handleLogout } from "../../utils/logout";
+import { NavLink, useNavigate } from "react-router-dom";
+// import { handleLogout } from "../../utils/logout";
+import useLogout from "../../hooks/useLogout";
 
 const Navbar = () => {
+  const logout = useLogout();
+  const navigate = useNavigate();
+  const signOut = async () => {
+    await logout();
+    navigate("/");
+  };
   return (
     <nav className=" fixed bottom-0 sm:relative  w-full h-fit sm:w-fit sm:h-full flex items-center justify-center">
       <div className="bg-gray-800  bg-opacity-60 sm:rounded-md px-5 py-9 sm:py-11 w-full h-fit flex gap-y-8 flex-row gap-x-10 sm:gap-x-6 sm:flex-col items-center justify-center">
@@ -64,7 +71,7 @@ const Navbar = () => {
         </NavLink>
         <button
           className="hover:text-[#ee1a30] transition-all ease-in-out delay-75"
-          onClick={() => handleLogout()}
+          onClick={() => signOut()}
         >
           <RiLogoutBoxLine size={28} />
         </button>

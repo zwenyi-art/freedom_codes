@@ -5,6 +5,8 @@ const {
   public_servers,
   random_server,
 } = require("../models/Servers");
+
+// public servers
 const updatePublicServer = async (data) => {
   await public_servers.findOneAndUpdate(
     { tag: "public_servers" },
@@ -23,6 +25,11 @@ const createPublicServer = async (data) => {
   });
 };
 
+const getAllPublicServers = async (req, res) => {
+  const result = await public_servers.find({ tag: "public_servers" });
+  res.status(200).json(result);
+};
+// private servers
 const createNewServer = async (req, res) => {
   const { type } = req.body;
   console.log("server hitted", type);
@@ -40,6 +47,8 @@ const createNewServer = async (req, res) => {
       console.log(req.body);
     } else if (type === "ssh") {
       const { server, tag, server_port, user, password } = req.body;
+      console.log(server, server_port);
+
       await ssh.create({
         type,
         server,
@@ -150,10 +159,16 @@ const deleteServer = async (req, res) => {
 };
 
 const getRandomServers = async (req, res) => {
-  const randomServer = await random_server.findOne({ tag: "random_servers" });
-  res.status(200).json(randomServer.servers);
+  const randomServer = await random_server
+    .findOne({ tag: "random_servers" })
+    .exec();
+  const serverList = randomServer?.servers?.map((data) => {
+    return data.server;
+  });
+  res.status(200).json({ serverList });
 };
 module.exports = {
+  getAllPublicServers,
   getAllServers,
   deleteServer,
   createNewServer,

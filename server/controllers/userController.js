@@ -9,25 +9,26 @@ const getAllUsers = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  const { user_id } = req.body;
-  const users = await User.findOne({ user_id: user_id });
-  res.status(200).json({ data: users });
+  const users = await User.findOne({ user_id: req.user_id });
+  res
+    .status(200)
+    .json({ coins: users.coins, user_id: users.user_id, token: users.token });
 };
 const deleteUser = async (req, res) => {
   return;
 };
 
 const addCoins = async (req, res) => {
-  const { user_id, coupon } = req.body;
-  if (!user_id & !coupon) {
+  const { coupon } = req.body;
+  if (!req.user_id & !coupon) {
     return res.sendStatus(400);
   }
-  const foundUser = await User.findOne({ user_id: user_id }).exec();
+  const foundUser = await User.findOne({ user_id: req.user_id }).exec();
   const foundCoupon = await Coupon.findOne({ coupon: coupon }).exec();
   if (!foundUser) return res.sendStatus(401);
-  if (!foundCoupon) return res.status(401).send({ data: "expired token" });
+  if (!foundCoupon) return res.status(401).send("expired token");
   if (foundUser.coupon === foundCoupon.coupon) {
-    return res.status(404).send({ data: "you used this coupon" });
+    return res.status(400).send("you used this coupon");
   }
   foundUser.coins += 100;
   foundUser.coupon = coupon;
