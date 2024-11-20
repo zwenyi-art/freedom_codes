@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-
 import PublicServersList from "../components/admin/PublicServersList";
 import PrivateServersList from "../components/admin/PrivateServersList";
 import AddNewServer from "../components/admin/AddNewServer";
 import TotalInfo from "../components/admin/TotalInfo";
 import UsersList from "../components/admin/UsersList";
-import Testing from "../components/admin/Testing";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 const AdminLayout = () => {
   const [selected, setSelected] = useState("servers");

@@ -1,18 +1,10 @@
 import React from "react";
-
-import { GiHamburgerMenu } from "react-icons/gi";
-import { FaRegCopy } from "react-icons/fa";
-import { LuImport } from "react-icons/lu";
 import { PiStackPlusFill } from "react-icons/pi";
 import { ImHome3 } from "react-icons/im";
-import { BsPersonVideo } from "react-icons/bs";
-import { FcAbout } from "react-icons/fc";
 import { IoSpeedometerSharp } from "react-icons/io5";
-import { CgDarkMode } from "react-icons/cg";
 import { TbServerBolt } from "react-icons/tb";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { NavLink, useNavigate } from "react-router-dom";
-// import { handleLogout } from "../../utils/logout";
 import useLogout from "../../hooks/useLogout";
 
 const Navbar = () => {

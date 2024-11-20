@@ -11,7 +11,6 @@ import Login from "./pages/auth/Login";
 import RequireAuth from "./components/common/RequireAuth";
 import LandingPage from "./pages/LandingPage";
 import UnauthorizePage from "./pages/UnauthorizePage";
-import NetSpeed from "./pages/user/NetSpeed";
 import PersistLogin from "./components/common/PersistLogin";
 const ROLES = {
   User: 2001,
