@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import NavBar from "../components/common/Navbar";
+import NavBar from "../components/common/NavBar";
 import { Outlet } from "react-router-dom";
 import UserInfo from "../components/user/UserInfo";
 import PageTransition from "../components/common/PageTransition";
