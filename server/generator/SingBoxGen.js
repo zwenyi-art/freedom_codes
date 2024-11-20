@@ -211,19 +211,27 @@ const sign_box_config_genMod = async (servers) => {
         // sign_box_config.outbounds[1].outbounds.push(ss.tag);
       }
     } else if (data.type === "ssh") {
+      console.log("ssh");
       const { tag, type, server, server_port, user, password } = data;
-      sign_box_config.outbounds.push({
-        tag,
-        type,
-        server,
-        server_port,
-        user,
-        password,
-      });
-      sign_box_config.outbounds[0].outbounds.push(tag);
-      sign_box_config.outbounds[1].outbounds.push(tag);
+      // sign_box_config.outbounds.push({
+      //   tag,
+      //   type,
+      //   server,
+      //   server_port,
+      //   user,
+      //   password,
+      // });
+      // sign_box_config.outbounds[0].outbounds.push(tag);
+      // sign_box_config.outbounds[1].outbounds.push(tag);
       // console.log({ tag, type, server, server_port, user, password });
+      SingBox.setOutbounds([
+        ...SingBox.sing_box.outbounds,
+        { tag, type, server, server_port, user, password },
+      ]);
+      SingBox.setURLTest([...SingBox.sing_box.outbounds[1].outbounds, tag]);
     } else if (data.type === "vmess") {
+      console.log("vmess");
+
       const {
         type,
         server,
@@ -235,32 +243,76 @@ const sign_box_config_genMod = async (servers) => {
         transport,
         tls,
       } = data;
-      if (transport.type) {
-        sign_box_config.outbounds.push({
-          type,
-          server,
-          tag,
-          server_port,
-          uuid,
-          security,
-          alter_id,
-          transport,
-          tls,
-        });
+
+      console.log({
+        type,
+        server,
+        tag,
+        server_port,
+        uuid,
+        security,
+        alter_id,
+        transport,
+        tls,
+      });
+
+      if (transport) {
+        SingBox.setOutbounds([
+          ...SingBox.sing_box.outbounds,
+          {
+            type,
+            server,
+            tag,
+            server_port,
+            uuid,
+            security,
+            alter_id,
+            transport,
+            tls,
+          },
+        ]);
+
+        // sign_box_config.outbounds.push({
+        //   type,
+        //   server,
+        //   tag,
+        //   server_port,
+        //   uuid,
+        //   security,
+        //   alter_id,
+        //   transport,
+        //   tls,
+        // });
       } else {
-        sign_box_config.outbounds.push({
-          type,
-          server,
-          tag,
-          server_port,
-          uuid,
-          security,
-          alter_id,
-        });
+        SingBox.setOutbounds([
+          ...SingBox.sing_box.outbounds,
+          {
+            type,
+            server,
+            tag,
+            server_port,
+            uuid,
+            security,
+            alter_id,
+            tls,
+          },
+        ]);
+
+        // sign_box_config.outbounds.push({
+        //   type,
+        //   server,
+        //   tag,
+        //   server_port,
+        //   uuid,
+        //   security,
+        //   alter_id,
+        // });
       }
 
-      sign_box_config.outbounds[0].outbounds.push(tag);
-      sign_box_config.outbounds[1].outbounds.push(tag);
+      // SingBox.setURLTest([...SingBox.sing_box.outbounds[0].outbounds, tag]);
+      SingBox.setURLTest([...SingBox.sing_box.outbounds[1].outbounds, tag]);
+      // sign_box_config.outbounds[0].outbounds.push(tag);
+      // sign_box_config.outbounds[1].outbounds.push(tag);
     }
   }
   return SingBox.sing_box;

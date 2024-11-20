@@ -16,11 +16,16 @@ const updateRandomServers = async (req, res) => {
   ]);
   const SS = await ss.aggregate([
     { $match: { type: "shadowsocks" } }, // Filter documents with type 'ssh'
-    { $sample: { size: 1 } }, // Randomly select 1 document
+    { $sample: { size: 2 } }, // Randomly select 1 document
   ]);
-  console.log("here is getting ", ss);
+  const VMESS = await vmess.aggregate([
+    { $match: { type: "vmess" } }, // Filter documents with type 'ssh'
+    { $sample: { size: 2 } }, // Randomly select 1 document
+  ]);
+  console.log("here is getting ", VMESS);
   const randomizer = await randomizeServer(data[0].servers, 15);
-  const serverData = [...SSH, ...randomizer, ...SS];
+  // const serverData = [...SSH, ...randomizer, ...SS];
+  const serverData = [...VMESS, ...randomizer, ...SSH, ...SS];
   const public_config = await sign_box_config_genMod(serverData);
   // const public_config = await sign_box_config_gen(serverData);
   // res.status(200).json(public_config);
