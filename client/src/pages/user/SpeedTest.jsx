@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GaugeComponent from "react-gauge-component";
 
 const GaugeCard = ({ speed, title, kbitsToMbits }) => (
@@ -56,12 +56,12 @@ const SpeedTest = () => {
   const [uploadSpeed, setUploadSpeed] = useState(0);
   const [complete, setComplete] = useState(false);
   const startTest = () => {
-    window.ndt7
+    ndt7
       .test(
         {
           userAcceptedDataPolicy: true,
-          downloadworkerfile: "./public/ndt7-download-worker.js",
-          uploadworkerfile: "./public/ndt7-upload-worker.js",
+          downloadworkerfile: "/ndt7-download-worker.js",
+          uploadworkerfile: "/ndt7-upload-worker.js",
           metadata: {
             client_name: "ndt7-react-speedtest",
           },
@@ -123,6 +123,14 @@ const SpeedTest = () => {
     return value.toFixed(0) + " Kbps"; // Otherwise, display as Kbps
   };
 
+  useEffect(() => {
+    const startSpeedTest = setTimeout(() => {
+      startTest();
+    }, 2000);
+    return () => {
+      clearTimeout(startSpeedTest);
+    };
+  }, []);
   return (
     <section className="w-full h-svh flex items-center justify-center">
       <div className="relative w-full h-fit gap-x-10 flex flex-col sm:flex-row items-center justify-center">
@@ -134,30 +142,33 @@ const SpeedTest = () => {
             kbitsToMbits={kbitsToMbits}
           />
         ) : (
-          <></>
+          <GaugeCard
+            speed={downloadSpeed}
+            title="Download Speed"
+            kbitsToMbits={kbitsToMbits}
+          />
         )}
 
         {/* Status Indicator */}
-        {loading ? (
-          <div className="w-full h-full bottom-10 absolute flex items-start justify-center ">
-            {!complete ? (
-              <span>
-                Testing To <span className="text-blue-600">{server}</span> Server
+
+        <div className="w-full h-full bottom-10 absolute flex items-start justify-center ">
+          {!complete ? (
+            loading ? (
+              <span className="uppercase font-bold text-emerald-300">
+                Testing To <span className="text-green-600">{server}</span>{" "}
+                Server ...
               </span>
             ) : (
-              <span>Speed Test Completed 😅</span>
-            )}
-          </div>
-        ) : (
-          <div className="w-full h-full absolute  flex items-end justify-center ">
-            <button
-              className="w-fit h-fit bg-gray-800 px-2 py-1"
-              onClick={() => startTest()}
-            >
-              Start Test
-            </button>
-          </div>
-        )}
+              <span className="uppercase font-bold text-white">
+                Finding To The Nearest Server ....
+              </span>
+            )
+          ) : (
+            <span className="uppercase font-bold text-emerald-300">
+              Speed Test Completed !
+            </span>
+          )}
+        </div>
 
         {/* Upload Speed */}
         {loading ? (
@@ -167,7 +178,11 @@ const SpeedTest = () => {
             kbitsToMbits={kbitsToMbits}
           />
         ) : (
-          <></>
+          <GaugeCard
+            speed={uploadSpeed}
+            title="Upload Speed"
+            kbitsToMbits={kbitsToMbits}
+          />
         )}
       </div>
     </section>

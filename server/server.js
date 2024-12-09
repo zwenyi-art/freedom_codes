@@ -12,6 +12,8 @@ const corsOptions = require("./configs/corsOptions");
 const app = express();
 const PORT = 3500;
 
+//middleware for cookies
+app.use(cookieParser());
 // Handle options credentials check - before CORS!
 // and fetch cookies credentials requirement
 app.use(credentials);
@@ -23,8 +25,7 @@ app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));
 // built-in middleware for json
 app.use(express.json());
-//middleware for cookies
-app.use(cookieParser());
+
 //good cron job
 app.use("/crons", require("./routes/cronRouter"));
 //telegram bot

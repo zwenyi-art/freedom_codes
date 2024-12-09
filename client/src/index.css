@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 .swal2-html-container {
   color: #4b5563; /* Tailwind's gray-600 color */
 }

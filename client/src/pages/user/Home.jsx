@@ -4,6 +4,7 @@ import { LuImport } from "react-icons/lu";
 import { useLocation, useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
+import useRefreshToken from "../../hooks/useRefreshToken";
 
 const generateIP = (servers) => {
   const shuffledIPs = [...servers].sort(() => 0.5 - Math.random());
@@ -16,6 +17,7 @@ const generateRandomString = () => {
 
 const Home = () => {
   const { userInfo } = useAuth();
+  const refresh = useRefreshToken();
   const [servers, setServers] = useState([]);
   const axiosPrivate = useAxiosPrivate();
   const [randomServer, setRandomServer] = useState([]);
@@ -30,7 +32,6 @@ const Home = () => {
   useEffect(() => {
     let isMounted = true;
     // const controller = new AbortController();
-
     const getServers = async () => {
       console.log("get server ip");
       try {
@@ -54,10 +55,19 @@ const Home = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const importToSingBox = () => {
+    const url = `sing-box://import-remote-profile?url=${config}#Beyond_The_Limitation`;
+    window.location.href = url;
+  };
   useEffect(() => {
     const token = userInfo?.token;
     const user_id = userInfo?.user_id;
-    setConfig(() => `http://localhost:3500/api/v1/${user_id}?token=${token}`);
+    setConfig(
+      () =>
+        `${
+          import.meta.env.VITE_APP_REMOTE_URL
+        }/api/v1/${user_id}?token=${token}`
+    );
   }, [userInfo?.token]);
 
   useEffect(() => {
@@ -75,7 +85,7 @@ const Home = () => {
     };
   }, [servers]);
   return (
-    <section className="z-30 w-full h-full">
+    <section className=" w-full h-full ">
       <div className="px-2 w-full h-full  flex items-center justify-center  font-mono">
         <div className="w-full max-w-2xl bg-gray-900 border  border-blue-500 rounded-md shadow-lg overflow-hidden">
           <div className="bg-gray-800 p-2 flex justify-between items-center">
@@ -142,6 +152,7 @@ const Home = () => {
             </div>
             <button
               onClick={() => {
+                importToSingBox();
                 /* Handle Singbox import */
               }}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium sm:py-1 py-2 px-2 rounded-md transition duration-150 ease-in-out flex items-center justify-center space-x-2"

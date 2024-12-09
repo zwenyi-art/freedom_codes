@@ -1,3 +1,4 @@
+const { userInfo } = require("os");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const handleRefreshToken = async (req, res) => {
@@ -7,6 +8,9 @@ const handleRefreshToken = async (req, res) => {
   const foundUser = await User.findOne({ refreshToken });
   if (!foundUser) return res.sendStatus(403);
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+    console.log(
+      `err ${err} , decoded ${decoded} , foundUser ${foundUser.user_id}`
+    );
     if (err || foundUser.user_id !== decoded.userInfo.user_id) {
       return res.sendStatus(403);
     }

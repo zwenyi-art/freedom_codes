@@ -1,9 +1,12 @@
 import useAuth from "./useAuth";
 import Swal from "sweetalert2";
 import axios from "../api/axios";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const useLogout = () => {
-  const { setAuth } = useAuth();
+  const { auth, setAuth } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
   const logout = async () => {
     Swal.fire({
       title: "Are you sure?",
@@ -24,8 +27,10 @@ const useLogout = () => {
       if (result.isConfirmed) {
         // Perform logout action
         try {
-          const response = await axios("/logout", { withCredentials: true });
-          console.log("Logged out successfully");
+          await axios("/logout", { withCredentials: true });
+          if (auth?.accessToken) {
+            navigate("/login", { state: { from: location }, replace: true });
+          }
         } catch (error) {
           console.error(error);
         }

@@ -5,6 +5,8 @@ import { RxTokens } from "react-icons/rx";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { BsMailbox } from "react-icons/bs";
+import { BiLock } from "react-icons/bi";
 
 const LOGIN_URL = "/auth";
 const Login = () => {
@@ -104,7 +106,7 @@ const Login = () => {
       validate={validate}
       className=" w-full h-svh  flex items-center justify-center"
     >
-      <div className="w-full  h-svh flex items-center justify-center">
+      <div className="px-2 w-full  h-svh flex items-center justify-center">
         <Form className="w-fit h-fit  bg-slate-700 bg-opacity-45   px-12 py-10 gap-y-4 rounded-md   flex flex-col items-center justify-center">
           <div className=" w-fit h-fit flex flex-col items-center justify-center">
             <div className="relative text-white flex items-center justify-center">
@@ -166,7 +168,7 @@ const Login = () => {
           </button>
           <span className="w-full h-fit flex items-center justify-center gap-x-2">
             <span className="text-white">Need Account?</span>
-            <span className="underline text-sm text-blue-400">
+            <span className="underline text-sm text-blue-400 cursor-pointer">
               Sign up here
             </span>
           </span>

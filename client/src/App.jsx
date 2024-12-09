@@ -12,6 +12,8 @@ import RequireAuth from "./components/common/RequireAuth";
 import LandingPage from "./pages/LandingPage";
 import UnauthorizePage from "./pages/UnauthorizePage";
 import PersistLogin from "./components/common/PersistLogin";
+import MissingPage from "./pages/MissingPage";
+
 const ROLES = {
   User: 2001,
   Admin: 5150,
@@ -21,7 +23,6 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/">
-          <Route index element={<LandingPage></LandingPage>}></Route>
           <Route path="login" element={<Login></Login>}></Route>
           <Route
             path="unauthorize"
@@ -29,6 +30,8 @@ const App = () => {
           ></Route>
 
           <Route element={<PersistLogin></PersistLogin>}>
+            <Route index element={<LandingPage></LandingPage>}></Route>
+
             {/* user layout */}
             <Route
               element={<RequireAuth allowedRoles={[ROLES.User]}></RequireAuth>}
@@ -53,6 +56,8 @@ const App = () => {
               <Route path="admin" element={<AdminLayout></AdminLayout>}></Route>
             </Route>
           </Route>
+
+          <Route path="*" element={<MissingPage></MissingPage>}></Route>
         </Route>
       </Routes>
     </Router>
