@@ -64,9 +64,7 @@ const Home = () => {
     const user_id = userInfo?.user_id;
     setConfig(
       () =>
-        `${
-          import.meta.env.VITE_APP_REMOTE_URL
-        }/api/v1/${user_id}?token=${token}`
+        `https://freedom-codes-api.vercel.app/api/v1/${user_id}?token=${token}`
     );
   }, [userInfo?.token]);
 
