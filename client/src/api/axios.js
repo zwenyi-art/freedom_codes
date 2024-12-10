@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "https://freedom-codes-api.vercel.app/";
+const BASE_URL = "https://freedom-codes-api.onrender.com/";
 export default axios.create({
   baseURL: BASE_URL,
 });
