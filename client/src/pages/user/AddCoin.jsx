@@ -8,10 +8,12 @@ const AddCoin = () => {
   const axiosPrivate = useAxiosPrivate();
   const addCoinHandle = () => {
     Swal.fire({
-      title: "ကူပွန်ကုဒ်လေးထည့်ပြီးကံစမ်းမယ်။😁🎁🎁",
+      title: "ကူပွန်ကုဒ်ထည့်ပြီးကံစမ်းမယ်။🎁🎁",
       input: "text",
       inputPlaceholder: "ကူပွန်ကုဒ်ကို ဒီမှာထည့်ပါ...",
       confirmButtonText: "Submit",
+      cancelButtonText: "Cancel",
+      showCancelButton: true, // Enables the cancel button
       customClass: {
         popup: "bg-gray-800   rounded-lg ", // Tailwind styling for popup
         title: "text-xl font-semibold text-white", // Tailwind styling for title
@@ -44,7 +46,7 @@ const AddCoin = () => {
           if (error.status === 400) {
             Swal.fire({
               title: "Sorry!",
-              text: "😛ရင်ခုန်သံတွေမလတ်ဆတ်တော့သောကူပွန်ဖြစ်သည်။",
+              text: "Your Coupon has Expired!",
               confirmButtonText: "Close", // Custom message
               customClass: {
                 popup: "bg-gray-800 text-white rounded-lg", // Set background color to gray and text to white
@@ -58,7 +60,7 @@ const AddCoin = () => {
           if (error.status === 401) {
             Swal.fire({
               title: "😒😒",
-              text: "ဟော် မဟုတ်တာတွေ လာမထည့်နဲ့လေ။",
+              text: "Your Coupon Is Invalid!",
               confirmButtonText: "Close", // Custom message
               customClass: {
                 popup: "bg-gray-800 text-white rounded-lg", // Set background color to gray and text to white
@@ -72,6 +74,8 @@ const AddCoin = () => {
         }
       } else if (result.isDenied) {
         Swal.fire("Changes are not saved", "", "info");
+      } else if (result.isDismissed) {
+        console.log("Modal was canceled");
       }
     });
   };

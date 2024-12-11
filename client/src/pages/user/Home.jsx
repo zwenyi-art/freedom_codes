@@ -83,7 +83,7 @@ const Home = () => {
     };
   }, [servers]);
   return (
-    <section className=" w-full h-full ">
+    <section className=" w-full h-full pb-20 sm:p-0">
       <div className="px-2 w-full h-full  flex items-center justify-center  font-mono">
         <div className="w-full max-w-2xl bg-gray-900 border  border-blue-500 rounded-md shadow-lg overflow-hidden">
           <div className="bg-gray-800 p-2 flex justify-between items-center">
