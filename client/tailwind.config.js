@@ -4,8 +4,7 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        "custom-desktop-bg": "url('./public/images/close_face.webp')", // Define your custom background
-        "custom-mobile-bg": "url('./public/images/close_face_mobile.webp')",
+        "custom-desktop-bg": "url('./public/images/newServer.png')", // Define your custom background
       },
     },
     // container: {
