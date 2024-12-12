@@ -168,7 +168,10 @@ const Login = () => {
           </button>
           <span className="w-full h-fit flex items-center justify-center gap-x-2">
             <span className="text-white">Need Account?</span>
-            <span className="underline text-sm text-blue-400 cursor-pointer">
+            <span
+              onClick={() => window.open("https://t.me/codesmm_bot", "_blank")}
+              className=" underline text-sm text-blue-400 cursor-pointer"
+            >
               Sign up here
             </span>
           </span>
