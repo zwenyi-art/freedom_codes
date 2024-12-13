@@ -157,7 +157,7 @@ const LandingPage = () => {
           </div>
           <div className="w-full h-[200px]  flex flex-col px-2 gap-y-4">
             <button
-              onClick={() => navigate("/login")}
+              onClick={() => window.open("https://t.me/codesmm_bot", "_blank")}
               className="w-full h-fit rounded-md px-2 py-2 flex items-center justify-center gap-x-1 bg-blue-500 text-xl text-white font-extrabold"
             >
               SingUp <IoMdLogIn size={20} />
