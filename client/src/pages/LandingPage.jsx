@@ -10,6 +10,7 @@ import { FaLanguage } from "react-icons/fa6";
 import { FaAndroid } from "react-icons/fa6";
 import { FaApple } from "react-icons/fa";
 import { FaWindows } from "react-icons/fa";
+import { MdOutlineCrisisAlert } from "react-icons/md";
 const welcome_content = {
   en: {
     title: "Welcome To Freedom Codes For Myanmar",
@@ -65,14 +66,24 @@ const LandingPage = () => {
     }
   };
   useEffect(() => {
-    console.log(modalBox);
+    // Block scrolling when modal is active
+    if (modalBox) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    // Clean up style when component unmounts
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [modalBox]);
   return (
     <main
       onClick={() => modalBox && setModalBox(false)}
-      className="relative w-full h-svh flex flex-col gap-y-3 text-white mx-auto container"
+      className=" w-full h-full flex flex-col bg-gray-800 gap-y-3 text-white mx-auto container"
     >
-      <nav className="w-full h-fit bg-black/30 sm:bg-transparent flex flex-row items-center justify-between px-3  py-4 sm:px-0 sm:py-1">
+      <nav className="fixed top-0 right-0 left-0 w-full h-fit bg-black/30 sm:bg-transparent flex flex-row items-center justify-between backdrop-blur-md px-3  py-4 sm:px-3 sm:py-1">
         <h1>FREEDM</h1>
         <div className=" flex-auto hidden sm:flex items-center justify-center">
           <div className="w-fit h-fit  flex flex-row bg-black/20 shadow-lg px-3 py-1 rounded-full items-center justify-center">
@@ -89,6 +100,7 @@ const LandingPage = () => {
           </div>
         </div>
 
+        {/* language box */}
         <div className="hidden sm:block relative w-fit h-fit  cursor-pointer">
           {/* <button onClick={changeLanguage}>
             {language == "en" ? "မြန်မာ" : "English"}
@@ -127,9 +139,38 @@ const LandingPage = () => {
           </div>
         </div>
         <div className="w-fit sm:hidden h-fit flex flex-row gap-x-7 items-center justify-center">
-          <div onClick={() => setLanguageBox(!languageBox)} className="">
-            <FaLanguage size={37} />
+          <div className="w-full h-fit">
+            <div onClick={() => setLanguageBox(!languageBox)} className="">
+              <FaLanguage size={37} />
+            </div>
+            <div
+              className={
+                languageBox
+                  ? "absolute right-0 w-fit h-fit flex flex-col gap-y-2 bg-black/20 py-2 px-5 mt-4"
+                  : "hidden"
+              }
+            >
+              <span
+                className=""
+                onClick={() => {
+                  setLanguageBox(false);
+                  setLanguage("en");
+                }}
+              >
+                English
+              </span>
+              <span
+                className=""
+                onClick={() => {
+                  setLanguageBox(false);
+                  setLanguage("my");
+                }}
+              >
+                မြန်မာ
+              </span>
+            </div>
           </div>
+
           <div
             onClick={() => setModalBox(!modalBox)}
             className="block sm:hidden"
@@ -138,8 +179,10 @@ const LandingPage = () => {
           </div>
         </div>
       </nav>
+      {/* spacing */}
+      <div className="w-full h-28 sm:h-11"></div>
       {modalBox ? (
-        <div className="absolute sm:hidden md:hidden xl:hidden flex flex-col left-0 bg-slate-600 w-2/3 h-full">
+        <div className="fixed sm:hidden md:hidden xl:hidden flex flex-col left-0 bg-slate-600 w-2/3 h-full">
           <div className="w-full h-full flex flex-col items-center pt-20 gap-y-9 ">
             <button className="w-full h-fit px-2 py-1 flex flex-row items-center justify-between">
               <span className="text-xl font-bold">About</span>
@@ -177,10 +220,13 @@ const LandingPage = () => {
         <></>
       )}
 
-      <section className="px-2 w-full h-full flex flex-col items-center justify-center">
-        <div className="w-full sm:w-[650px] h-fit sm:h-[350px] sm:bg-black/15 flex gap-y-5 sm:gap-y-6 flex-col sm:items-center justify-center sm:py-4 px-1  pt-3 sm:px-5 rounded-none sm:rounded-xl">
-          <h1 className="font-bold uppercase text-center text-2xl">
-            {welcome_content[language].title}
+      <section className="px-2 w-full h-full gap-y-5  flex flex-col items-center justify-center">
+        <article className="w-full  h-fit sm:h-[350px] sm:bg-black/15 flex gap-y-5 sm:gap-y-6 flex-col sm:items-center justify-center sm:py-4 px-1  pt-3 sm:px-5 rounded-none sm:rounded-xl">
+          <h1 className="font-semibold font-serif uppercase text-center text-2xl">
+            <span className="text-green-400">F</span>reedom{" "}
+            <span className="text-blue-600">C</span>odes{" "}
+            <span className="text-pink-500">F</span>or{" "}
+            <span className="text-lime-400">M</span>yanmar
           </h1>
           <p className="tracking-wide text-center text-base">
             {welcome_content[language].description}
@@ -196,7 +242,56 @@ const LandingPage = () => {
               Download For <FaWindows />
             </button>
           </div>
-        </div>
+        </article>
+        <article className="w-full h-full  flex gap-y-5  flex-col  items-center justify-center ">
+          <div className="w-full h-fit flex items-center justify-center">
+            <h1 className=" font-semibold font-serif uppercase text-center text-2xl">
+              <span className="text-green-500">F</span>eatures
+            </h1>
+          </div>
+          <p className="text-center">
+            VPN များအား ဝယ်ယူအသုံးပြုရန် ငွေကြေးအရအဆင်မပြေသောလူများအတွက် အခမဲ့
+            အသုံးပြုနိုင်ရန်ပြုလုပ်ထားခြင်းဖြစ်သည်။
+          </p>
+          <div className="w-full h-fit gap-y-2 py-1 flex flex-col items-center justify-center">
+            <div className="w-full h-full  grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="w-fit h-fit bg-black/15 px-3 py-3 flex flex-col gap-y-1 border-cyan-50/35 border ">
+                <h1 className="text-2xl text-white font-extrabold">01</h1>
+                <h2 className="text-xl uppercase">Bypassing Censorship</h2>
+                <p>
+                  Firewall အား ကျော်လွှားနိုင်စေရန် မတူညီသော protocols
+                  များအသုံးပြုထားခြင်း
+                </p>
+              </div>
+              <div className="w-fit h-fit bg-black/15 px-3 py-3 flex flex-col gap-y-1 border-cyan-50/35 border ">
+                <h1 className="text-2xl text-white font-extrabold">02</h1>
+                <h2 className="text-xl uppercase">Seamless Server Updates</h2>
+                <p>
+                  အချိန်တိုင်း Servers များ အလိုအလျောက်ပြောင်းလဲကာ
+                  ပေါက်တတ်ကရတွေဖြစ်၍နေခြင်း
+                </p>
+              </div>
+              <div className="w-fit h-fit bg-black/15 px-3 py-3 flex flex-col gap-y-1 border-cyan-50/35 border ">
+                <h1 className="text-2xl text-white font-extrabold">03</h1>
+                <h2 className="text-xl uppercase">Internet Speed Testing</h2>
+                <p>
+                  လက်ရှိမိမိအသုံးပြုနေသောအင်တာနက်Speedအားစမ်းသပ်စစ်ဆေးနိုင်ခြင်း
+                </p>
+              </div>
+              <div className="w-fit h-fit bg-black/15 px-3 py-3 flex flex-col gap-y-1 border-cyan-50/35 border ">
+                <h1 className="text-2xl text-white font-extrabold">04</h1>
+                <h2 className="text-xl uppercase">Update Servers Freely</h2>
+                <p>
+                  Server
+                  Updateလုပ်ရန်အသုံးပြုရန်လိုအပ်သောCoinsများအားကူပွန်အသုံးပြူခြင်းမှရရှိနိုင်ခြင်း
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+        <article className="w-full h-full  flex gap-y-5  flex-col  items-center justify-center">
+          
+        </article>
       </section>
     </main>
   );

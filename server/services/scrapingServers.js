@@ -4,7 +4,7 @@ const fetchData = require("../utils/fetchData");
 const processingLargeData = require("../utils/processingLargeData");
 
 const scrapShadowSocks = async (req, res) => {
-  const url = "https://pad.riseup.net/p/9cjN4e-8-dlnAmfHii2v/export/txt";
+  const url = "https://pad.riseup.net/p/lez_uFcJoUlmalBOCyHt/export/txt";
   try {
     const data = await fetchData(url);
     const servers = await processingLargeData(data).catch(console.error);
