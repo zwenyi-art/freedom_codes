@@ -7,6 +7,9 @@ import { HiMiniLanguage } from "react-icons/hi2";
 import { CiMenuBurger } from "react-icons/ci";
 import { IoIosArrowForward } from "react-icons/io";
 import { FaLanguage } from "react-icons/fa6";
+import { FaAndroid } from "react-icons/fa6";
+import { FaApple } from "react-icons/fa";
+import { FaWindows } from "react-icons/fa";
 const welcome_content = {
   en: {
     title: "Welcome To Freedom Codes For Myanmar",
@@ -21,9 +24,9 @@ const welcome_content = {
           build a brighter future.`,
   },
   my: {
-    title: "Freedom Codes For Myanmar မှကြိုဆိုပါတယ်။",
+    title: "Welcome To Freedom Codes For Myanmar",
     description:
-      "မြန်မာပြည်တွင် နေရာအနှံ့အပြား၌ပြည်တွင်းစစ်ကြီး ဖြစ်နေရုံမျှမက အင်တာနက် ပိတ်ဆို့ကန့်သတ်ဖြတ်တောက်မှုများစွာကြုံတွေ့နေရသည်ဖြစ်သည်။ ယခု platform သည် ထိုကဲ့သို့ ဖြတ်တောက်မှုများအားကျော်လွှားနိုင်ရန် နှင့် အသိပညာပေးချင်းလုပ်ငန်းများဆောင်ရွက်နိုင်ရန်ပြုလုပ်ထားချင်းဖြစ်သည်။",
+      "မြန်မာပြည်တွင် လူသုံးများသော social media platform များသာမက VPN applications များအား ပိတ်ဆို့ကန့်သတ်ထားသဖြင့် သတင်းအချက်လက်ရရှိရန်နဲ့ အချင်းချင်းဆက်သွယ်ရာတွင် လူတိုင်းနီးပါး အခက်ခဲ ကြုံတွေနေရသည်။ထိုပြသနာအား အနည်းငယ်ဖြေရှင်းနိုင်လိမ့်မည်ဟူသော မျှော်လင့်ချက်ဖြင့် ယခု website အားပြုလုပ်လိုက်ရချင်းဖြစ်သည်။",
   },
 };
 const LandingPage = () => {
@@ -31,7 +34,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [background, setBackground] = useState("");
-  const [language, setLanguage] = useState("en");
+  const [language, setLanguage] = useState("my");
   const [languageBox, setLanguageBox] = useState(false);
   const [modalBox, setModalBox] = useState(false);
   console.log("landing page", auth);
@@ -124,7 +127,7 @@ const LandingPage = () => {
           </div>
         </div>
         <div className="w-fit sm:hidden h-fit flex flex-row gap-x-7 items-center justify-center">
-          <div className="">
+          <div onClick={() => setLanguageBox(!languageBox)} className="">
             <FaLanguage size={37} />
           </div>
           <div
@@ -174,14 +177,25 @@ const LandingPage = () => {
         <></>
       )}
 
-      <section className="px-2 w-full h-fit flex flex-col items-center justify-center">
-        <div className="w-full sm:w-[650px] h-fit sm:h-[350px] sm:bg-black/15 flex flex-col sm:py-4 px-1  pt-3 sm:px-5 rounded-none sm:rounded-xl">
-          <h1 className="font-bold text-lg">
+      <section className="px-2 w-full h-full flex flex-col items-center justify-center">
+        <div className="w-full sm:w-[650px] h-fit sm:h-[350px] sm:bg-black/15 flex gap-y-5 sm:gap-y-6 flex-col sm:items-center justify-center sm:py-4 px-1  pt-3 sm:px-5 rounded-none sm:rounded-xl">
+          <h1 className="font-bold uppercase text-center text-2xl">
             {welcome_content[language].title}
           </h1>
-          <p className="tracking-wide">
+          <p className="tracking-wide text-center text-base">
             {welcome_content[language].description}
           </p>
+          <div className="w-full h-fit gap-x-4 gap-y-2 flex flex-wrap flex-row items-center justify-center">
+            <button className="w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2">
+              Download For <FaAndroid />
+            </button>
+            <button className="w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2">
+              Download For <FaApple />
+            </button>
+            <button className=" w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2">
+              Download For <FaWindows />
+            </button>
+          </div>
         </div>
       </section>
     </main>
