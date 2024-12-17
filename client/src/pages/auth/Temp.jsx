@@ -154,4 +154,33 @@ const Sponsor = () => {
     </div>
   );
 };
+
+const Home = () => {
+  return (
+    <article
+      id="about"
+      className="w-full  min-h-svh   sm:bg-black/15 flex gap-y-5 sm:gap-y-6 flex-col sm:items-center justify-center sm:py-4  px-1  pt-6 sm:px-5 rounded-none sm:rounded-xl"
+    >
+      <h1 className="font-semibold font-serif uppercase text-center text-2xl">
+        <span className="text-green-400">B</span>eyond{" "}
+        <span className="text-blue-600">T</span>he{" "}
+        <span className="text-pink-500">L</span>imitations
+      </h1>
+      <p className="tracking-wide text-center text-base">
+        {welcome_content[language].description}
+      </p>
+      <div className="w-full h-fit gap-x-4 gap-y-2 flex flex-wrap flex-row items-center justify-center">
+        <button className="w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2">
+          Download For <FaAndroid />
+        </button>
+        <button className="w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2">
+          Download For <FaApple />
+        </button>
+        <button className=" w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2">
+          Download For <FaWindows />
+        </button>
+      </div>
+    </article>
+  );
+};
 export default Temp;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { IoMdLogIn } from "react-icons/io";
@@ -7,57 +7,38 @@ import { HiMiniLanguage } from "react-icons/hi2";
 import { CiMenuBurger } from "react-icons/ci";
 import { IoIosArrowForward } from "react-icons/io";
 import { FaLanguage } from "react-icons/fa6";
-import { FaAndroid } from "react-icons/fa6";
-import { FaApple, FaTelegramPlane } from "react-icons/fa";
-import { FaWindows } from "react-icons/fa";
+import { FaTelegramPlane } from "react-icons/fa";
 
 import { MdOutlineCrisisAlert } from "react-icons/md";
 import Sponsor from "../components/landing/Sponsor";
-const welcome_content = {
-  en: {
-    title: "Welcome To Freedom Codes For Myanmar",
-    description: `In the face of Myanmar’s challenges, where civil war has disrupted
-          lives and internet freedom is increasingly restricted, we stand
-          together to ensure access to uncensored information and
-          connectivity. This platform is created for the people of Myanmar and
-          those affected by internet censorship, offering tools and resources
-          to help you stay connected, informed, and safe. Our mission is to
-          empower you with the freedom to communicate, share, and thrive—even
-          in the most difficult times. Together, we can overcome barriers and
-          build a brighter future.`,
-  },
-  my: {
-    title: "Welcome To Freedom Codes For Myanmar",
-    description:
-      "မြန်မာပြည်တွင် လူသုံးများသော social media platform များသာမက VPN applications များအား ပိတ်ဆို့ကန့်သတ်ထားသဖြင့် သတင်းအချက်လက်ရရှိရန်နဲ့ အချင်းချင်းဆက်သွယ်ရာတွင် လူတိုင်းနီးပါး အခက်ခဲ ကြုံတွေနေရသည်။ထိုပြသနာအား အနည်းငယ်ဖြေရှင်းနိုင်လိမ့်မည်ဟူသော မျှော်လင့်ချက်ဖြင့် ယခု website အားပြုလုပ်လိုက်ရချင်းဖြစ်သည်။",
-  },
-};
+import About from "../components/landing/About";
+import Features from "../components/landing/Features";
+
 const LandingPage = () => {
   const { auth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const [background, setBackground] = useState("");
   const [language, setLanguage] = useState("my");
   const [languageBox, setLanguageBox] = useState(false);
   const [modalBox, setModalBox] = useState(false);
-  console.log("landing page", auth);
-
+  const aboutRef = useRef();
+  const featuresRef = useRef();
+  const modalBoxSwitch = () => {
+    console.log("modal box switch button");
+    setModalBox(!modalBox);
+  };
   useEffect(() => {
     console.log("landing page", auth);
-
     if (auth?.accessToken) {
       navigate("/home", { state: { from: location }, replace: true });
     }
   }, []);
-
-  // useEffect(() => {
-  //   const img = new Image();
-  //   img.src = "./public/images/close_face.webp";
-  //   img.onload = () => setBackground(img.src);
-  // }, []);
-
-  const containerStyle = {
-    backgroundImage: `url(${background})`,
+  const scrollToSection = (elementRef) => {
+    elementRef?.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: "nearest",
+    });
   };
 
   const changeLanguage = () => {
@@ -68,14 +49,11 @@ const LandingPage = () => {
     }
   };
   useEffect(() => {
-    // Block scrolling when modal is active
     if (modalBox) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
     }
-
-    // Clean up style when component unmounts
     return () => {
       document.body.style.overflow = "";
     };
@@ -83,9 +61,9 @@ const LandingPage = () => {
   return (
     <main
       onClick={() => modalBox && setModalBox(false)}
-      className=" w-full h-full flex flex-col bg-gray-800 gap-y-3 text-white mx-auto container"
+      className=" w-full h-full flex flex-col bg-gray-800  text-white mx-auto container"
     >
-      <nav className="sticky  top-0 right-0 left-0 w-full h-fit bg-black/30 sm:bg-transparent flex flex-row items-center justify-between backdrop-blur-md px-3  py-4 sm:px-3 sm:py-1">
+      <nav className="sticky z-50  top-0 right-0 left-0 w-full h-fit bg-black/30 sm:bg-transparent flex flex-row items-center justify-between backdrop-blur-md px-3  py-4 sm:px-3 sm:py-1">
         <h1>FREEDM</h1>
         <div className=" flex-auto hidden sm:flex items-center justify-center">
           <div className="w-fit h-fit  flex flex-row bg-black/20 shadow-lg px-3 py-1 rounded-full items-center justify-center">
@@ -173,10 +151,7 @@ const LandingPage = () => {
             </div>
           </div>
 
-          <div
-            onClick={() => setModalBox(!modalBox)}
-            className="block sm:hidden"
-          >
+          <div onClick={modalBoxSwitch} className="block sm:hidden z-50">
             <CiMenuBurger size={25} />
           </div>
         </div>
@@ -184,20 +159,20 @@ const LandingPage = () => {
       {modalBox ? (
         <div className="fixed sm:hidden md:hidden xl:hidden flex flex-col left-0 z-50 bg-slate-600 w-2/3 h-full">
           <div className="w-full h-full flex flex-col items-center pt-20 gap-y-9 ">
-            <a
-              href="#about"
+            <button
+              onClick={() => scrollToSection(aboutRef)}
               className="w-full h-fit px-2 py-1 flex flex-row items-center justify-between"
             >
               <span className="text-xl font-bold">About</span>
               <IoIosArrowForward size={17} />
-            </a>
-            <a
-              href="#features"
+            </button>
+            <button
+              onClick={() => scrollToSection(featuresRef)}
               className="w-full h-fit px-2 py-1 flex flex-row items-center justify-between"
             >
               <span className="text-xl font-bold">Features</span>
               <IoIosArrowForward size={17} />
-            </a>
+            </button>
             <button className="w-full h-fit px-2 py-1 flex flex-row items-center justify-between">
               <span className="text-xl font-bold">Tutorials</span>
               <IoIosArrowForward size={17} />
@@ -225,102 +200,10 @@ const LandingPage = () => {
       ) : (
         <></>
       )}
-
-      <section className="px-2 w-full h-full gap-y-14  flex flex-col items-center justify-center">
-        <article
-          id="about"
-          className="w-full  h-full   sm:bg-black/15 flex gap-y-5 sm:gap-y-6 flex-col sm:items-center justify-center sm:py-4  px-1  pt-6 sm:px-5 rounded-none sm:rounded-xl"
-        >
-          <h1 className="font-semibold font-serif uppercase text-center text-2xl">
-            <span className="text-green-400">B</span>eyond{" "}
-            <span className="text-blue-600">T</span>he{" "}
-            <span className="text-pink-500">L</span>imitations
-          </h1>
-          <p className="tracking-wide text-center text-base">
-            {welcome_content[language].description}
-          </p>
-          <div className="w-full h-fit gap-x-4 gap-y-2 flex flex-wrap flex-row items-center justify-center">
-            <button className="w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2">
-              Download For <FaAndroid />
-            </button>
-            <button className="w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2">
-              Download For <FaApple />
-            </button>
-            <button className=" w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2">
-              Download For <FaWindows />
-            </button>
-          </div>
-        </article>
-        <article
-          id="features"
-          className="w-full h-full  flex gap-y-5  flex-col  items-center justify-center "
-        >
-          <div className="w-full h-fit flex items-center justify-center">
-            <h1 className=" font-semibold font-serif uppercase text-center text-2xl">
-              <span className="text-green-500">F</span>eatures
-            </h1>
-          </div>
-          <p className="text-center">
-            VPN များအား ဝယ်ယူအသုံးပြုရန် ငွေကြေးအရအဆင်မပြေသောလူများအတွက် အခမဲ့
-            အသုံးပြုနိုင်ရန်ပြုလုပ်ထားခြင်းဖြစ်သည်။
-          </p>
-          <div className="w-full h-fit gap-y-2 py-1 flex flex-col items-center justify-center">
-            <div className="w-full h-full  grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <div className="w-fit h-fit bg-black/15 px-3 py-3 flex flex-col gap-y-1 border-cyan-50/35 border ">
-                <h1 className="text-2xl text-white font-extrabold">01</h1>
-                <h2 className="text-xl uppercase">Bypassing Censorship</h2>
-                <p>
-                  Firewall အား ကျော်လွှားနိုင်စေရန် မတူညီသော protocols
-                  များအသုံးပြုထားခြင်း
-                </p>
-              </div>
-              <div className="w-fit h-fit bg-black/15 px-3 py-3 flex flex-col gap-y-1 border-cyan-50/35 border ">
-                <h1 className="text-2xl text-white font-extrabold">02</h1>
-                <h2 className="text-xl uppercase">Seamless Server Updates</h2>
-                <p>
-                  အချိန်တိုင်း Servers များ အလိုအလျောက်ပြောင်းလဲကာ
-                  ပေါက်တတ်ကရတွေဖြစ်၍နေခြင်း
-                </p>
-              </div>
-              <div className="w-fit h-fit bg-black/15 px-3 py-3 flex flex-col gap-y-1 border-cyan-50/35 border ">
-                <h1 className="text-2xl text-white font-extrabold">03</h1>
-                <h2 className="text-xl uppercase">Internet Speed Testing</h2>
-                <p>
-                  လက်ရှိမိမိအသုံးပြုနေသောအင်တာနက်Speedအားစမ်းသပ်စစ်ဆေးနိုင်ခြင်း
-                </p>
-              </div>
-              <div className="w-fit h-fit bg-black/15 px-3 py-3 flex flex-col gap-y-1 border-cyan-50/35 border ">
-                <h1 className="text-2xl text-white font-extrabold">04</h1>
-                <h2 className="text-xl uppercase">Update Servers Freely</h2>
-                <p>
-                  Server
-                  Updateလုပ်ရန်အသုံးပြုရန်လိုအပ်သောCoinsများအားကူပွန်အသုံးပြူခြင်းမှရရှိနိုင်ခြင်း
-                </p>
-              </div>
-            </div>
-          </div>
-        </article>
-        <article
-          id="partners"
-          className="w-full h-full  flex gap-y-5  flex-col  items-center justify-center"
-        >
-          <div className="w-full h-fit gap-y-2 flex flex-col items-center justify-center">
-            <h1 className=" font-semibold font-serif uppercase text-center text-2xl">
-              <span className="text-yellow-300">Partners</span> <span>&</span>{" "}
-              <span className="text-green-500">Sponsored </span>
-            </h1>
-            <p className="text-center">
-              စီးပွားရေး၊ပညာရေး၊လူမှုရေး အစရှိသဖြင့် အရေးကြီးသော
-              အရာများလုပ်ဆောင်ရာတွင် အင်တာနက်ပိတ်ဆို့မှုများကြောင့် အခက်ခဲ
-              များဖြစ်နေပါက ယုံကြည်စိတ်ချရသော မိတ်ဖက်အဖွဲ့များရှိကြောင်း
-              ကိုလဲသတင်းကောင်းပါးအပ်ပါသည်။
-            </p>
-            <Sponsor></Sponsor>
-          </div>
-        </article>
-      </section>
-
-      <div className="w-full h-14 flex flex-col sm:flex-row  items-center justify-center gap-x-4">
+      <About language={language} aboutRef={aboutRef}></About>
+      <Features language={language} featuresRef={featuresRef}></Features>
+      <Sponsor language={language}></Sponsor>
+      <footer className="w-full h-14 flex flex-col sm:flex-row  items-center justify-center gap-x-4">
         <div className="w-fit h-fit flex gap-x-2 items-center justify-center">
           <span>&copy;2024</span>
           <span>FreedomCodeForMyanmar</span>
@@ -333,7 +216,7 @@ const LandingPage = () => {
             Telegram Channel
           </a>
         </div>
-      </div>
+      </footer>
     </main>
   );
 };
