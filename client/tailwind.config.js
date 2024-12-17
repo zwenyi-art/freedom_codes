@@ -5,6 +5,8 @@ export default {
     extend: {
       backgroundImage: {
         "custom-desktop-bg": "url('./public/images/newServer.png')", // Define your custom background
+        n4bg: "url('./public/images/n4bg.png')",
+        homebg: "url('./public/images/homebg.png')",
       },
     },
     // container: {

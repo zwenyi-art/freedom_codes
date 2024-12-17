@@ -8,9 +8,11 @@ import { CiMenuBurger } from "react-icons/ci";
 import { IoIosArrowForward } from "react-icons/io";
 import { FaLanguage } from "react-icons/fa6";
 import { FaAndroid } from "react-icons/fa6";
-import { FaApple } from "react-icons/fa";
+import { FaApple, FaTelegramPlane } from "react-icons/fa";
 import { FaWindows } from "react-icons/fa";
+
 import { MdOutlineCrisisAlert } from "react-icons/md";
+import Sponsor from "../components/landing/Sponsor";
 const welcome_content = {
   en: {
     title: "Welcome To Freedom Codes For Myanmar",
@@ -83,7 +85,7 @@ const LandingPage = () => {
       onClick={() => modalBox && setModalBox(false)}
       className=" w-full h-full flex flex-col bg-gray-800 gap-y-3 text-white mx-auto container"
     >
-      <nav className="fixed top-0 right-0 left-0 w-full h-fit bg-black/30 sm:bg-transparent flex flex-row items-center justify-between backdrop-blur-md px-3  py-4 sm:px-3 sm:py-1">
+      <nav className="sticky  top-0 right-0 left-0 w-full h-fit bg-black/30 sm:bg-transparent flex flex-row items-center justify-between backdrop-blur-md px-3  py-4 sm:px-3 sm:py-1">
         <h1>FREEDM</h1>
         <div className=" flex-auto hidden sm:flex items-center justify-center">
           <div className="w-fit h-fit  flex flex-row bg-black/20 shadow-lg px-3 py-1 rounded-full items-center justify-center">
@@ -179,19 +181,23 @@ const LandingPage = () => {
           </div>
         </div>
       </nav>
-      {/* spacing */}
-      <div className="w-full h-28 sm:h-11"></div>
       {modalBox ? (
-        <div className="fixed sm:hidden md:hidden xl:hidden flex flex-col left-0 bg-slate-600 w-2/3 h-full">
+        <div className="fixed sm:hidden md:hidden xl:hidden flex flex-col left-0 z-50 bg-slate-600 w-2/3 h-full">
           <div className="w-full h-full flex flex-col items-center pt-20 gap-y-9 ">
-            <button className="w-full h-fit px-2 py-1 flex flex-row items-center justify-between">
+            <a
+              href="#about"
+              className="w-full h-fit px-2 py-1 flex flex-row items-center justify-between"
+            >
               <span className="text-xl font-bold">About</span>
               <IoIosArrowForward size={17} />
-            </button>
-            <button className="w-full h-fit px-2 py-1 flex flex-row items-center justify-between">
+            </a>
+            <a
+              href="#features"
+              className="w-full h-fit px-2 py-1 flex flex-row items-center justify-between"
+            >
               <span className="text-xl font-bold">Features</span>
               <IoIosArrowForward size={17} />
-            </button>
+            </a>
             <button className="w-full h-fit px-2 py-1 flex flex-row items-center justify-between">
               <span className="text-xl font-bold">Tutorials</span>
               <IoIosArrowForward size={17} />
@@ -220,13 +226,15 @@ const LandingPage = () => {
         <></>
       )}
 
-      <section className="px-2 w-full h-full gap-y-5  flex flex-col items-center justify-center">
-        <article className="w-full  h-fit sm:h-[350px] sm:bg-black/15 flex gap-y-5 sm:gap-y-6 flex-col sm:items-center justify-center sm:py-4 px-1  pt-3 sm:px-5 rounded-none sm:rounded-xl">
+      <section className="px-2 w-full h-full gap-y-14  flex flex-col items-center justify-center">
+        <article
+          id="about"
+          className="w-full  h-full   sm:bg-black/15 flex gap-y-5 sm:gap-y-6 flex-col sm:items-center justify-center sm:py-4  px-1  pt-6 sm:px-5 rounded-none sm:rounded-xl"
+        >
           <h1 className="font-semibold font-serif uppercase text-center text-2xl">
-            <span className="text-green-400">F</span>reedom{" "}
-            <span className="text-blue-600">C</span>odes{" "}
-            <span className="text-pink-500">F</span>or{" "}
-            <span className="text-lime-400">M</span>yanmar
+            <span className="text-green-400">B</span>eyond{" "}
+            <span className="text-blue-600">T</span>he{" "}
+            <span className="text-pink-500">L</span>imitations
           </h1>
           <p className="tracking-wide text-center text-base">
             {welcome_content[language].description}
@@ -243,7 +251,10 @@ const LandingPage = () => {
             </button>
           </div>
         </article>
-        <article className="w-full h-full  flex gap-y-5  flex-col  items-center justify-center ">
+        <article
+          id="features"
+          className="w-full h-full  flex gap-y-5  flex-col  items-center justify-center "
+        >
           <div className="w-full h-fit flex items-center justify-center">
             <h1 className=" font-semibold font-serif uppercase text-center text-2xl">
               <span className="text-green-500">F</span>eatures
@@ -289,10 +300,40 @@ const LandingPage = () => {
             </div>
           </div>
         </article>
-        <article className="w-full h-full  flex gap-y-5  flex-col  items-center justify-center">
-          
+        <article
+          id="partners"
+          className="w-full h-full  flex gap-y-5  flex-col  items-center justify-center"
+        >
+          <div className="w-full h-fit gap-y-2 flex flex-col items-center justify-center">
+            <h1 className=" font-semibold font-serif uppercase text-center text-2xl">
+              <span className="text-yellow-300">Partners</span> <span>&</span>{" "}
+              <span className="text-green-500">Sponsored </span>
+            </h1>
+            <p className="text-center">
+              စီးပွားရေး၊ပညာရေး၊လူမှုရေး အစရှိသဖြင့် အရေးကြီးသော
+              အရာများလုပ်ဆောင်ရာတွင် အင်တာနက်ပိတ်ဆို့မှုများကြောင့် အခက်ခဲ
+              များဖြစ်နေပါက ယုံကြည်စိတ်ချရသော မိတ်ဖက်အဖွဲ့များရှိကြောင်း
+              ကိုလဲသတင်းကောင်းပါးအပ်ပါသည်။
+            </p>
+            <Sponsor></Sponsor>
+          </div>
         </article>
       </section>
+
+      <div className="w-full h-14 flex flex-col sm:flex-row  items-center justify-center gap-x-4">
+        <div className="w-fit h-fit flex gap-x-2 items-center justify-center">
+          <span>&copy;2024</span>
+          <span>FreedomCodeForMyanmar</span>
+        </div>
+        <div className="w-fit h-fit flex flex-row items-center justify-center gap-x-2">
+          <div className="w-fit h-fit flex flex-row gap-x-1">
+            <FaTelegramPlane size={20} />
+          </div>
+          <a href="https://t.me/beyond_the_limitations_for_mm">
+            Telegram Channel
+          </a>
+        </div>
+      </div>
     </main>
   );
 };

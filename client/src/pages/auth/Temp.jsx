@@ -80,4 +80,78 @@ const Temp = () => {
   );
 };
 
+const Sponsor = () => {
+  return (
+    <div className="w-full gap-x-3 h-fit flex flex-row items-center justify-center">
+      <div className="w-fit px-4 py-2   h-fit flex flex-col items-center ">
+        <img
+          className="w-32 h-full"
+          src="./public/images/n4bg1.png"
+          alt=""
+          srcset=""
+        />
+        <div className="px-3 w-fit h-fit flex flex-col items-center justify-center">
+          <div className="w-full h-fit flex flex-row items-center justify-center gap-x-2">
+            <div className="w-fit h-fit flex flex-row gap-x-1">
+              <FaTelegramPlane size={20} />
+            </div>
+            <a href="https://t.me/n4vpn">https://t.me/n4vpn</a>
+          </div>
+          <div className="w-full h-fit flex flex-row items-center justify-center gap-x-2">
+            <div className="w-fit h-fit flex flex-row gap-x-1">
+              <AiFillTikTok size={20} />
+            </div>
+            <a href="https://t.me/n4vpn">https://t.me/n4vpn</a>
+          </div>
+          <div className="w-full h-fit flex flex-row items-center justify-center gap-x-2">
+            <div className="w-fit h-fit flex flex-row gap-x-1">
+              <TfiYoutube size={20} />
+            </div>
+            <a href="https://t.me/n4vpn">https://t.me/n4vpn</a>
+          </div>
+          <div className="w-full h-fit flex flex-row items-center justify-center gap-x-2">
+            <div className="w-fit h-fit flex flex-row gap-x-1">
+              <FaFacebookSquare size={20} />
+            </div>
+            <a href="https://t.me/n4vpn">https://t.me/n4vpn</a>
+          </div>
+        </div>
+      </div>
+      <div className="w-fit px-4 py-2 border bg-gradient-to-br rounded-md h-fit flex flex-col items-center ">
+        <img
+          className="w-32 h-full"
+          src="./public/images/n4bg1.png"
+          alt=""
+          srcset=""
+        />
+        <div className="px-3 w-fit h-fit flex flex-col items-center justify-center">
+          <div className="w-full h-fit flex flex-row items-center justify-center gap-x-2">
+            <div className="w-fit h-fit flex flex-row gap-x-1">
+              <FaTelegramPlane size={20} />
+            </div>
+            <a href="https://t.me/n4vpn">https://t.me/n4vpn</a>
+          </div>
+          <div className="w-full h-fit flex flex-row items-center justify-center gap-x-2">
+            <div className="w-fit h-fit flex flex-row gap-x-1">
+              <AiFillTikTok size={20} />
+            </div>
+            <a href="https://t.me/n4vpn">https://t.me/n4vpn</a>
+          </div>
+          <div className="w-full h-fit flex flex-row items-center justify-center gap-x-2">
+            <div className="w-fit h-fit flex flex-row gap-x-1">
+              <TfiYoutube size={20} />
+            </div>
+            <a href="https://t.me/n4vpn">https://t.me/n4vpn</a>
+          </div>
+          <div className="w-full h-fit flex flex-row items-center justify-center gap-x-2">
+            <div className="w-fit h-fit flex flex-row gap-x-1">
+              <FaFacebookSquare size={20} />
+            </div>
+            <a href="https://t.me/n4vpn">https://t.me/n4vpn</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 export default Temp;
