@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { FaAndroid } from "react-icons/fa6";
 import { FaApple, FaTelegramPlane } from "react-icons/fa";
 import { FaWindows } from "react-icons/fa";
+import { VscTerminalLinux } from "react-icons/vsc";
 const welcome_content = {
   en: {
     title: "Welcome To Freedom Codes For Myanmar",
@@ -36,14 +37,49 @@ const About = ({ language, aboutRef }) => {
         {welcome_content[language].description}
       </p>
       <div className="w-full h-fit gap-x-4 gap-y-2 flex flex-wrap flex-row items-center justify-center">
-        <button className="w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2">
+        <button
+          onClick={() =>
+            window.open(
+              "https://play.google.com/store/apps/details?id=io.nekohasekai.sfa",
+              "_blank"
+            )
+          }
+          className="w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2"
+        >
           Download For <FaAndroid />
         </button>
-        <button className="w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2">
+        <button
+          onClick={() =>
+            window.open(
+              "https://apps.apple.com/us/app/sing-box-vt/id6673731168?platform=iphone",
+              "_blank"
+            )
+          }
+          className="w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2"
+        >
           Download For <FaApple />
         </button>
-        <button className=" w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2">
+        <button
+          onClick={() =>
+            window.open(
+              "https://github.com/GUI-for-Cores/GUI.for.SingBox/releases/download/v1.8.3/GUI.for.SingBox-windows-amd64.zip",
+              "_blank"
+            )
+          }
+          className=" w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2"
+        >
           Download For <FaWindows />
+        </button>
+        <button
+          onClick={() =>
+            window.open(
+              "https://github.com/SagerNet/sing-box/releases",
+              "_blank"
+            )
+          }
+          className=" w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2"
+        >
+          Download For <VscTerminalLinux />
         </button>
       </div>
     </section>

@@ -8,8 +8,6 @@ import { CiMenuBurger } from "react-icons/ci";
 import { IoIosArrowForward } from "react-icons/io";
 import { FaLanguage } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
-
-import { MdOutlineCrisisAlert } from "react-icons/md";
 import Sponsor from "../components/landing/Sponsor";
 import About from "../components/landing/About";
 import Features from "../components/landing/Features";
@@ -67,8 +65,18 @@ const LandingPage = () => {
         <h1>FREEDM</h1>
         <div className=" flex-auto hidden sm:flex items-center justify-center">
           <div className="w-fit h-fit  flex flex-row bg-black/20 shadow-lg px-3 py-1 rounded-full items-center justify-center">
-            <button className="w-fit h-fit px-2 py-1">About</button>
-            <button className="w-fit h-fit px-2 py-1">Features</button>
+            <button
+              onClick={() => scrollToSection(aboutRef)}
+              className="w-fit h-fit px-2 py-1"
+            >
+              About
+            </button>
+            <button
+              onClick={() => scrollToSection(featuresRef)}
+              className="w-fit h-fit px-2 py-1"
+            >
+              Features
+            </button>
             <button className="w-fit h-fit px-2 py-1">Tutorials</button>
             <button className="w-fit h-fit px-2 py-1">Support</button>
             <button
