@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
 import useRefreshToken from "../../hooks/useRefreshToken";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const generateIP = (servers) => {
   const shuffledIPs = [...servers].sort(() => 0.5 - Math.random());
@@ -28,15 +29,57 @@ const Home = () => {
   const [config, setConfig] = useState("");
   const [copied, setCopied] = useState(false);
   const [activityCode, setActivityCode] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState("");
+  const [ispTypes, setIspTypes] = useState([]);
+  // Handle radio button selection
+  const handleChange = (event) => {
+    const value = event.target.value;
+    setSelectedValue(value);
+    localStorage.setItem("selectedISP", value);
+  };
 
+  // Load saved value from localStorage when component mounts
+  useEffect(() => {
+    const storedValue = localStorage.getItem("selectedISP");
+    if (storedValue) {
+      setSelectedValue(storedValue);
+    } else {
+      setSelectedValue("Ooredoo");
+    }
+  }, []);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const ispDetailList = {
+    Ooredoo: "OOREDOO MYANMAR",
+    Mytel: "Telecom International Myanmar Co., Ltd",
+  };
+  const getISPName = (isp_data) => {
+    return (
+      Object.keys(ispDetailList).find(
+        (key) => ispDetailList[key] === isp_data
+      ) || false
+    );
+  };
   useEffect(() => {
     let isMounted = true;
     // const controller = new AbortController();
     const getServers = async () => {
-      console.log("get server ip");
+      // console.log("get server ip");
       try {
         const response = await axiosPrivate.get("/serverList");
-        isMounted && setServers(response.data.serverList);
+        const newServers = response?.data?.serverList.map(
+          (data) => data.server
+        );
+        const ispList = response?.data?.ispList?.map((data) =>
+          getISPName(data)
+        );
+
+        isMounted && setServers(newServers);
+        isMounted && setIspTypes(ispList);
       } catch (error) {
         console.error(error);
         navigate("/login", { state: { from: location }, replace: true });
@@ -63,11 +106,11 @@ const Home = () => {
     const token = userInfo?.token;
     const user_id = userInfo?.user_id;
     setConfig(
-      () =>
-        `https://freedom-codes-api.onrender.com/api/v1/${user_id}?token=${token}`
+      () => `${BASE_URL}/api/v1/${user_id}?token=${token}&isp=${selectedValue}`
     );
   }, [userInfo?.token]);
 
+  //showing shffeled ifp
   useEffect(() => {
     const intervalId = setInterval(() => {
       setRandomServer(() => generateIP(servers));
@@ -82,17 +125,84 @@ const Home = () => {
       clearInterval(activityId);
     };
   }, [servers]);
+
+  useEffect(() => {
+    console.log(ispTypes);
+  }, [ispTypes]);
   return (
     <section className=" w-full h-full pb-20 sm:p-0">
       <div className="px-2 w-full h-full  flex items-center justify-center  font-mono">
-        <div className="w-full max-w-2xl bg-gray-900 border  border-blue-500 rounded-md shadow-lg overflow-hidden">
+        <div className="relative w-full max-w-2xl bg-gray-900 border  border-blue-500 rounded-md shadow-lg overflow-hidden">
           <div className="bg-gray-800 p-2 flex justify-between items-center">
             <div className="flex space-x-2">
               <div className="w-3 h-3 rounded-full bg-red-500"></div>
               <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
               <div className="w-3 h-3 rounded-full bg-green-500"></div>
             </div>
+            <div className="flex">
+              <button
+                disabled={randomServer?.length === 0}
+                onClick={toggleDropdown}
+                className="inline-flex justify-center w-full rounded-md 
+                    border border-gray-300 shadow-sm px-4 py-2 bg-white 
+                    text-sm font-medium text-gray-700 hover:bg-gray-50 
+                    focus:outline-none"
+              >
+                Select Operators
+                <svg
+                  className="ml-2 -mr-1 h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
+
+          {isOpen && (
+            <div
+              className="origin-top-right absolute right-2 mt-2 w-56 
+                    rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-85
+                    focus:outline-none"
+              role="menu"
+            >
+              <ul className="w-full text-sm font-medium text-gray-900 border border-blue-500 rounded-lg">
+                {ispTypes?.map((item) => (
+                  <li
+                    key={item}
+                    className="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600"
+                  >
+                    <div className="flex items-center ps-3">
+                      <input
+                        id={`radio-${item}`}
+                        type="radio"
+                        value={item}
+                        name="list-radio"
+                        checked={selectedValue === item}
+                        onChange={handleChange}
+                        className="w-4 h-4 text-blue-600 focus:ring-opacity-100 bg-gray-800 border-green-700 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-0 dark:bg-gray-600 dark:border-yellow-500"
+                      />
+                      <label
+                        htmlFor={`radio-${item}`}
+                        className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      >
+                        {item}
+                      </label>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div className="p-2 h-70 overflow-y-auto">
             <div className="mb-1">
               <p className="text-blue-500">$./initialize_vpn_servers.sh</p>
@@ -155,7 +265,7 @@ const Home = () => {
               }}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium sm:py-1 py-2 px-2 rounded-md transition duration-150 ease-in-out flex items-center justify-center space-x-2"
             >
-              <span>Import Singbox Config</span>
+              <span>Import Config</span>
               <LuImport className="h-5 w-5" />
             </button>
           </div>

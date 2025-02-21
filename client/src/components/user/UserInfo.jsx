@@ -13,7 +13,7 @@ const UserInfo = () => {
     const getUserInfo = async () => {
       try {
         const response = await axiosPrivate.get("/user");
-        console.log("user info", response.data);
+        // console.log("user info", response.data);
         isMounted && setUserInfo(response.data);
       } catch (error) {
         console.error(error);

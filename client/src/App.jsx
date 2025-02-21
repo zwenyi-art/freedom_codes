@@ -13,6 +13,7 @@ import LandingPage from "./pages/LandingPage";
 import UnauthorizePage from "./pages/UnauthorizePage";
 import PersistLogin from "./components/common/PersistLogin";
 import MissingPage from "./pages/MissingPage";
+import Testing from "./pages/user/Testing";
 
 const ROLES = {
   User: 2001,
@@ -23,6 +24,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/">
+          <Route path="testing" element={<Testing></Testing>}></Route>
           <Route path="login" element={<Login></Login>}></Route>
           <Route
             path="unauthorize"
@@ -50,13 +52,7 @@ const App = () => {
               </Route>
             </Route>
             {/* admin layout */}
-            <Route
-              element={<RequireAuth allowedRoles={[ROLES.Admin]}></RequireAuth>}
-            >
-              <Route path="admin" element={<AdminLayout></AdminLayout>}></Route>
-            </Route>
           </Route>
-
           <Route path="*" element={<MissingPage></MissingPage>}></Route>
         </Route>
       </Routes>

@@ -72,19 +72,28 @@ const ServersSchema = new mongoose.Schema({
 
 const RandomServers = new mongoose.Schema(
   {
-    config: {
-      type: Object,
-      required: true, // This will store your entire configuration as a single object
-    },
     tag: { type: String },
-    servers: { type: Array },
+    public_servers: { type: Array },
+    private_servers: { type: Array },
+    isp_list: { type: Array },
   },
   { timestamps: true }
 );
 
 const public_servers = mongoose.model("public", PublicServersSchema);
+const myShadowSocks = mongoose.model("shadowsocks", ServersSchema);
 const ssh = mongoose.model("ssh_server", SshServerSchema);
 const ss = mongoose.model("ss_server", SSserverSchema);
 const vmess = mongoose.model("vmess_server", VmessServerSchema);
-const random_server = mongoose.model("random_server", RandomServers);
-module.exports = { public_servers, ssh, ss, vmess, random_server };
+const public_random_server = mongoose.model(
+  "public_random_server",
+  RandomServers
+);
+module.exports = {
+  public_servers,
+  ssh,
+  ss,
+  vmess,
+  public_random_server,
+  myShadowSocks,
+};

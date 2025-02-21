@@ -8,7 +8,6 @@ import { CiMenuBurger } from "react-icons/ci";
 import { IoIosArrowForward } from "react-icons/io";
 import { FaLanguage } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
-import Sponsor from "../components/landing/Sponsor";
 import About from "../components/landing/About";
 import Features from "../components/landing/Features";
 
@@ -210,7 +209,6 @@ const LandingPage = () => {
       )}
       <About language={language} aboutRef={aboutRef}></About>
       <Features language={language} featuresRef={featuresRef}></Features>
-      <Sponsor language={language}></Sponsor>
       <footer className="w-full h-14 flex flex-col sm:flex-row  items-center justify-center gap-x-4">
         <div className="w-fit h-fit flex gap-x-2 items-center justify-center">
           <span>&copy;2024</span>

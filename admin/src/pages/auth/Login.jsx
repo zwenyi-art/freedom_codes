@@ -4,16 +4,16 @@ import { MdAccountBox } from "react-icons/md";
 import { RxTokens } from "react-icons/rx";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
-import { useLocation, useNavigate } from "react-router-dom";
+// import { useLocation, useNavigate } from "react-router-dom";
 import { BsMailbox } from "react-icons/bs";
 import { BiLock } from "react-icons/bi";
-
+import { useLocation, useNavigate } from "react-router";
 const LOGIN_URL = "/auth";
 const Login = () => {
   const { setAuth, persist, setPersist } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/home";
+  const from = location.state?.from?.pathname || "/dashboard";
   const [errMsg, setErrMsg] = useState();
   const initialValues = {
     tid: "",
@@ -23,6 +23,7 @@ const Login = () => {
   const onSubmit = async (values, { resetForm }) => {
     try {
       const { tid, password } = values;
+      console.log(JSON.stringify({ tid, password }));
       const response = await axios.post(
         LOGIN_URL,
         { user_id: tid, pwd: password },
@@ -31,7 +32,7 @@ const Login = () => {
           withCredentials: true,
         }
       );
-      // console.log(JSON.stringify(response?.data));
+      console.log(JSON.stringify(response?.data));
 
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
@@ -68,6 +69,10 @@ const Login = () => {
     }
     return errors;
   };
+
+  useEffect(() => {
+    console.log(errMsg);
+  }, [errMsg]);
 
   const togglePersist = () => {
     setPersist((prev) => {
@@ -111,7 +116,7 @@ const Login = () => {
               <Field
                 type="text"
                 name="tid"
-                id="tid"
+                id=""
                 placeholder="Enter Your Telegram ID"
                 className="pl-10 w-full py-2 bg-transparent border-b border-mono_blue focus:border-mono_blue/25 focus:outline-none transition-colors duration-300 placeholder-gray-500"
                 autoComplete="off"

@@ -72,10 +72,49 @@ async function sendInlineKeyboard(chatId) {
   console.log(data);
 }
 //controllers
+
+function formatDateTime() {
+  const now = new Date();
+
+  // Get day with suffix
+  const day = now.getDate();
+  const daySuffix = getDaySuffix(day);
+
+  // Get month name
+  const month = now.toLocaleString("en-US", { month: "long" });
+
+  // Get year
+  const year = now.getFullYear();
+
+  // Get time in 12-hour format
+  let hours = now.getHours();
+  const minutes = now.getMinutes().toString().padStart(2, "0");
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12 || 12; // Convert 0 to 12 for midnight
+
+  return `${day}${daySuffix} ${month} ${year}, ${hours}:${minutes} ${ampm}`;
+}
+
+// Helper function to get the correct day suffix (st, nd, rd, th)
+function getDaySuffix(day) {
+  if (day >= 11 && day <= 13) return "th";
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+}
+
 const postToChannel = async (req, res) => {
   try {
+    const todayDate = formatDateTime();
     const coupon = await updateCoupon();
-    const message = ` \*13 ရက် 11လ 2024ခုနှစ်*\n\nကူပွန်ကုဒ် : ||${coupon}||\n\n[website](http://www.google.com/)\n\n**>ကံကောင်းပါစေ၊ ချစ်သူခင်သူတွေနဲ့ပျော်ရွှင်စွာတသက်လုံးအတူနေနိုင်ပါစေ။`;
+    const message = `📅 *${todayDate}*\n\n🌹🌹🌹\n\n🎟️ ကူပွန်ကုဒ်: ||${coupon}|| \n\n🔗 [အသေးစိတ်ကြည့်ရန်](http://www.google.com/)  \n\n💙 စိတ်အားတင်းတင်းထားပါ—လင်းလက်သောနေ့တွေကိုယ်တိုင်ရောက်လာမယ်။ သင်တစ်ဦးတည်းမဟုတ်ပါ။\n\n━━━━━━━━━━━━━━━\n\n🎟️ Coupon Code: ||${coupon}||\n\n🔗 [View Details](http://www.google.com/) \n\n💙 Stay strong—better days will come. You are not alone. `;
     await sendMessageToChannel(message);
     console.log(message);
     res.send("Message posted to the channel successfully!");
