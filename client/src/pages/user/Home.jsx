@@ -112,7 +112,8 @@ const Home = () => {
     const token = userInfo?.token;
     const user_id = userInfo?.user_id;
     setConfig(
-      () => `${BASE_URL}/api/v1/${user_id}?token=${token}&isp=${selectedValue}`
+      () =>
+        `${BASE_URL}/api/v1/${user_id}?token=${token}&isp=${ispDetailList[selectedValue]}`
     );
   }, [userInfo?.token, selectedValue]);
 
