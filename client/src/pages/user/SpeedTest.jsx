@@ -70,10 +70,10 @@ const SpeedTest = () => {
           serverChosen: function (server) {
             setServer(`${server.location.city}`);
             setLoading(true);
-            console.log("Testing to:", {
-              machine: server.machine,
-              locations: server.location,
-            });
+            // console.log("Testing to:", {
+            //   machine: server.machine,
+            //   locations: server.location,
+            // });
           },
           downloadMeasurement: function (data) {
             if (data.Source === "client") {
@@ -112,7 +112,7 @@ const SpeedTest = () => {
       )
       .then((exitcode) => {
         setComplete(true);
-        console.log("ndt7 test completed with exit code:", exitcode);
+        // console.log("ndt7 test completed with exit code:", exitcode);
       });
   };
 

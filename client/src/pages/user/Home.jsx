@@ -26,6 +26,7 @@ const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [key, setKey] = useState(0);
   const [config, setConfig] = useState("");
   const [copied, setCopied] = useState(false);
   const [activityCode, setActivityCode] = useState("");
@@ -37,16 +38,21 @@ const Home = () => {
     const value = event.target.value;
     setSelectedValue(value);
     localStorage.setItem("selectedISP", value);
+    window.location.reload();
   };
 
   // Load saved value from localStorage when component mounts
   useEffect(() => {
+    let isMounted = true;
     const storedValue = localStorage.getItem("selectedISP");
     if (storedValue) {
       setSelectedValue(storedValue);
     } else {
       setSelectedValue("Ooredoo");
     }
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const toggleDropdown = () => {
@@ -108,7 +114,7 @@ const Home = () => {
     setConfig(
       () => `${BASE_URL}/api/v1/${user_id}?token=${token}&isp=${selectedValue}`
     );
-  }, [userInfo?.token]);
+  }, [userInfo?.token, selectedValue]);
 
   //showing shffeled ifp
   useEffect(() => {
@@ -126,9 +132,6 @@ const Home = () => {
     };
   }, [servers]);
 
-  useEffect(() => {
-    console.log(ispTypes);
-  }, [ispTypes]);
   return (
     <section className=" w-full h-full pb-20 sm:p-0">
       <div className="px-2 w-full h-full  flex items-center justify-center  font-mono">
@@ -143,14 +146,19 @@ const Home = () => {
               <button
                 disabled={randomServer?.length === 0}
                 onClick={toggleDropdown}
-                className="inline-flex justify-center w-full rounded-md 
-                    border border-gray-300 shadow-sm px-4 py-2 bg-white 
-                    text-sm font-medium text-gray-700 hover:bg-gray-50 
-                    focus:outline-none"
+                className="inline-flex items-center justify-center w-full rounded-md 
+        border border-transparent px-4 py-2
+        bg-gradient-to-r from-cyan-500 to-blue-500 
+        hover:from-cyan-600 hover:to-blue-600
+        text-sm font-medium text-white
+        shadow-sm transition-all duration-200
+        disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Select Operators
                 <svg
-                  className="ml-2 -mr-1 h-5 w-5"
+                  className={`ml-2 -mr-1 h-5 w-5 transition-all duration-200 ${
+                    isOpen ? "rotate-0" : "-rotate-90"
+                  }`}
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"

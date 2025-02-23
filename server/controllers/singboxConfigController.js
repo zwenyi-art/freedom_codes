@@ -127,7 +127,7 @@ const getRandomSingboxServers = async (req, res) => {
         return data;
       }
     });
-    console.log(isp_public_server);
+    // console.log(isp_public_server);
     const new_public_config = new SingBoxConfigure();
     await Promise.all([
       await new_public_config.addOutBound(
@@ -156,7 +156,7 @@ const getRandomHiddifyServers = async (req, res) => {
         return data;
       }
     });
-    console.log(isp_public_server);
+    // console.log(isp_public_server);
     const new_public_config = new SingBoxConfigure();
     await Promise.all([
       await new_public_config.addOutBound(

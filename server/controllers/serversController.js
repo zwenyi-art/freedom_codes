@@ -168,7 +168,7 @@ const getRandomServers = async (req, res) => {
       }
     });
     const isp_list = data?.isp_list;
-    console.log(isp_public_server);
+    // console.log(isp_public_server);
     res
       .status(200)
       .json({
