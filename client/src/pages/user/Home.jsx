@@ -123,7 +123,7 @@ const Home = () => {
       "hiddify://import/https://freedom-codes-api.onrender.com/api/v1/7777?token=50b1e803-fed7-4724-80eb-f0151c2d11d1&isp=ooredoo#Ooredoo";
     if (app === "singbox") {
       window.location.href = singBoxUrl;
-    } else {
+    } else if (app === "hiddify") {
       window.location.href = hiddifyUrl;
     }
   };
@@ -226,11 +226,11 @@ const Home = () => {
                     focus:outline-none"
               role="menu"
             >
-              <ul className="w-full text-sm font-medium text-gray-900 border border-blue-500 rounded-lg">
+              <ul className="w-full text-sm font-medium text-white border border-blue-500 rounded-lg">
                 {ispTypes?.map((item) => (
                   <li
                     key={item}
-                    className="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600"
+                    className="w-full border-b  rounded-t-lg border-gray-600"
                   >
                     <div className="flex items-center ps-3">
                       <input
@@ -244,7 +244,7 @@ const Home = () => {
                       />
                       <label
                         htmlFor={`radio-${item}`}
-                        className="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                        className="w-full py-3 ms-2 text-sm font-medium text-white"
                       >
                         {item}
                       </label>
