@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
 import useRefreshToken from "../../hooks/useRefreshToken";
+import Swal from "sweetalert2";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const generateIP = (servers) => {
@@ -104,16 +105,34 @@ const Home = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const importToSingBox = () => {
-    const url = `sing-box://import-remote-profile?url=${config}#Beyond_The_Limitation`;
-    window.location.href = url;
+  const importToSingBox = (app) => {
+    // const url = `sing-box://import-remote-profile?url=${config}#Beyond_The_Limitation`;
+    const baseUrl = BASE_URL + "/api/v1/" + userInfo?.user_id;
+    // const token = "50b1e803-fed7-4724-80eb-f0151c2d11d1";
+    const isp = ispDetailList[selectedValue];
+    const profileName = "Beyond_The_Limitation";
+    const token = userInfo?.token;
+    // Construct the query parameters
+    const queryParams = `token=${token}&isp=${encodeURIComponent(isp)}`;
+    const fullUrl = `${baseUrl}?${queryParams}`;
+
+    const encodedUrl = encodeURIComponent(fullUrl);
+    // Encode the full URL before appending it to SingBox import
+    const singBoxUrl = `sing-box://import-remote-profile?url=${encodedUrl}#${profileName}`;
+    const hiddifyUrl =
+      "hiddify://import/https://freedom-codes-api.onrender.com/api/v1/7777?token=50b1e803-fed7-4724-80eb-f0151c2d11d1&isp=ooredoo#Ooredoo";
+    if (app === "singbox") {
+      window.location.href = singBoxUrl;
+    } else {
+      window.location.href = hiddifyUrl;
+    }
   };
   useEffect(() => {
-    const token = userInfo?.token;
-    const user_id = userInfo?.user_id;
+    // const token = userInfo?.token;
+
     setConfig(
       () =>
-        `${BASE_URL}/api/v1/${user_id}?token=${token}&isp=${ispDetailList[selectedValue]}`
+        `${BASE_URL}/api/v1/${userInfo?.user_id}?token=${userInfo?.token}&isp=${ispDetailList[selectedValue]}`
     );
   }, [userInfo?.token, selectedValue]);
 
@@ -133,8 +152,31 @@ const Home = () => {
     };
   }, [servers]);
 
+  const addCoinHandle = () => {
+    Swal.fire({
+      title: "လှေနံနှစ်ဖက်နင်းချင်လို့ မရဘူးကိုယ့်လူတခုခုရွေး😂😂 ",
+      confirmButtonText: "Singbox",
+      cancelButtonText: "Hiddify",
+      showCancelButton: true, // Enables the cancel button
+      customClass: {
+        popup: "bg-gray-800/80  rounded-lg", // Tailwind styling for popup
+        title: "text-xl font-semibold text-white", // Tailwind styling for title
+        confirmButton:
+          "bg-green-300 hover:bg-green-600 text-black font-bold py-2 px-4 rounded",
+        cancelButton:
+          "bg-blue-300 hover:bg-blue-500 text-black font-bold py-2 px-4 rounded",
+      },
+    }).then(async (result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        importToSingBox("singbox");
+      } else if (result.isDismissed) {
+        importToSingBox("hiddify");
+      }
+    });
+  };
   return (
-    <section className=" w-full h-full pb-20 sm:p-0">
+    <section className=" w-full  h-full pb-20 sm:p-0">
       <div className="px-2 w-full h-full  flex items-center justify-center  font-mono">
         <div className="relative w-full max-w-2xl bg-gray-900 border  border-blue-500 rounded-md shadow-lg overflow-hidden">
           <div className="bg-gray-800 p-2 flex justify-between items-center">
@@ -268,10 +310,11 @@ const Home = () => {
               )}
             </div>
             <button
-              onClick={() => {
-                importToSingBox();
-                /* Handle Singbox import */
-              }}
+              // onClick={() => {
+              //   importToSingBox();
+              //   /* Handle Singbox import */
+              // }}
+              onClick={() => addCoinHandle()}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium sm:py-1 py-2 px-2 rounded-md transition duration-150 ease-in-out flex items-center justify-center space-x-2"
             >
               <span>Import Config</span>
