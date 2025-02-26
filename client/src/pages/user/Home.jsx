@@ -119,8 +119,7 @@ const Home = () => {
     const encodedUrl = encodeURIComponent(fullUrl);
     // Encode the full URL before appending it to SingBox import
     const singBoxUrl = `sing-box://import-remote-profile?url=${encodedUrl}#${profileName}`;
-    const hiddifyUrl =
-      "hiddify://import/https://freedom-codes-api.onrender.com/api/v1/7777?token=50b1e803-fed7-4724-80eb-f0151c2d11d1&isp=ooredoo#Ooredoo";
+    const hiddifyUrl = `hiddify://import/https://freedom-codes-api.onrender.com/api/v1/7777?token=50b1e803-fed7-4724-80eb-f0151c2d11d1&isp=ooredoo##${profileName}`;
     if (app === "singbox") {
       window.location.href = singBoxUrl;
     } else if (app === "hiddify") {
