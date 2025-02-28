@@ -105,7 +105,7 @@ const Home = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const importToSingBox = (app) => {
+  const importToHiddify = () => {
     // const url = `sing-box://import-remote-profile?url=${config}#Beyond_The_Limitation`;
     const baseUrl = BASE_URL + "/api/v1/" + userInfo?.user_id;
     // const token = "50b1e803-fed7-4724-80eb-f0151c2d11d1";
@@ -115,20 +115,27 @@ const Home = () => {
     // Construct the query parameters
     const queryParams = `token=${token}&isp=${encodeURIComponent(isp)}`;
     const fullUrl = `${baseUrl}?${queryParams}`;
+    const hiddifyUrl = `hiddify://import/${fullUrl}#${profileName}`;
+    window.location.href = hiddifyUrl;
+  };
 
+  const importToSingBox = () => {
+    // const url = `sing-box://import-remote-profile?url=${config}#Beyond_The_Limitation`;
+    const baseUrl = BASE_URL + "/api/v1/" + userInfo?.user_id;
+    // const token = "50b1e803-fed7-4724-80eb-f0151c2d11d1";
+    const isp = ispDetailList[selectedValue];
+    const profileName = "Beyond_The_Limitation";
+    const token = userInfo?.token;
+    // Construct the query parameters
+    const queryParams = `token=${token}&isp=${encodeURIComponent(isp)}`;
+    const fullUrl = `${baseUrl}?${queryParams}`;
     const encodedUrl = encodeURIComponent(fullUrl);
     // Encode the full URL before appending it to SingBox import
     const singBoxUrl = `sing-box://import-remote-profile?url=${encodedUrl}#${profileName}`;
-    const hiddifyUrl = `hiddify://import/https://freedom-codes-api.onrender.com/api/v1/7777?token=50b1e803-fed7-4724-80eb-f0151c2d11d1&isp=ooredoo##${profileName}`;
-    if (app === "singbox") {
-      window.location.href = singBoxUrl;
-    } else if (app === "hiddify") {
-      window.location.href = hiddifyUrl;
-    }
+    window.location.href = singBoxUrl;
   };
   useEffect(() => {
     // const token = userInfo?.token;
-
     setConfig(
       () =>
         `${BASE_URL}/api/v1/${userInfo?.user_id}?token=${userInfo?.token}&isp=${ispDetailList[selectedValue]}`
@@ -151,27 +158,60 @@ const Home = () => {
     };
   }, [servers]);
 
+  // const addCoinHandle = () => {
+  //   Swal.fire({
+  //     title: "လှေနံနှစ်ဖက်နင်းချင်လို့ မရဘူးကိုယ့်လူတခုခုရွေး😂😂 ",
+  //     confirmButtonText: "Singbox",
+  //     cancelButtonText: "Hiddify",
+  //     showCancelButton: true, // Enables the cancel button
+  //     customClass: {
+  //       popup: "bg-gray-800/80  rounded-lg", // Tailwind styling for popup
+  //       title: "text-xl font-semibold text-white", // Tailwind styling for title
+  //       confirmButton:
+  //         "bg-green-300 hover:bg-green-600 text-black font-bold py-2 px-4 rounded",
+  //       cancelButton:
+  //         "bg-blue-300 hover:bg-blue-500 text-black font-bold py-2 px-4 rounded",
+  //     },
+  //   }).then(async (result) => {
+  //     /* Read more about isConfirmed, isDenied below */
+  //     if (result.isConfirmed) {
+  //       importToSingBox("singbox");
+  //     } else if (result.isDismissed) {
+  //       console.log("cancel");
+  //       importToSingBox("hiddify");
+  //     } else if (result.isDismissed) {
+  //       console.log("dismissed");
+  //     }
+  //   });
+  // };
+
   const addCoinHandle = () => {
     Swal.fire({
       title: "လှေနံနှစ်ဖက်နင်းချင်လို့ မရဘူးကိုယ့်လူတခုခုရွေး😂😂 ",
-      confirmButtonText: "Singbox",
-      cancelButtonText: "Hiddify",
-      showCancelButton: true, // Enables the cancel button
+      html: `
+      <button id="singboxBtn" class="bg-green-300 hover:bg-green-600 text-black font-bold py-2 px-4 rounded m-2">
+        Singbox
+      </button>
+      <button id="hiddifyBtn" class="bg-blue-300 hover:bg-blue-500 text-black font-bold py-2 px-4 rounded m-2">
+        Hiddify
+      </button>
+    `,
+      showConfirmButton: false,
+      showCancelButton: false, // Enables the cancel button
       customClass: {
-        popup: "bg-gray-800/80  rounded-lg", // Tailwind styling for popup
+        popup: "bg-gray-800/80 rounded-lg", // Tailwind styling for popup
         title: "text-xl font-semibold text-white", // Tailwind styling for title
-        confirmButton:
-          "bg-green-300 hover:bg-green-600 text-black font-bold py-2 px-4 rounded",
-        cancelButton:
-          "bg-blue-300 hover:bg-blue-500 text-black font-bold py-2 px-4 rounded",
       },
-    }).then(async (result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        importToSingBox("singbox");
-      } else if (result.isDismissed) {
-        importToSingBox("hiddify");
-      }
+      didOpen: () => {
+        document.getElementById("singboxBtn").addEventListener("click", () => {
+          Swal.close();
+          importToSingBox();
+        });
+        document.getElementById("hiddifyBtn").addEventListener("click", () => {
+          Swal.close();
+          importToHiddify();
+        });
+      },
     });
   };
   return (

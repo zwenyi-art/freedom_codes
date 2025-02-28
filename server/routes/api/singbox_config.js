@@ -5,15 +5,15 @@ const { clientChecker } = require("../../middleware/clientTypeChecker");
 const { verifyCoin } = require("../../middleware/verifyCoin");
 // router.get("/:id", verifyCoin, singboxConfigController.getRandomServers);
 // router.get("/:id", clientChecker, singboxConfigController.getRandomServers);
-router.get("/:id", singboxConfigController.getRandomSingboxServers);
-// router.get(
-//   "/:id",
-//   clientChecker,
-//   singboxConfigController.getRandomSingboxServers
-// );
-// router.get(
-//   "/:id",
-//   clientChecker,
-//   singboxConfigController.getRandomHiddifyServers
-// );
+// router.get("/:id", singboxConfigController.getRandomSingboxServers);
+router.get(
+  "/:id",
+  clientChecker,
+  singboxConfigController.getRandomSingboxServers
+);
+router.get(
+  "/:id",
+  clientChecker,
+  singboxConfigController.getRandomHiddifyServers
+);
 module.exports = router;
