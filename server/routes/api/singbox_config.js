@@ -11,9 +11,9 @@ router.get(
   clientChecker,
   singboxConfigController.getRandomSingboxServers
 );
-router.get(
-  "/:id",
-  clientChecker,
-  singboxConfigController.getRandomHiddifyServers
-);
+// router.get(
+//   "/:id",
+//   clientChecker,
+//   singboxConfigController.getRandomHiddifyServers
+// );
 module.exports = router;

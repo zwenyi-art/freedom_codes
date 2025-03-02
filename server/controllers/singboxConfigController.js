@@ -119,6 +119,8 @@ const updateRandomServers = async (req, res) => {
 
 const getRandomSingboxServers = async (req, res) => {
   const { isp = "ooredoo" } = req.query;
+  const userAgent = req.get("User-Agent");
+  console.log(userAgent);
   const data = await public_random_server.findOne({ tag: "random_servers" });
   try {
     const isp_public_server = data?.public_servers.filter((data) => {
@@ -139,8 +141,13 @@ const getRandomSingboxServers = async (req, res) => {
         isp_public_server[0]["random_server"]
       ),
     ]);
-    const public_singbox_config = await new_public_config.getConfig();
-    res.status(200).json(public_singbox_config);
+    if (userAgent.includes("Hiddify")) {
+      const public_hiddify_config = await new_public_config.getServers();
+      res.status(200).json({ outbounds: public_hiddify_config });
+    } else if (userAgent.includes("sing-box")) {
+      const public_singbox_config = await new_public_config.getConfig();
+      res.status(200).json(public_singbox_config);
+    }
   } catch (err) {
     res.status(200).json({ data: "unsupported isp" });
   }

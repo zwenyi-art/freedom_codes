@@ -63,6 +63,7 @@ const Home = () => {
   const ispDetailList = {
     Ooredoo: "OOREDOO MYANMAR",
     Mytel: "Telecom International Myanmar Co., Ltd",
+    Atom: "Atom Myanmar Limited",
   };
   const getISPName = (isp_data) => {
     return (
