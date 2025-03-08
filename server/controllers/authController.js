@@ -40,8 +40,9 @@ const handleLogin = async (req, res) => {
     //create secure cookie with refresh token
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
-      secure: false,
-      sameSite: "Lax",
+      secure: true,
+      sameSite: "None",
+      domain:".netflow4mm.com"
       maxAge: 24 * 60 * 60 * 1000,
     });
 
