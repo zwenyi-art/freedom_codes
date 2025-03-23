@@ -48,8 +48,8 @@ const handleLogin = async (req, res) => {
 
     // res.cookie("jwt", refreshToken, {
     //   httpOnly: true,
-    //   secure: true,
-    //   sameSite: "none",
+    //   secure: false,
+    //   sameSite: "Lax",
     //   maxAge: 24 * 60 * 60 * 1000,
     // });
     res.status(200).json({ accessToken, roles });

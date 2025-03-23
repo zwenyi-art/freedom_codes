@@ -28,8 +28,6 @@ app.use(express.json());
 
 //good cron job
 app.use("/crons", require("./routes/cronRouter"));
-//telegram bot
-app.use("/bot", require("./routes/telegram_bot"));
 //authentication
 app.use("/auth", require("./routes/auth"));
 // app.use("/register", require("./routes/register"));

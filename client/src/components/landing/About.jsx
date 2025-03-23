@@ -19,68 +19,52 @@ const welcome_content = {
   my: {
     title: "Welcome To Freedom Codes For Myanmar",
     description:
-      "မြန်မာပြည်တွင် လူသုံးများသော social media platform များသာမက VPN applications များအား ပိတ်ဆို့ကန့်သတ်ထားသဖြင့် သတင်းအချက်လက်ရရှိရန်နဲ့ အချင်းချင်းဆက်သွယ်ရာတွင် လူတိုင်းနီးပါး အခက်ခဲ ကြုံတွေနေရသည်။ထိုပြသနာအား အနည်းငယ်ဖြေရှင်းနိုင်လိမ့်မည်ဟူသော မျှော်လင့်ချက်ဖြင့် ယခု website အားပြုလုပ်လိုက်ရချင်းဖြစ်သည်။",
+      "မြန်မာနိုင်ငံတွင် ပြည်တွင်းစစ်ကြောင့် လူ့အသက်များစွာပျက်စီးနေရပြီး အင်တာနက်လွတ်လပ်ခွင့်တွေဆုံးရှုံးခြင်းနှင့်အတူ အခက်အခဲများစွာရင်ဆိုင်နေရပါသည်။ကျွန်ုပ်တို့သည် အင်တာနက်လွတ်လပ်ခွင့်တွေရရှိစေရန်အတွက် ပြည်သူများနှင့်အတူရပ်တည်လျက်ရှိပါသည်။အတားအဆီးတွေကိုဖြတ်ကျော်ပြီး တောက်ပတဲ့အနာဂတ်ကို ကျွန်ုပ်တို့ အတူတကွတည်ဆောက်ကြပါစို့။",
   },
 };
 const About = ({ language, aboutRef }) => {
   return (
     <section
       ref={aboutRef}
-      className="w-full relative min-h-svh  flex flex-col gap-y-12  px-1  sm:px-5 items-center justify-center sm:bg-black/15 rounded-none sm:rounded-xl"
+      className="w-full relative min-h-svh  flex flex-col    px-1  sm:px-5  justify-center items-center rounded-none "
     >
-      <h1 className="font-semibold font-serif uppercase text-center text-2xl">
-        <span className="text-green-400">B</span>eyond{" "}
-        <span className="text-blue-600">T</span>he{" "}
-        <span className="text-pink-500">L</span>imitations
-      </h1>
-      <p className="tracking-wide text-center text-base">
-        {welcome_content[language].description}
-      </p>
-      <div className="w-full h-fit gap-x-4 gap-y-2 flex flex-wrap flex-row items-center justify-center">
-        <button
-          onClick={() =>
-            window.open(
-              "https://play.google.com/store/apps/details?id=io.nekohasekai.sfa",
-              "_blank"
-            )
-          }
-          className="w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2"
-        >
-          Download For <FaAndroid />
-        </button>
-        <button
-          onClick={() =>
-            window.open(
-              "https://apps.apple.com/us/app/sing-box-vt/id6673731168?platform=iphone",
-              "_blank"
-            )
-          }
-          className="w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2"
-        >
-          Download For <FaApple />
-        </button>
-        <button
-          onClick={() =>
-            window.open(
-              "https://github.com/GUI-for-Cores/GUI.for.SingBox/releases/download/v1.8.3/GUI.for.SingBox-windows-amd64.zip",
-              "_blank"
-            )
-          }
-          className=" w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2"
-        >
-          Download For <FaWindows />
-        </button>
-        <button
-          onClick={() =>
-            window.open(
-              "https://github.com/SagerNet/sing-box/releases",
-              "_blank"
-            )
-          }
-          className=" w-fit text-xs h-fit flex flex-row items-center justify-center gap-x-2 border  rounded-full px-7 py-4 sm:px-4 sm:py-2"
-        >
-          Download For <VscTerminalLinux />
-        </button>
+      <div className="w-full h-full z-30 flex flex-col absolute justify-center items-center gap-y-6 ">
+        <h1 className="text-2xl max-w-xl text-center">
+          We Stand Together: Uncensored Information for a United Myanmar.
+        </h1>
+
+        <div className="w-full h-fit flex flex-col items-center justify-center gap-y-6">
+          <p className="tracking-wide  text-base max-w-lg">
+            {welcome_content[language].description}
+          </p>
+          <div className="w-full h-fit flex items-center justify-center gap-x-6">
+            <button
+              onClick={() =>
+                window.open(
+                  "https://play.google.com/store/apps/details?id=io.nekohasekai.sfa",
+                  "_blank"
+                )
+              }
+              className="w-fit  h-fit flex flex-row items-center justify-center gap-x-2 border   px-7 py-4 sm:px-4 sm:py-2"
+            >
+              Download For <FaAndroid />
+            </button>
+            <button
+             onClick={() =>
+              window.open("https://t.me/NetFlow4MM_bot", "_blank")
+            }
+              className="w-fit  font-extrabold h-fit flex flex-row items-center justify-center gap-x-2 border bg-green-600   px-7 py-4 sm:px-4 sm:py-2"
+            >
+              Join For Free ✨
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="w-full animate-pulse h-full opacity-30 mix-blend-color-dodge">
+        <img
+          src="https://res.cloudinary.com/detwp36e7/image/upload/v1741878367/NetFlowLandingPhoto_lugaql.png"
+          alt=""
+        />
       </div>
     </section>
   );

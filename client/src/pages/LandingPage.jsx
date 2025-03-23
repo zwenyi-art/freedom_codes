@@ -60,10 +60,17 @@ const LandingPage = () => {
       onClick={() => modalBox && setModalBox(false)}
       className=" w-full h-full flex flex-col bg-gray-800  text-white mx-auto container"
     >
-      <nav className="sticky z-50  top-0 right-0 left-0 w-full h-fit bg-black/30 sm:bg-transparent flex flex-row items-center justify-between backdrop-blur-md px-3  py-4 sm:px-3 sm:py-1">
-        <h1>FREEDM</h1>
+      <nav className="sticky z-50  top-0 right-0 left-0 w-full h-fit bg-black/30 sm:bg-transparent flex flex-row items-center justify-between  rounded-md backdrop-blur-md px-3   py-4 sm:px-3 sm:py-1">
+        <div className="w-fit h-fit">
+          <img
+            src="./public/NetFlowWebLogo.png"
+            className="w-28"
+            alt=""
+            srcset=""
+          />
+        </div>
         <div className=" flex-auto hidden sm:flex items-center justify-center">
-          <div className="w-fit h-fit  flex flex-row bg-black/20 shadow-lg px-3 py-1 rounded-full items-center justify-center">
+          <div className="w-fit h-fit  flex flex-row bg-black/20 shadow-lg px-3 py-1 rounded-md border  items-center justify-center">
             <button
               onClick={() => scrollToSection(aboutRef)}
               className="w-fit h-fit px-2 py-1"
@@ -211,16 +218,14 @@ const LandingPage = () => {
       <Features language={language} featuresRef={featuresRef}></Features>
       <footer className="w-full h-14 flex flex-col sm:flex-row  items-center justify-center gap-x-4">
         <div className="w-fit h-fit flex gap-x-2 items-center justify-center">
-          <span>&copy;2024</span>
-          <span>FreedomCodeForMyanmar</span>
+          <span>&copy;2025</span>
+          <span>NetFlow 4MM</span>
         </div>
         <div className="w-fit h-fit flex flex-row items-center justify-center gap-x-2">
           <div className="w-fit h-fit flex flex-row gap-x-1">
             <FaTelegramPlane size={20} />
           </div>
-          <a href="https://t.me/beyond_the_limitations_for_mm">
-            Telegram Channel
-          </a>
+          <a href="https://t.me/netflow4mm">Telegram Channel</a>
         </div>
       </footer>
     </main>

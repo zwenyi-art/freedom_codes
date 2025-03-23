@@ -164,7 +164,9 @@ const Login = () => {
           <span className="w-full h-fit flex items-center justify-center gap-x-2">
             <span className="text-white">Need Account?</span>
             <span
-              onClick={() => window.open("https://t.me/codesmm_bot", "_blank")}
+              onClick={() =>
+                window.open("https://t.me/NetFlow4MM_bot", "_blank")
+              }
               className=" underline text-sm text-blue-400 cursor-pointer"
             >
               Sign up here

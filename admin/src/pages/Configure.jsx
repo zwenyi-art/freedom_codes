@@ -61,7 +61,7 @@ const Configure = () => {
       "chacha20-ietf",
       "xchacha20",
     ];
-    console.log(port);
+    console.log(hostPortWithHash);
     const result = {
       tag: hash,
       type: "shadowsocks",

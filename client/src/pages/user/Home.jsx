@@ -69,7 +69,7 @@ const Home = () => {
     return (
       Object.keys(ispDetailList).find(
         (key) => ispDetailList[key] === isp_data
-      ) || false
+      ) || isp_data
     );
   };
   useEffect(() => {

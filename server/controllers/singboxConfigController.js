@@ -31,7 +31,7 @@ const updateRandomServers = async (req, res) => {
     .filter((data) => data.length > 0)
     .flat();
   const Unique_ISP_List = [...new Set(ISP_List)];
-  console.log(Unique_ISP_List);
+  // console.log(Unique_ISP_List);
   // const randomizer = await randomizeServer(isp,data, 15);
   const private_serverData = [...VMESS, ...SSH, ...SS];
 
