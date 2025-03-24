@@ -8,8 +8,15 @@ import { CiMenuBurger } from "react-icons/ci";
 import { IoIosArrowForward } from "react-icons/io";
 import { FaLanguage } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
-import About from "../components/landing/About";
-import Features from "../components/landing/Features";
+import { MdOutlineArrowRightAlt } from "react-icons/md";
+import { MdBlock } from "react-icons/md";
+import { FiShield, FiUnlock } from "react-icons/fi";
+import { FaArrowsRotate } from "react-icons/fa6";
+import { GiNetworkBars } from "react-icons/gi";
+import { BsArrowClockwise } from "react-icons/bs";
+import { IoWarningOutline } from "react-icons/io5";
+import Hero from "../components/landing/Hero";
+import { TfiLock } from "react-icons/tfi";
 
 const LandingPage = () => {
   const { auth } = useAuth();
@@ -56,177 +63,315 @@ const LandingPage = () => {
     };
   }, [modalBox]);
   return (
-    <main
-      onClick={() => modalBox && setModalBox(false)}
-      className=" w-full h-full flex flex-col bg-gray-800  text-white mx-auto container"
-    >
-      <nav className="sticky z-50  top-0 right-0 left-0 w-full h-fit bg-black/30 sm:bg-transparent flex flex-row items-center justify-between  rounded-md backdrop-blur-md px-3   py-4 sm:px-3 sm:py-1">
-        <div className="w-fit h-fit">
+    <main className="text-[#112B51] w-full h-full  flex flex-col items-center justify-center">
+      <nav className="w-full h-fit container mx-auto z-50 bg-white border-b-2 sticky top-0">
+        <section className="z_pd   py-4  w-full h-full flex flex-row items-center justify-between">
+          <div className="text-4xl w-fit h-fit ">Logosfsfsfs</div>
+          <div className="w-fit h-full gap-x-6 font-oswald   flex flex-row items-center">
+            <a href="">Features</a>
+            <a href="">How It Works</a>
+            <a href="">Community</a>
+            <a href="">Safety</a>
+            <button className="w-fit  h-fit flex items-center gap-x-2 px-4 py-1 rounded-md text-white bg-black">
+              <span className="flex items-center font-roboto justify-center">
+                Sign In
+              </span>
+              <IoIosArrowForward size={17} className="mt-[1px]" />
+            </button>
+          </div>
+        </section>
+      </nav>
+      {/* Hero */}
+      <section className="z_pd container mx-auto bg-green-400  w-full h-full min-h-svh  flex flex-col  gap-y-5 justify-center">
+        <h1 className="font-bebas text-5xl max-w-2xl">
+          Stay Connected. Break Through the Firewall. For Free.
+        </h1>
+        <p className="font-roboto max-w-3xl text-2xl font-light text-pretty  subpixel-antialiase tracking-wide ">
+          Access the open internet safely with free, community-powered VPN
+          protocols designed for local ISPs. No payment. No tracking. Just
+          freedom.
+        </p>
+        <button className="font-roboto w-fit h-fit flex items-center justify-center bg-black text-white px-3 py-2 rounded-sm gap-x-3">
+          <span>Get Started Now</span> <MdOutlineArrowRightAlt size={30} />
+        </button>
+      </section>
+      {/* Problem Statement */}
+      <section className="z_pd container mx-auto w-full h-full min-h-svh flex flex-col items-center justify-center gap-y-4">
+        <h2 className="font-bebas text-5xl max-w-2xl">Why This Matters</h2>
+        <p className="font-roboto max-w-3xl text-2xl font-light text-pretty  subpixel-antialiase tracking-wide text-center">
+          We're addressing critical connectivity challenges in regions with
+          restricted internet access.
+        </p>
+        <div className="w-full h-full flex flex-col xl:flex-row items-center justify-center gap-5">
+          <div className=" h-full rounded-md overflow-hidden ">
+            <img
+              className="w-full"
+              src="https://res.cloudinary.com/detwp36e7/image/upload/v1742885371/Untitled_design_h1cbda.png"
+              alt=""
+              srcset=""
+            />
+          </div>
+
+          <article className="w-full h-full flex flex-col gap-y-4">
+            <div className="w-full h-fit flex flex-row items-center gap-x-5">
+              <div className="w-fit h-fit rounded-full bg-[#D8DEDE] p-2">
+                <MdBlock size={35} />
+              </div>
+              <div className="w-full h-fit flex flex-col ">
+                <h1 className="text-2xl font-oswald font-bold">
+                  Access Restrictions
+                </h1>
+                <p className="text-xl font-roboto font-light divide-opacity-85 ">
+                  Firewalls block access to news, social media, and
+                  communication tools.
+                </p>
+              </div>
+            </div>
+
+            <div className="w-full h-fit flex flex-row items-center gap-x-5">
+              <div className="w-fit h-fit rounded-full bg-[#D8DEDE] p-2">
+                <FiShield size={35} />
+              </div>
+              <div className="w-full h-fit flex flex-col ">
+                <h1 className="text-2xl font-oswald font-bold">
+                  Expensive Alternatives
+                </h1>
+                <p className="text-xl font-roboto font-light divide-opacity-85 ">
+                  Paid VPNs are expensive and aren't usable everywhere.
+                </p>
+              </div>
+            </div>
+
+            <div className="w-full h-fit flex flex-row items-center gap-x-5">
+              <div className="w-fit h-fit rounded-full bg-[#D8DEDE] p-2">
+                <FiUnlock size={35} />
+              </div>
+              <div className="w-full h-fit flex flex-col ">
+                <h1 className="font-oswald font-bold text-2xl">
+                  Community Solution
+                </h1>
+                <p className="text-xl font-roboto font-light divide-opacity-85 ">
+                  We built this platform for you—to keep people connected,
+                  informed, and united.
+                </p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+      {/* How It Works */}
+      <section className=" z_pd bg-[#5BC8A8] container mx-auto w-full h-full flex flex-col items-center justify-center gap-y-4">
+        <h2 className="font-bebas text-5xl max-w-2xl pt-6">
+          Free Access in 3 Simple Steps
+        </h2>
+        <p className="font-roboto max-w-3xl text-2xl font-light text-pretty  subpixel-antialiase tracking-wide text-center">
+          Getting connected is quick and easy with our streamlined process.
+        </p>
+
+        <div className="w-full h-full flex flex-row gap-x-6 px-3 py-2">
+          <div className="max-w-md border rounded-md shadow-md bg-[#D9DFDF] h-fit flex flex-col gap-y-3 items-center justify-center p-4">
+            <div class="w-12 h-12 flex items-center justify-center bg-[#112B51] text-white text-xl font-bold font-bebas rounded-full">
+              1
+            </div>
+            <h1 className="text-center font-bebas text-2xl">
+              Create Your Free Account
+            </h1>
+            <p className="text-center max-w-sm font-oswald text-xl">
+              Use our Telegram bot to generate a personalized, secure profile in
+              seconds.
+            </p>
+          </div>
+
+          <div className="max-w-md border rounded-md shadow-md bg-[#D9DFDF] h-fit flex flex-col gap-y-3 items-center justify-center p-4">
+            <div class="w-12 h-12 flex items-center justify-center bg-[#112B51] text-white text-xl font-bold font-bebas rounded-full">
+              2
+            </div>
+            <h1 className="text-center font-bebas text-2xl">
+              Choose Your ISP-Optimized Server
+            </h1>
+            <p className="text-center max-w-sm font-oswald text-xl">
+              Servers are grouped by ISP to maximize speed and reliability.
+            </p>
+          </div>
+
+          <div className="max-w-md border rounded-md shadow-md bg-[#D9DFDF] h-fit flex flex-col gap-y-3 items-center justify-center p-4">
+            <div class="w-12 h-12 flex items-center justify-center bg-[#112B51] text-white text-xl font-bold font-bebas rounded-full">
+              3
+            </div>
+            <h1 className="text-center font-bebas text-2xl">
+              Connect & Stay Safe
+            </h1>
+            <p className="text-center max-w-sm font-oswald text-xl">
+              Use Singbox or Hiddify protocols to bypass restrictions. Servers
+              update daily!
+            </p>
+          </div>
+        </div>
+      </section>
+      {/* What Makes This Different */}
+      <section className="z_pd container mx-auto w-full h-full gap-y-4 flex flex-col items-center justify-center">
+        <h2 className="font-bebas text-5xl max-w-2xl pt-6">
+          What Makes This Different
+        </h2>
+        <p className="font-roboto max-w-3xl text-2xl font-light text-pretty  subpixel-antialiase tracking-wide text-center">
+          Our solution stands out with these key features designed for
+          reliability and accessibility.
+        </p>
+
+        <div className="w-full h-full flex items-center justify-center">
+          <div className="grid grid-flow-row items-center justify-center  grid-cols-2 gap-7">
+            <div className=" max-w-md  rounded-md shadow-md bg-[#D9DFDF] h-fit flex flex-col gap-y-3 items-center justify-center p-4">
+              <FiShield size={45} />
+              <h1 className="text-center font-bebas text-2xl">Free Forever</h1>
+              <p className="text-center max-w-sm font-oswald text-xl">
+                No ads, no subscriptions. Funded by the community, for the
+                community.
+              </p>
+            </div>
+
+            <div className="max-w-md  rounded-md shadow-md bg-[#D9DFDF] h-fit flex flex-col gap-y-3 items-center justify-center p-4">
+              <FaArrowsRotate size={45} />
+              <h1 className="text-center font-bebas text-2xl">
+                Dynamic Server Pool
+              </h1>
+              <p className="text-center max-w-sm font-oswald text-xl">
+                Access a dynamic pool of servers, updated live from our API.
+              </p>
+            </div>
+
+            <div className="max-w-md  rounded-md shadow-md bg-[#D9DFDF] h-fit flex flex-col gap-y-3 items-center justify-center p-4">
+              <GiNetworkBars size={45} />
+              <h1 className="text-center font-bebas text-2xl">
+                ISP-Specific Optimization
+              </h1>
+              <p className="text-center max-w-sm font-oswald text-xl">
+                Tailored for various local ISPs to ensure optimal performance.
+              </p>
+            </div>
+
+            <div className="max-w-md rounded-md shadow-md bg-[#D9DFDF] h-fit flex flex-col gap-y-3 items-center justify-center p-4">
+              <TfiLock size={45} />
+              <h1 className="text-center font-bebas text-2xl">
+                Our Privacy Practices
+              </h1>
+              <p className="text-center max-w-sm font-oswald text-xl">
+                We securely handle your data within our platform's systems.
+              </p>
+            </div>
+          </div>
+        </div>
+        <p className="font-roboto italic tracking-normal font-light opacity-80 py-3 z-0">
+          Note: Servers are crowdsourced from public networks. Speeds may vary,
+          but we work tirelessly to improve reliability.
+        </p>
+      </section>
+      {/* community */}
+      <section className="z_pd bg-[#F3AB56] container mx-auto w-full h-full flex flex-col xl:flex-row items-center justify-center gap-y-4">
+        <article className="w-full h-fit flex flex-col gap-y-5">
+          <h1 className="font-bebas text-5xl max-w-2xl pt-6">
+            By the Community, For the Community
+          </h1>
+          <p className="font-roboto max-w-3xl text-2xl font-light text-pretty  subpixel-antialiase tracking-wide">
+            This is not a business. It's a platform built by volunteers to
+            resist censorship and keep people connected.
+          </p>
+          <div className="w-full h-fit flex flex-col gap-y-2">
+            <div className="w-full h-fit flex flex-row gap-x-2 items-center">
+              <div className="w-fit h-fit rounded-full bg-[#D8DEDE] p-1">
+                <IoIosArrowForward size={14} className="mt-[1px]" />
+              </div>
+              <p className="font-roboto">
+                <span className="font-oswald">Share feedback</span> via Telegram
+                to help us improve.
+              </p>
+            </div>
+            <div className="w-full h-fit flex flex-row gap-x-2 items-center">
+              <div className="w-fit h-fit rounded-full bg-[#D8DEDE] p-1">
+                <IoIosArrowForward size={14} className="mt-[1px]" />
+              </div>
+              <p className="font-roboto">
+                <span className="font-oswald">Spread the word:</span> The more
+                users, the stronger our network becomes.
+              </p>
+            </div>
+          </div>
+          <button className="w-fit  h-fit flex items-center gap-x-2 px-6 py-3 rounded-md text-white bg-black">
+            Join Our Community
+          </button>
+        </article>
+        <div className=" h-full rounded-md overflow-hidden ">
           <img
-            src="./public/NetFlowWebLogo.png"
-            className="w-28"
+            className="w-full"
+            src="https://res.cloudinary.com/detwp36e7/image/upload/v1742917211/community_epi1jj.png"
             alt=""
             srcset=""
           />
         </div>
-        <div className=" flex-auto hidden sm:flex items-center justify-center">
-          <div className="w-fit h-fit  flex flex-row bg-black/20 shadow-lg px-3 py-1 rounded-md border  items-center justify-center">
-            <button
-              onClick={() => scrollToSection(aboutRef)}
-              className="w-fit h-fit px-2 py-1"
-            >
-              About
-            </button>
-            <button
-              onClick={() => scrollToSection(featuresRef)}
-              className="w-fit h-fit px-2 py-1"
-            >
-              Features
-            </button>
-            <button className="w-fit h-fit px-2 py-1">Tutorials</button>
-            <button className="w-fit h-fit px-2 py-1">Support</button>
-            <button
-              onClick={() => navigate("/login")}
-              className="w-fit h-fit px-2 py-1 flex items-center justify-center gap-x-1 text-white font-extrabold"
-            >
-              SingIn <IoMdLogIn size={20} />
-            </button>
+      </section>
+      {/* safety */}
+      <section className=" z_pd  container mx-auto w-full h-full flex flex-col items-center justify-center gap-y-4">
+        <h2 className="font-bebas text-5xl max-w-2xl pt-6">
+          Your Safety Comes First
+        </h2>
+        <p className="font-roboto max-w-3xl text-2xl font-light text-pretty  subpixel-antialiase tracking-wide text-center">
+          We prioritize your privacy and security above all else.
+        </p>
+
+        <div className="w-full h-full flex flex-row gap-x-6 px-3 py-2">
+          <div className="w-full border rounded-md shadow-md bg-[#D9DFDF] h-full flex flex-col gap-y-3 items-center justify-center p-4">
+            <MdBlock size={45} />
+            <h1 className="text-center font-bebas text-2xl">
+              No Data Collection
+            </h1>
+            <p className="text-center max-w-sm font-oswald text-xl">
+              We don't store logs or personal information.
+            </p>
+          </div>
+
+          <div className="w-full border rounded-md shadow-md bg-[#D9DFDF] h-full flex flex-col gap-y-3 items-center justify-center p-4">
+            <BsArrowClockwise size={45} />
+            <h1 className="text-center font-bebas text-2xl">
+              Open-Source Tools
+            </h1>
+            <p className="text-center max-w-sm font-oswald text-xl">
+              Built on transparent, audited protocols like Singbox and Hiddify.
+            </p>
+          </div>
+
+          <div className="w-full border rounded-md shadow-md bg-[#D9DFDF] h-full flex flex-col gap-y-3 items-center justify-center p-4">
+            <IoWarningOutline size={45} />
+            <h1 className="text-center font-bebas text-2xl">Use Responsibly</h1>
+            <p className="text-center max-w-sm font-oswald text-xl">
+              Avoid accessing sensitive accounts through public servers.
+            </p>
           </div>
         </div>
-
-        {/* language box */}
-        <div className="hidden sm:block relative w-fit h-fit  cursor-pointer">
-          {/* <button onClick={changeLanguage}>
-            {language == "en" ? "မြန်မာ" : "English"}
-          </button> */}
-          <button
-            className="w-fit h-fit text-sm flex items-center justify-center "
-            onClick={() => setLanguageBox(!languageBox)}
-          >
-            <HiMiniLanguage size={17} /> <span>Languages</span>
+      </section>
+      {/* testermonal */}
+      <section className=" z_pd bg-[#EC764E] container mx-auto w-full h-full flex flex-col items-center justify-center gap-y-4">
+        <h2 className="font-bebas text-5xl max-w-2xl pt-6 text-center">
+          Join Thousands of Users Fighting for Freedom
+        </h2>
+        <p className="font-roboto max-w-3xl text-2xl font-light text-pretty  subpixel-antialiase tracking-wide text-center">
+          Be part of a growing community dedicated to open internet access.
+        </p>
+        <div className="w-full h-fit flex flex-row items-center justify-center gap-x-7">
+          <button className="w-fit  h-fit flex items-center gap-x-2 px-6 py-3 rounded-md text-white bg-black">
+            Start Now With Telegram
           </button>
-          <div
-            className={
-              languageBox
-                ? "absolute  w-fit h-fit flex flex-col gap-y-2 rounded-lg bg-black/20 py-2 px-3 mt-2"
-                : "hidden"
-            }
-          >
-            <span
-              className=""
-              onClick={() => {
-                setLanguageBox(false);
-                setLanguage("en");
-              }}
-            >
-              English
-            </span>
-            <span
-              className=""
-              onClick={() => {
-                setLanguageBox(false);
-                setLanguage("my");
-              }}
-            >
-              မြန်မာ
-            </span>
-          </div>
+          <button className="w-fit  h-fit flex items-center gap-x-2 px-6 py-3 rounded-md text-white bg-black">
+            Need Help?Join Our Support Channel
+          </button>
         </div>
-        <div className="w-fit sm:hidden h-fit flex flex-row gap-x-7 items-center justify-center">
-          <div className="w-full h-fit">
-            <div onClick={() => setLanguageBox(!languageBox)} className="">
-              <FaLanguage size={37} />
-            </div>
-            <div
-              className={
-                languageBox
-                  ? "absolute right-0 w-fit h-fit flex flex-col gap-y-2 bg-black/20 py-2 px-5 mt-4"
-                  : "hidden"
-              }
-            >
-              <span
-                className=""
-                onClick={() => {
-                  setLanguageBox(false);
-                  setLanguage("en");
-                }}
-              >
-                English
-              </span>
-              <span
-                className=""
-                onClick={() => {
-                  setLanguageBox(false);
-                  setLanguage("my");
-                }}
-              >
-                မြန်မာ
-              </span>
-            </div>
-          </div>
-
-          <div onClick={modalBoxSwitch} className="block sm:hidden z-50">
-            <CiMenuBurger size={25} />
-          </div>
-        </div>
-      </nav>
-      {modalBox ? (
-        <div className="fixed sm:hidden md:hidden xl:hidden flex flex-col left-0 z-50 bg-slate-600 w-2/3 h-full">
-          <div className="w-full h-full flex flex-col items-center pt-20 gap-y-9 ">
-            <button
-              onClick={() => scrollToSection(aboutRef)}
-              className="w-full h-fit px-2 py-1 flex flex-row items-center justify-between"
-            >
-              <span className="text-xl font-bold">About</span>
-              <IoIosArrowForward size={17} />
-            </button>
-            <button
-              onClick={() => scrollToSection(featuresRef)}
-              className="w-full h-fit px-2 py-1 flex flex-row items-center justify-between"
-            >
-              <span className="text-xl font-bold">Features</span>
-              <IoIosArrowForward size={17} />
-            </button>
-            <button className="w-full h-fit px-2 py-1 flex flex-row items-center justify-between">
-              <span className="text-xl font-bold">Tutorials</span>
-              <IoIosArrowForward size={17} />
-            </button>
-            <button className="w-full h-fit px-2 py-1 flex flex-row items-center justify-between">
-              <span className="text-xl font-bold">Support</span>
-              <IoIosArrowForward size={17} />
-            </button>
-          </div>
-          <div className="w-full h-[200px]  flex flex-col px-2 gap-y-4">
-            <button
-              onClick={() => window.open("https://t.me/codesmm_bot", "_blank")}
-              className="w-full h-fit rounded-md px-2 py-2 flex items-center justify-center gap-x-1 bg-blue-500 text-xl text-white font-extrabold"
-            >
-              SingUp <IoMdLogIn size={20} />
-            </button>
-            <button
-              onClick={() => navigate("/login")}
-              className="w-full h-fit rounded-md px-2 py-2 flex items-center justify-center gap-x-1 bg-white text-xl text-black font-extrabold"
-            >
-              Login <IoMdLogIn size={20} />
-            </button>
-          </div>
-        </div>
-      ) : (
-        <></>
-      )}
-      <About language={language} aboutRef={aboutRef}></About>
-      <Features language={language} featuresRef={featuresRef}></Features>
-      <footer className="w-full h-14 flex flex-col sm:flex-row  items-center justify-center gap-x-4">
-        <div className="w-fit h-fit flex gap-x-2 items-center justify-center">
-          <span>&copy;2025</span>
-          <span>NetFlow 4MM</span>
-        </div>
-        <div className="w-fit h-fit flex flex-row items-center justify-center gap-x-2">
-          <div className="w-fit h-fit flex flex-row gap-x-1">
-            <FaTelegramPlane size={20} />
-          </div>
-          <a href="https://t.me/netflow4mm">Telegram Channel</a>
-        </div>
+      </section>
+      <footer className="z_pd  container mx-auto w-full h-fit flex flex-row items-center">
+        <p className="font-roboto opacity-80 italic">
+          This service relies on public servers. Performance may vary. Use at
+          your own risk.
+        </p>
+        <p className="font-roboto font-semibold">Made with ❤️ by volunteers.</p>
+        <a href="" className="underline">Telegram Support</a>
+        <a href="" className="underline">Privacy Policy</a>
       </footer>
     </main>
   );
