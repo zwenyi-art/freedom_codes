@@ -67,12 +67,12 @@ const LandingPage = () => {
       <nav className="w-full h-fit container mx-auto z-50 bg-white border-b-2 sticky top-0">
         <section className="z_pd   py-4  w-full h-full flex flex-row items-center justify-between">
           <div className="text-4xl w-fit h-fit ">Logosfsfsfs</div>
-          <div className="w-fit h-full gap-x-6 font-oswald   flex flex-row items-center">
+          <div className="w-fit h-full gap-x-6 font-oswald hidden  md:flex flex-row items-center">
             <a href="">Features</a>
             <a href="">How It Works</a>
             <a href="">Community</a>
             <a href="">Safety</a>
-            <button className="w-fit  h-fit flex items-center gap-x-2 px-4 py-1 rounded-md text-white bg-black">
+            <button className="w-fit  h-fit flex items-center gap-x-2 px-4 py-1 rounded-sm text-white bg-black">
               <span className="flex items-center font-roboto justify-center">
                 Sign In
               </span>
@@ -82,18 +82,28 @@ const LandingPage = () => {
         </section>
       </nav>
       {/* Hero */}
-      <section className="z_pd container mx-auto bg-green-400  w-full h-full min-h-svh  flex flex-col  gap-y-5 justify-center">
-        <h1 className="font-bebas text-5xl max-w-2xl">
-          Stay Connected. Break Through the Firewall. For Free.
-        </h1>
-        <p className="font-roboto max-w-3xl text-2xl font-light text-pretty  subpixel-antialiase tracking-wide ">
-          Access the open internet safely with free, community-powered VPN
-          protocols designed for local ISPs. No payment. No tracking. Just
-          freedom.
-        </p>
-        <button className="font-roboto w-fit h-fit flex items-center justify-center bg-black text-white px-3 py-2 rounded-sm gap-x-3">
-          <span>Get Started Now</span> <MdOutlineArrowRightAlt size={30} />
-        </button>
+      <section className="z_pd container mx-auto  bg-green-400  w-full h-full min-h-svh  flex flex-col xl:flex-row gap-y-5 items-center justify-center">
+        <div className="w-full h-full flex flex-col  gap-y-5">
+          <h1 className="font-bebas text-5xl max-w-2xl">
+            Stay Connected. Break Through the Firewall. For Free.
+          </h1>
+          <p className="font-roboto max-w-3xl text-2xl font-light text-pretty  subpixel-antialiase tracking-wide ">
+            Access the open internet safely with free, community-powered VPN
+            protocols designed for local ISPs. No payment. No tracking. Just
+            freedom.
+          </p>
+          <button className="font-roboto w-fit h-fit flex items-center justify-center bg-black text-white px-3 py-2 rounded-sm gap-x-3">
+            <span>Get Started Now</span> <MdOutlineArrowRightAlt size={30} />
+          </button>
+        </div>
+        <div className="w-full h-full bg-blend-color-dodge rounded-sm overflow-hidden">
+          <img
+            className="w-full h-full object-cover z-20"
+            src="https://res.cloudinary.com/detwp36e7/image/upload/v1743051747/heroSection_ywceuj.png"
+            alt=""
+            srcset=""
+          />
+        </div>
       </section>
       {/* Problem Statement */}
       <section className="z_pd container mx-auto w-full h-full min-h-svh flex flex-col items-center justify-center gap-y-4">
@@ -168,7 +178,7 @@ const LandingPage = () => {
           Getting connected is quick and easy with our streamlined process.
         </p>
 
-        <div className="w-full h-full flex flex-row gap-x-6 px-3 py-2">
+        <div className="w-full h-full flex flex-col md:flex-row  gap-x-6 px-3 py-2">
           <div className="max-w-md border rounded-md shadow-md bg-[#D9DFDF] h-fit flex flex-col gap-y-3 items-center justify-center p-4">
             <div class="w-12 h-12 flex items-center justify-center bg-[#112B51] text-white text-xl font-bold font-bebas rounded-full">
               1
@@ -317,7 +327,7 @@ const LandingPage = () => {
           We prioritize your privacy and security above all else.
         </p>
 
-        <div className="w-full h-full flex flex-row gap-x-6 px-3 py-2">
+        <div className="w-full h-full flex flex-col md:flex-row gap-x-6 px-3 py-2">
           <div className="w-full border rounded-md shadow-md bg-[#D9DFDF] h-full flex flex-col gap-y-3 items-center justify-center p-4">
             <MdBlock size={45} />
             <h1 className="text-center font-bebas text-2xl">
@@ -364,14 +374,18 @@ const LandingPage = () => {
           </button>
         </div>
       </section>
-      <footer className="z_pd  container mx-auto w-full h-fit flex flex-row items-center">
+      <footer className="z_pd  container mx-auto w-full h-fit flex flex-col md:flex-row items-center">
         <p className="font-roboto opacity-80 italic">
           This service relies on public servers. Performance may vary. Use at
           your own risk.
         </p>
         <p className="font-roboto font-semibold">Made with ❤️ by volunteers.</p>
-        <a href="" className="underline">Telegram Support</a>
-        <a href="" className="underline">Privacy Policy</a>
+        <a href="" className="underline">
+          Telegram Support
+        </a>
+        <a href="" className="underline">
+          Privacy Policy
+        </a>
       </footer>
     </main>
   );
