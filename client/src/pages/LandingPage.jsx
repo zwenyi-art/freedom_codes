@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import { CiServer } from "react-icons/ci";
+import { IoSpeedometerOutline } from "react-icons/io5";
+import { GoAlert } from "react-icons/go";
+
 import { IoMdLogIn } from "react-icons/io";
 import { title } from "framer-motion/client";
 import { HiMiniLanguage } from "react-icons/hi2";
@@ -17,7 +21,7 @@ import { BsArrowClockwise } from "react-icons/bs";
 import { IoWarningOutline } from "react-icons/io5";
 import Hero from "../components/landing/Hero";
 import { TfiLock } from "react-icons/tfi";
-
+import { AiOutlineExclamationCircle } from "react-icons/ai";
 const LandingPage = () => {
   const { auth } = useAuth();
   const navigate = useNavigate();
@@ -67,7 +71,7 @@ const LandingPage = () => {
       <nav className="w-full h-fit container mx-auto z-50 bg-white border-b-2 sticky top-0">
         <section className="z_pd    w-full h-full flex flex-row items-center justify-between">
           <div className=" w-fit h-fit gap-x-2  flex flex-row items-center justify-center">
-            <h1 className="font-bebas text-[#4ADE80] font-semibold text-3xl">
+            <h1 className="font-bebas text-[#4ADE80] font-semibold text-2xl md:text-3xl">
               NETFLOW
             </h1>
             <div className="w-fit h-fit">
@@ -79,7 +83,7 @@ const LandingPage = () => {
               />
             </div>
 
-            <h1 className="font-bebas font-semibold text-3xl text-[#E81224]">
+            <h1 className="font-bebas font-semibold text-[#E81224] text-2xl md:text-3xl">
               4MM
             </h1>
           </div>
@@ -112,7 +116,7 @@ const LandingPage = () => {
             protocols designed for local ISPs. No payment. No tracking. Just
             freedom.
           </p>
-          <button className="font-roboto w-fit h-fit flex items-center justify-center bg-black text-white px-3 py-2 rounded-sm gap-x-3">
+          <button className="font-roboto w-fit h-fit flex items-center justify-center bg-black text-white mt-6 px-3 py-2 rounded-sm gap-x-3">
             <span>Get Started Now</span> <MdOutlineArrowRightAlt size={30} />
           </button>
         </div>
@@ -246,8 +250,7 @@ const LandingPage = () => {
               <FiShield size={45} />
               <h1 className="text-center font-bebas text-2xl">Free Forever</h1>
               <p className="text-center max-w-sm font-oswald text-xl">
-                No ads, no subscriptions. Funded by the community, for the
-                community.
+                Funded by the community, for the community.
               </p>
             </div>
 
@@ -283,7 +286,7 @@ const LandingPage = () => {
           </div>
         </div>
         <p className="font-roboto italic tracking-normal font-semibold opacity-80 py-3 z-0 text-red-600">
-          Note: Servers are crowdsourced from public networks. Speeds may vary,
+          Note:Servers are crowdsourced from public networks. Speeds may vary,
           but we work tirelessly to improve reliability.
         </p>
       </section>
@@ -387,18 +390,35 @@ const LandingPage = () => {
           </button>
         </div>
       </section>
-      <footer className="z_pd  container mx-auto w-full h-fit flex flex-col md:flex-row items-center">
-        <p className="font-roboto opacity-80  font-semibold">
-          This service relies on public servers. Performance may vary. Use at
-          your own risk.
-        </p>
-        <p className="font-roboto font-semibold">Made with ❤️ by volunteers.</p>
-        <a href="" className="underline">
-          Telegram Support
-        </a>
-        <a href="" className="underline">
-          Privacy Policy
-        </a>
+      <footer className="z_pd  container mx-auto w-full h-fit flex gap-y-2 flex-col md:flex-row items-center justify-center">
+        <div className="font-roboto  opacity-80   font-semibold w-full flex  flex-col">
+          <p className="flex flex-row gap-x-3 w-fit h-fit items-center">
+            <CiServer size={20} />
+            <span>This service relies on public servers.</span>
+          </p>
+          <p className="flex flex-row gap-x-3 w-fit h-fit items-center">
+            <IoSpeedometerOutline size={20} />
+            <span>Performance may vary.</span>
+          </p>
+          <p className="flex flex-row gap-x-3 w-fit h-fit items-center">
+            <GoAlert size={20} />
+            <span>Use at your own risk.</span>
+          </p>
+        </div>
+
+        <div className="w-full flex flex-row items-center">
+          <p className="font-roboto font-semibold w-full md:text-center">
+            Made with ❤️ by volunteers.
+          </p>
+          <div className="w-full h-fit flex flex-col md:items-center">
+            <a href="" className="underline">
+              Telegram Support
+            </a>
+            <a href="" className="underline">
+              Privacy Policy
+            </a>
+          </div>
+        </div>
       </footer>
     </main>
   );
