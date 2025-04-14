@@ -5,7 +5,10 @@ import { MdBlock } from "react-icons/md";
 
 const Safety = () => {
   return (
-    <section className=" z_pd  container mx-auto w-full h-full flex flex-col md:items-center justify-center gap-y-4">
+    <section
+      id="safety"
+      className=" z_pd  container mx-auto w-full h-full flex flex-col md:items-center justify-center gap-y-4"
+    >
       <h2 className="font-bebas text-5xl max-w-2xl pt-6">
         Your Safety Comes First
       </h2>

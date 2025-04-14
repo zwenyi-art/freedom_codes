@@ -102,7 +102,7 @@ const Login = () => {
       className=" w-full h-svh  flex items-center justify-center"
     >
       <div className="px-2 w-full  h-svh flex items-center justify-center">
-        <Form className="w-fit h-fit  bg-slate-700 bg-opacity-45   px-12 py-10 gap-y-4 rounded-md   flex flex-col items-center justify-center">
+        <Form className="w-fit h-fit  bg-slate-700    px-12 py-10 gap-y-4 rounded-md   flex flex-col items-center justify-center">
           <div className=" w-fit h-fit flex flex-col items-center justify-center">
             <div className="relative text-white flex items-center justify-center">
               <div className="absolute left-0">

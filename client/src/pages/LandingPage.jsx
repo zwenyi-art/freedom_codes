@@ -14,37 +14,35 @@ const LandingPage = () => {
   const { auth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const [language, setLanguage] = useState("my");
-  const [languageBox, setLanguageBox] = useState(false);
   const [modalBox, setModalBox] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const aboutRef = useRef();
-  const featuresRef = useRef();
-  const modalBoxSwitch = () => {
-    console.log("modal box switch button");
-    setModalBox(!modalBox);
-  };
+
+  const listRef = useRef(null);
+
   useEffect(() => {
     console.log("landing page", auth);
     if (auth?.accessToken) {
       navigate("/home", { state: { from: location }, replace: true });
     }
   }, []);
-  const scrollToSection = (elementRef) => {
-    elementRef?.current?.scrollIntoView({
+  // const scrollToSection = (elementRef) => {
+  //   setIsOpen(false);
+  //   elementRef?.current?.scrollIntoView({
+  //     behavior: "smooth",
+  //     block: "end",
+  //     inline: "nearest",
+  //   });
+  // };
+
+  const scrollToSection = (index) => {
+    const nodelist = listRef.current.children[index];
+    nodelist.scrollIntoView({
       behavior: "smooth",
-      block: "end",
+      block: "start",
       inline: "nearest",
     });
   };
 
-  const changeLanguage = () => {
-    if (language === "en") {
-      setLanguage("my");
-    } else {
-      setLanguage("en");
-    }
-  };
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -56,8 +54,15 @@ const LandingPage = () => {
     };
   }, [isOpen]);
   return (
-    <main className="text-[#112B51] relative w-full h-full  flex flex-col items-center justify-center ">
-      <NavBar isOpen={isOpen} setIsOpen={setIsOpen}></NavBar>
+    <main
+      ref={listRef}
+      className="text-[#112B51] relative w-full h-full  flex flex-col items-center justify-center "
+    >
+      <NavBar
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        scrollToSection={scrollToSection}
+      ></NavBar>
       {/* Hero */}
       <Hero></Hero>
       {/* Problem Statement */}

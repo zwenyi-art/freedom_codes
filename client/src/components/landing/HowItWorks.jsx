@@ -2,7 +2,10 @@ import React from "react";
 
 const HowItWorks = () => {
   return (
-    <section className=" z_pd bg-[#5BC8A8] container mx-auto w-full h-full flex flex-col md:items-center justify-center gap-y-4">
+    <section
+      id="how_it_work"
+      className=" z_pd bg-[#5BC8A8] container mx-auto w-full h-full flex flex-col md:items-center justify-center gap-y-4"
+    >
       <h2 className="font-bebas text-5xl max-w-2xl pt-6">
         Free Access in 3 Simple Steps
       </h2>

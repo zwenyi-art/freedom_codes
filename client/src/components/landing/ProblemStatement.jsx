@@ -2,9 +2,13 @@ import React from "react";
 import { FiShield, FiUnlock } from "react-icons/fi";
 import { MdBlock } from "react-icons/md";
 
-const ProblemStatement = () => {
+const ProblemStatement = ({ control_ref }) => {
   return (
-    <section className="z_pd container mx-auto w-full h-full min-h-svh flex flex-col md:items-center justify-center gap-y-4">
+    <section
+      ref={control_ref}
+      id="problem_statement"
+      className="z_pd container mx-auto w-full h-full min-h-svh flex flex-col md:items-center justify-center gap-y-4"
+    >
       <h2 className="font-bebas text-5xl max-w-2xl">Why This Matters</h2>
       <p className="font-roboto max-w-3xl text-2xl font-light text-pretty  subpixel-antialiase tracking-wide md:text-center">
         We're addressing critical connectivity challenges in regions with

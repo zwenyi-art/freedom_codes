@@ -3,7 +3,10 @@ import { IoIosArrowForward } from "react-icons/io";
 
 const Community = () => {
   return (
-    <section className="z_pd bg-[#F3AB56] container mx-auto w-full h-full flex flex-col xl:flex-row items-center justify-center gap-y-4">
+    <section
+      id="community"
+      className="z_pd bg-[#F3AB56] container mx-auto w-full h-full flex flex-col xl:flex-row items-center justify-center gap-y-4"
+    >
       <article className="w-full h-fit flex flex-col gap-y-5">
         <h1 className="font-bebas text-5xl max-w-2xl pt-6">
           By the Community, For the Community

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import { CiMenuBurger } from "react-icons/ci";
 import { IoIosArrowForward } from "react-icons/io";
 import { CiMenuFries } from "react-icons/ci";
-const NavBar = ({ isOpen, setIsOpen }) => {
+const NavBar = ({ isOpen, setIsOpen, scrollToSection }) => {
+  const navigate = useNavigate();
   return (
     <>
       <nav className="w-full h-fit container mx-auto z-50 bg-slate-100  sticky top-0">
@@ -25,13 +28,22 @@ const NavBar = ({ isOpen, setIsOpen }) => {
             </h1>
           </div>
           <div className="w-fit h-full gap-x-6 font-oswald hidden  md:flex flex-row items-center">
-            <a href="">Features</a>
-            <a href="">How It Works</a>
-            <a href="">Community</a>
-            <a href="">Safety</a>
-            <button className="w-fit  h-fit flex items-center gap-x-2 px-4 py-1 rounded-sm text-white bg-black">
+            <button onClick={() => scrollToSection("problem_statement")}>
+              Features
+            </button>
+            <button onClick={() => scrollToSection("how_it_work")}>
+              How It Works
+            </button>
+            <button onClick={() => scrollToSection("community")}>
+              Community
+            </button>
+            <button onClick={() => scrollToSection("safety")}>Safety</button>
+            <button
+              onClick={() => navigate("/login")}
+              className="w-fit  h-fit flex items-center gap-x-2 px-4 py-1 rounded-sm text-white bg-black"
+            >
               <span className="flex items-center font-roboto justify-center">
-                Sign In
+                LogIn
               </span>
               <IoIosArrowForward size={17} className="mt-[1px]" />
             </button>
@@ -70,24 +82,39 @@ const NavBar = ({ isOpen, setIsOpen }) => {
           </h1>
         </div>
         <div className=" px-3 w-full h-fit pt-6 gap-x-6 font-oswald flex flex-col  justify-center gap-y-5">
-          <a href="" className="text-xl">
+          <button
+            onClick={() => scrollToSection("problem_statement")}
+            className="text-xl"
+          >
             Features
-          </a>
-          <a href="" className="text-xl">
+          </button>
+          <button
+            onClick={() => scrollToSection("how_it_work")}
+            className="text-xl"
+          >
             How It Works
-          </a>
-          <a href="" className="text-xl">
+          </button>
+          <button
+            onClick={() => scrollToSection("community")}
+            className="text-xl"
+          >
             Community
-          </a>
-          <a href="" className="text-xl">
+          </button>
+          <button onClick={() => scrollToSection("safety")} className="text-xl">
             Safety
-          </a>
+          </button>
         </div>
         <div className="px-3    w-full h-fit  flex justify-end items-center flex-col gap-y-5 py-14">
-          <button className="w-full  h-fit flex items-center justify-center gap-x-2  py-2 rounded-md font-bold  border border-black/40">
+          <button
+            onClick={() => navigate("/login")}
+            className="w-full  h-fit flex items-center justify-center gap-x-2  py-2 rounded-md font-bold  border border-black/40"
+          >
             Login
           </button>
-          <button className="w-full  h-fit flex items-center justify-center gap-x-2  py-2 rounded-md  font-bold bg-[#2134E0] text-white">
+          <button
+            onClick={() => window.open("https://t.me/NetFlow4MM_bot", "_blank")}
+            className="w-full  h-fit flex items-center justify-center gap-x-2  py-2 rounded-md  font-bold bg-[#2134E0] text-white"
+          >
             Sign Up
           </button>
         </div>

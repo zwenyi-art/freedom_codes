@@ -3,7 +3,10 @@ import { MdOutlineArrowRightAlt } from "react-icons/md";
 
 const Hero = () => {
   return (
-    <section className="z_pd container mx-auto  bg-green-400  w-full h-full min-h-svh  flex  md:items-center justify-center">
+    <section
+      id="hero"
+      className="z_pd container mx-auto  bg-green-400  w-full h-full min-h-svh  flex  md:items-center justify-center"
+    >
       <div className="w-full h-full flex flex-col  gap-y-5">
         <div className="w-full h-12 md:hidden "></div>
         <h1 className="font-bebas text-5xl max-w-2xl">
