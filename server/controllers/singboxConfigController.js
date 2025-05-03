@@ -1,4 +1,5 @@
 const { sign_box_config_genMod } = require("../generator/SingBoxGen");
+const { client } = require("../configs/dbConn");
 const SingBoxConfigure = require("../generator/singBoxConfig");
 const {
   ssh,
@@ -117,72 +118,103 @@ const updateRandomServers = async (req, res) => {
   // res.status(200).json({ data: "random server updated", data: result });
 };
 
-const getRandomSingboxServers = async (req, res) => {
-  const { isp = "ooredoo" } = req.query;
-  const userAgent = req.get("User-Agent");
-  console.log(userAgent);
-  const data = await public_random_server.findOne({ tag: "random_servers" });
-  try {
-    const isp_public_server = data?.public_servers.filter((data) => {
-      const isp_list = data?.isp.toLowerCase();
-      if (isp_list?.includes(isp.toLowerCase())) {
-        return data;
-      }
-    });
-    // console.log(isp_public_server);
-    const new_public_config = new SingBoxConfigure();
-    await Promise.all([
-      await new_public_config.addOutBound(
-        "🖥 Load balancing",
-        data?.private_servers
-      ),
-      await new_public_config.addOutBound(
-        "☢️ Backup Runner",
-        isp_public_server[0]["random_server"]
-      ),
-    ]);
-    if (userAgent.includes("Hiddify")) {
-      const public_hiddify_config = await new_public_config.getServers();
-      res.status(200).json({ outbounds: public_hiddify_config });
-    } else if (userAgent.includes("sing-box")) {
-      const public_singbox_config = await new_public_config.getConfig();
-      res.status(200).json(public_singbox_config);
-    }
-  } catch (err) {
-    res.status(200).json({ data: "unsupported isp" });
+function fisherYatesShuffle(array, array_size, serverAmount) {
+  let n = array_size;
+  while (n > 1) {
+    n--;
+    let j = Math.floor(Math.random() * (n + 1));
+    [array[n], array[j]] = [array[j], array[n]];
   }
+  const result = array.slice(0, serverAmount).sort(function (a, b) {
+    return a - b;
+  });
+  return result;
+}
+
+const generateRandomServers = async (req, res) => {
+  const now = Date.now();
+  const ttlSeconds = 5 * 60;
+  const { ispType, serverAmount } = req.body;
+  const userId = Number(req.user_id);
+  const array_size = await myShadowSocks.find({}).countDocuments();
+  const SSH = await ssh.aggregate([
+    { $match: { type: "ssh" } }, // Filter documents with type 'ssh'
+    { $sample: { size: 3 } }, // Randomly select 1 document
+  ]);
+  const SS = await ss.aggregate([
+    { $match: { type: "shadowsocks" } }, // Filter documents with type 'ssh'
+    { $sample: { size: 3 } }, // Randomly select 1 document
+  ]);
+  const VMESS = await vmess.aggregate([
+    { $match: { type: "vmess" } }, // Filter documents with type 'ssh'
+    { $sample: { size: 3 } }, // Randomly select 1 document
+  ]);
+  const private_serverData = [...VMESS, ...SSH, ...SS];
+  // const result = await randomizeServer(ispType, data, 20);
+  let array = Array.from({ length: array_size }, (_, i) => i);
+  const random_index = fisherYatesShuffle(array, array_size, serverAmount);
+  const isp_regex = new RegExp(ispType, "i");
+  const random_data = await myShadowSocks
+    .find({
+      index: { $in: random_index },
+      "data.isp": { $in: [isp_regex] },
+    })
+    .select("data -_id");
+
+  // const z_data = random_data["_doc"]["data"];
+
+  // for (let z = 0; z < random_data.length; z++) {
+  //   console.log(random_data[z]["_doc"]["data"]);
+  // }
+  const new_public_config = new SingBoxConfigure();
+  await new_public_config.addOutBound("🖥 Load balancing", private_serverData);
+  await new_public_config.addOutBound("☢️ Backup Runner", random_data);
+
+  // getting configures
+  const public_singbox_config = await new_public_config.getConfig();
+  const public_hiddify_config = await new_public_config.getServers();
+
+  // lastItem = array_size[array_size.length - 1];
+  const personal_data = {
+    userId: userId,
+    ispType: ispType,
+    timestamp: now,
+    expiresAt: now + ttlSeconds * 1000,
+    serverAmount: serverAmount,
+    singbox_config: public_singbox_config,
+    hiddify_config: public_hiddify_config,
+    random_server: random_data.length,
+  };
+  client.setEx(`userId:${userId}`, ttlSeconds, JSON.stringify(personal_data)); // Cache for 1 hour
+
+  res.status(200).json({ msg: true, data: personal_data });
 };
 
-const getRandomHiddifyServers = async (req, res) => {
-  const { isp = "ooredoo" } = req.query;
-  const data = await public_random_server.findOne({ tag: "random_servers" });
-  try {
-    const isp_public_server = data?.public_servers.filter((data) => {
-      const isp_list = data?.isp.toLowerCase();
-      if (isp_list?.includes(isp.toLowerCase())) {
-        return data;
-      }
-    });
-    // console.log(isp_public_server);
-    const new_public_config = new SingBoxConfigure();
-    await Promise.all([
-      await new_public_config.addOutBound(
-        "🖥 Load balancing",
-        data?.private_servers
-      ),
-      await new_public_config.addOutBound(
-        "☢️ Backup Runner",
-        isp_public_server[0]["random_server"]
-      ),
-    ]);
-    const public_hiddify_config = await new_public_config.getServers();
-    res.status(200).json(public_hiddify_config);
-  } catch (err) {
-    res.status(200).json({ data: "unsupported isp" });
+const getUserServerConfigure = async (req, res) => {
+  const { id } = req.params;
+  const cache = await client.get(`userId:${id}`);
+  const userAgent = req.get("User-Agent");
+  if (cache) {
+    const data = JSON.parse(cache);
+    if (data.expiresAt < Date.now()) {
+      return res.status(200).json({ data: "Cache expired" });
+    }
+
+    if (userAgent.includes("sing-box")) {
+      const singbox_config = data?.singbox_config;
+      return res.status(200).json(singbox_config);
+    }
+    if (userAgent.includes("Hiddify")) {
+      console.log("hiddify config");
+      return res.status(200).json(data?.hiddify_config);
+    }
+    return res.status(200).json(data);
   }
+  return res.status(200).json({ msg: "Invalid Configure" });
 };
+
 module.exports = {
   updateRandomServers,
-  getRandomSingboxServers,
-  getRandomHiddifyServers,
+  generateRandomServers,
+  getUserServerConfigure,
 };

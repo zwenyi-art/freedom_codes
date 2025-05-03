@@ -60,6 +60,10 @@ const PublicServersSchema = new mongoose.Schema({
   tag: { type: String },
 });
 
+const IspSchema = new mongoose.Schema({
+  type: { type: String, required: true },
+});
+
 const ServersSchema = new mongoose.Schema({
   type: { type: String, required: true },
   server: { type: String, required: true },
@@ -89,6 +93,7 @@ const public_random_server = mongoose.model(
   "public_random_server",
   RandomServers
 );
+const Isp_List = mongoose.model("isplist", IspSchema);
 module.exports = {
   public_servers,
   ssh,
@@ -96,4 +101,5 @@ module.exports = {
   vmess,
   public_random_server,
   myShadowSocks,
+  Isp_List,
 };

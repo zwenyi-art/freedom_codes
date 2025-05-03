@@ -22,6 +22,7 @@ export default {
         oswald: ["Oswald", "sans-serif"],
         bebas: ["Bebas Neue", "sans-serif"],
         roboto: ["Roboto", "sans-serif"],
+        orbitron: ["Orbitron", "sans-serif"],
       },
     },
     // container: {

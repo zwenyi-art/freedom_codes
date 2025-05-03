@@ -5,11 +5,18 @@ const scrapingServers = require("../services/scrapingServers");
 const singboxConfigController = require("../controllers/singboxConfigController");
 const systemInfoController = require("../controllers/systemInfoController");
 const couponController = require("../controllers/coupnController");
+const cacheConfigure = require("../middleware/cacheConfigure");
 router.get(
   "/update",
   verifyCronJob.verifyCronJob,
   singboxConfigController.updateRandomServers
 );
+
+// router.get(
+//   "/update",
+//   singboxConfigController.updateRandomServers
+// );
+
 router.get(
   "/sysInfo",
   verifyCronJob.verifyCronJob,

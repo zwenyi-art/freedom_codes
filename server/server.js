@@ -2,7 +2,7 @@ require("dotenv").config();
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const express = require("express");
-const { connectDb } = require("./configs/dbConn");
+const { connectDb, connectRedis } = require("./configs/dbConn");
 const { verifyJWT } = require("./middleware/verifyJWT");
 const cookieParser = require("cookie-parser");
 const { verifyCoin } = require("./middleware/verifyCoin");
@@ -44,6 +44,7 @@ app.use("/user", require("./routes/user"));
 const start = async () => {
   try {
     await connectDb(process.env.DB_URL);
+    await connectRedis();
     app.listen(PORT, () => {
       console.log("server is listening", PORT);
     });

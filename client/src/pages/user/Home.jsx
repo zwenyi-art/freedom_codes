@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaRegCopy } from "react-icons/fa";
 import { LuImport } from "react-icons/lu";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -7,59 +7,60 @@ import useAuth from "../../hooks/useAuth";
 import useRefreshToken from "../../hooks/useRefreshToken";
 import Swal from "sweetalert2";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-
-const generateIP = (servers) => {
-  const shuffledIPs = [...servers].sort(() => 0.5 - Math.random());
-  return shuffledIPs.slice(0, 4);
-};
-
-const generateRandomString = () => {
-  return Math.random().toString(36).substring(2, 8).toUpperCase();
-};
+import CodeMirror from "@uiw/react-codemirror";
+import { EditorView } from "@uiw/react-codemirror";
+import { javascript } from "@codemirror/lang-javascript";
+import { aura, auraInit } from "@uiw/codemirror-theme-aura";
+import { MdContentCopy } from "react-icons/md";
+import { TiExportOutline } from "react-icons/ti";
 
 const Home = () => {
   const { userInfo } = useAuth();
   const refresh = useRefreshToken();
-  const [servers, setServers] = useState([]);
   const axiosPrivate = useAxiosPrivate();
-  const [randomServer, setRandomServer] = useState([]);
   // const [servers, setServers] = useState(Array(4).fill("").map(generateIP));
   const navigate = useNavigate();
   const location = useLocation();
-
   const [key, setKey] = useState(0);
   const [config, setConfig] = useState("");
   const [copied, setCopied] = useState(false);
   const [activityCode, setActivityCode] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("");
+
   const [ispTypes, setIspTypes] = useState([]);
-  // Handle radio button selection
-  const handleChange = (event) => {
-    const value = event.target.value;
-    setSelectedValue(value);
-    localStorage.setItem("selectedISP", value);
-    window.location.reload();
-  };
+  const [editorContent, setEditorContent] = useState("fsfsfsfsf");
 
-  // Load saved value from localStorage when component mounts
-  useEffect(() => {
-    let isMounted = true;
-    const storedValue = localStorage.getItem("selectedISP");
-    if (storedValue) {
-      setSelectedValue(storedValue);
-    } else {
-      setSelectedValue("Ooredoo");
-    }
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const [selectedValue, setSelectedValue] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [generating, setIsGenerating] = useState(false);
+  const [hasGenerated, setHasGenerated] = useState(false);
+  const [isCoolDown, setIsCoolDown] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+  const [numberOfServers, setNumberOfServers] = useState(25);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [showPrompt, setShowPrompt] = useState(false);
+  const intervalRef = useRef(null);
+  const [progress, setProgress] = useState(0);
+  const [flag, setFlag] = useState(false);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
+  //configure details
+  const [expiresAt, setExpiresAt] = useState(0);
+  const [ispName, setIspName] = useState("");
+  const [serverAmount, setServerAmount] = useState(0);
+  const [singBoxConfig, setSingBoxConfig] = useState({});
+  const [timeLeft, setTimeLeft] = useState("00:00");
 
+  //configure have generated or not
+  const [generated, setGenerated] = useState(false);
+  const extensions = [javascript()];
+  const scrollableEditor = EditorView.theme({
+    "&": {
+      maxHeight: "60vh", // dynamic based on screen
+      overflow: "auto",
+    },
+  });
+  const editorExtensions = [EditorView.lineWrapping, scrollableEditor];
+
+  //for converting ISP code to name
   const ispDetailList = {
     Ooredoo: "OOREDOO MYANMAR",
     Mytel: "Telecom International Myanmar Co., Ltd",
@@ -72,6 +73,7 @@ const Home = () => {
       ) || isp_data
     );
   };
+
   useEffect(() => {
     let isMounted = true;
     // const controller = new AbortController();
@@ -79,29 +81,47 @@ const Home = () => {
       // console.log("get server ip");
       try {
         const response = await axiosPrivate.get("/serverList");
-        const newServers = response?.data?.serverList.map(
-          (data) => data.server
-        );
-        const ispList = response?.data?.ispList?.map((data) =>
-          getISPName(data)
-        );
+        const result = response?.data?.msg;
 
-        isMounted && setServers(newServers);
-        isMounted && setIspTypes(ispList);
+        if (result) {
+          console.log("After Token Refresh", response?.data);
+
+          setButtonDisabled(true);
+          setExpiresAt(response?.data?.data?.expiresAt);
+          setSingBoxConfig(
+            JSON.stringify(response?.data?.data?.singbox_config, null, 2)
+          );
+
+          setGenerated(true);
+        } else {
+          console.log("Configure hasn't created yet", response?.data?.ispList);
+          setButtonDisabled(false);
+          setGenerated(false);
+          setIspTypes(response?.data?.ispList);
+        }
+
+        // isMounted && setServers(newServers);
+        // isMounted && setIspTypes(ispList);
       } catch (error) {
         console.error(error);
         navigate("/login", { state: { from: location }, replace: true });
       }
     };
     getServers();
-
     return () => {
       isMounted = false;
     };
   }, [axiosPrivate]);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(config);
+    navigator.clipboard
+      .writeText(singBoxConfig)
+      .then(() => {
+        console.log("Copied to clipboard");
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -135,30 +155,47 @@ const Home = () => {
     const singBoxUrl = `sing-box://import-remote-profile?url=${encodedUrl}#${profileName}`;
     window.location.href = singBoxUrl;
   };
-  useEffect(() => {
-    // const token = userInfo?.token;
-    setConfig(
-      () =>
-        `${BASE_URL}/api/v1/${userInfo?.user_id}?token=${userInfo?.token}&isp=${ispDetailList[selectedValue]}`
-    );
-  }, [userInfo?.token, selectedValue]);
 
   //showing shffeled ifp
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setRandomServer(() => generateIP(servers));
-    }, 2000);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setRandomServer(() => generateIP(servers));
+  //   }, 2000);
 
-    const activityId = setInterval(() => {
-      setActivityCode(generateRandomString());
-    }, 100);
+  //   const activityId = setInterval(() => {
+  //     setActivityCode(generateRandomString());
+  //   }, 100);
 
-    return () => {
-      clearInterval(intervalId);
-      clearInterval(activityId);
-    };
-  }, [servers]);
+  //   return () => {
+  //     clearInterval(intervalId);
+  //     clearInterval(activityId);
+  //   };
+  // }, [servers]);
 
+  // useEffect(() => {
+  //   console.log("Expires At:", expiresAt);
+  //   const interval = setInterval(() => {
+  //     console.log("Update Time Called");
+  //     const now = Date.now();
+  //     const diff = Math.max(0, expiresAt - now);
+  //     if (diff <= 0) {
+  //       setTimeLeft("00:00");
+  //       setGenerated(false);
+  //       clearInterval(interval);
+  //     }
+
+  //     const minutes = Math.floor(diff / 60000)
+  //       .toString()
+  //       .padStart(2, "0");
+  //     const seconds = Math.floor((diff % 60000) / 1000)
+  //       .toString()
+  //       .padStart(2, "0");
+  //     console.log("Update Time Called");
+  //     setTimeLeft(`${minutes}:${seconds}`);
+  //   }, 1000);
+
+  //   return () => clearInterval(interval);
+  // }, [expiresAt]);
   // const addCoinHandle = () => {
   //   Swal.fire({
   //     title: "လှေနံနှစ်ဖက်နင်းချင်လို့ မရဘူးကိုယ့်လူတခုခုရွေး😂😂 ",
@@ -186,58 +223,326 @@ const Home = () => {
   //   });
   // };
 
-  const addCoinHandle = () => {
-    Swal.fire({
-      title: "လှေနံနှစ်ဖက်နင်းချင်လို့ မရဘူးကိုယ့်လူတခုခုရွေး😂😂 ",
-      html: `
-      <button id="singboxBtn" class="bg-green-300 hover:bg-green-600 text-black font-bold py-2 px-4 rounded m-2">
-        Singbox
-      </button>
-      <button id="hiddifyBtn" class="bg-blue-300 hover:bg-blue-500 text-black font-bold py-2 px-4 rounded m-2">
-        Hiddify
-      </button>
-    `,
-      showConfirmButton: false,
-      showCancelButton: false, // Enables the cancel button
-      customClass: {
-        popup: "bg-gray-800/80 rounded-lg", // Tailwind styling for popup
-        title: "text-xl font-semibold text-white", // Tailwind styling for title
-      },
-      didOpen: () => {
-        document.getElementById("singboxBtn").addEventListener("click", () => {
-          Swal.close();
-          importToSingBox();
-        });
-        document.getElementById("hiddifyBtn").addEventListener("click", () => {
-          Swal.close();
-          importToHiddify();
-        });
-      },
-    });
+  useEffect(() => {
+    console.log("Expires At:", expiresAt);
+    if (expiresAt <= 0) return;
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const diff = Math.max(0, expiresAt - now);
+      if (diff <= 0) {
+        setTimeLeft("00:00");
+        clearInterval(interval);
+        setGenerated(false);
+      }
+      const minutes = Math.floor(diff / 60000)
+        .toString()
+        .padStart(2, "0");
+      const seconds = Math.floor((diff % 60000) / 1000)
+        .toString()
+        .padStart(2, "0");
+      setTimeLeft(`${minutes}:${seconds}`);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [expiresAt]);
+
+  const handleGenerate = () => {
+    setIsGenerating(true);
+    setShowPrompt(false);
+
+    console.log("Generating...");
+    setButtonDisabled(true);
+    setHasGenerated(false);
+    intervalRef.current = setInterval(() => {
+      console.log("Interval running...");
+      setProgress((prev) => {
+        if (prev < 40) {
+          return prev + 20;
+        }
+        clearInterval(intervalRef.current);
+        setShowPrompt(true);
+        return 40;
+      });
+    }, 500);
   };
+
+  const handleContinue = () => {
+    if (selectedValue === "") return;
+    setShowPrompt(false);
+    let fetchStarted = false;
+    let fetchCompleted = false;
+    let counter = 0;
+    intervalRef.current = setInterval(() => {
+      setProgress((prev) => {
+        if (fetchStarted && !fetchCompleted) {
+          console.log(
+            `FetchStarted ${fetchStarted}- FetchCompleted ${fetchCompleted}`
+          );
+          return prev;
+        }
+        if (prev >= 100) {
+          clearInterval(intervalRef.current);
+          setIsGenerating(false);
+          setHasGenerated(true);
+          setGenerated(true);
+          return 100;
+        }
+
+        if (progress <= 50 && !fetchStarted) {
+          fetchStarted = true;
+          const innerInterval = setInterval(async () => {
+            console.log("Fetching data interval started...");
+            try {
+              console.log("Generating servers...");
+              await axiosPrivate
+                .post(
+                  "/generateServers",
+                  {
+                    ispType: selectedValue,
+                    serverAmount: Number(numberOfServers),
+                  },
+                  {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                  }
+                )
+                .then((data) => {
+                  fetchCompleted = true;
+                  setExpiresAt(data?.data?.data?.expiresAt);
+                  // setSingBoxConfig(data?.data?.singbox_config);
+                  setSingBoxConfig(
+                    JSON.stringify(data?.data?.data?.singbox_config, null, 2)
+                  );
+
+                  clearInterval(innerInterval);
+                  console.log("Data Generated successfully");
+                }); // Replace with your endpoint
+            } catch (err) {
+              clearInterval(innerInterval);
+              clearInterval(intervalRef.current);
+              setIsGenerating(false);
+              setGenerated(false);
+              console.error(err);
+              alert("Error: Failed to fetch data.");
+              return;
+            }
+          }, 1000);
+        }
+        return prev + 10;
+      });
+    }, 600);
+  };
+
+  const handleChange = (event) => {
+    const value = event.target.value;
+    setSelectedValue(value);
+
+    // localStorage.setItem("selectedISP", value);
+    // window.location.reload();
+    console.log("Selected ISP:", value);
+  };
+
   return (
-    <section className=" w-full  h-full pb-20 sm:p-0">
-      <div className="px-2 w-full h-full  flex items-center justify-center  font-mono">
-        <div className="relative w-full max-w-2xl bg-gray-900 border  border-blue-500 rounded-md shadow-lg overflow-hidden">
-          <div className="bg-gray-800 p-2 flex justify-between items-center">
-            <div className="flex space-x-2">
-              <div className="w-3 h-3 rounded-full bg-red-500"></div>
-              <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-              <div className="w-3 h-3 rounded-full bg-green-500"></div>
+    <section className="sm:px-2  px-0 w-full h-auto  flex flex-col items-center justify-center  font-mono">
+      {/* <div className="w-full h-12 bg-red-500"></div> */}
+
+      <div className="w-full relative h-full flex items-center justify-center">
+        {/* {generated ? (
+          <div className="w-full h-full  bg-[#1A2331] rounded-sm flex items-center justify-center ">
+            <div className="w-full h-full rounded-md px-3  flex flex-col items-center justify-center  font-mono">
+              <div className="w-full h-fit flex py-2  justify-between items-center gap-2">
+                <div className="w-full h-full ">
+                  <span>ExpireIn: </span>
+                  <span>{timeLeft}</span>
+                </div>
+                <div className="w-full  h-full  flex items-center  justify-end  gap-x-2 md:gap-x-5 flex-row">
+                  <button
+                    onClick={() => handleCopy()}
+                    className="md:px-2 md:py-1 p-0 flex items-center justify-center gap-x-1"
+                  >
+                    Copy
+                    <MdContentCopy size={20} />
+                  </button>
+                  <button
+                    onClick={() => importToSingBox()}
+                    className="md:px-2 md:py-1 p-0  flex items-center justify-center gap-x-1"
+                  >
+                    Import
+                    <TiExportOutline size={25} />
+                  </button>
+                </div>
+              </div>
+              <div className="w-full max-w-full overflow-x-auto">
+                <CodeMirror
+                  value={singBoxConfig}
+                  extensions={editorExtensions}
+                  theme={aura}
+                  className="w-full font-mono min-h-max rounded-sm pb-3"
+                  onChange={(value, viewUpdate) => {
+                    setEditorContent(value);
+                  }}
+                />
+              </div>
             </div>
-            <div className="flex">
+          </div>
+        ) : (
+          <div className="relative w-full flex items-center justify-center h-full">
+            <div className="w-full h-full flex flex-col items-center justify-center gap-4">
               <button
-                disabled={randomServer?.length === 0}
-                onClick={toggleDropdown}
-                className="inline-flex items-center justify-center w-full rounded-md 
-        border border-transparent px-4 py-2
-        bg-gradient-to-r from-cyan-500 to-blue-500 
-        hover:from-cyan-600 hover:to-blue-600
-        text-sm font-medium text-white
-        shadow-sm transition-all duration-200
-        disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={buttonDisabled}
+                type="button"
+                onClick={() => handleGenerate()}
+                className="relative transition-all   delay-100 ease-out w-fit h-fit flex items-center justify-center "
               >
-                Select Operators
+                <div
+                  className={`w-40 h-40 rounded-full  ${
+                    generating && "shadow-md animate-spin shadow-red-500"
+                  } flex shadow-lg   items-center justify-center ${
+                    hasGenerated
+                      ? "bg-gradient-to-r from-green-300 to-green-500 "
+                      : "bg-gradient-to-r from-cyan-500 to-blue-500"
+                  }`}
+                ></div>
+                {generating ? (
+                  <p className="absolute flex flex-col text-center text-xl font-bold animate-pulse">
+                    <span>Generating</span>
+                    <span className="text-base">{progress}%</span>
+                  </p>
+                ) : (
+                  !hasGenerated && (
+                    <p className="absolute text-center text-xl font-bold ">
+                      Generate
+                    </p>
+                  )
+                )}
+                {hasGenerated && (
+                  <div className="flex flex-col absolute text-center items-center justify-center gap-2">
+                    <p className=" text-xl font-bold ">Success!</p>
+                    {isCoolDown && (
+                      <span className="text-center text-sm text-gray-600">
+                        Please wait {countdown} second
+                        {countdown !== 1 && "s"} to generate again.
+                      </span>
+                    )}
+                  </div>
+                )}
+              </button>
+            </div>
+          </div>
+        )} */}
+
+        {generated ? (
+          <div className="w-full h-full  bg-[#1A2331] rounded-sm flex items-center justify-center ">
+            <div className="w-full h-full rounded-md px-3  flex flex-col items-center justify-center  font-mono">
+              <div className="w-full h-fit flex py-2  justify-between items-center gap-2">
+                <div className="w-full h-full ">
+                  <span>ExpireIn: </span>
+                  <span>{timeLeft}</span>
+                </div>
+                <div className="w-full  h-full  flex items-center  justify-end  gap-x-2 md:gap-x-5 flex-row">
+                  <button
+                    onClick={() => handleCopy()}
+                    className="md:px-2 md:py-1 p-0 flex items-center justify-center gap-x-1"
+                  >
+                    Copy
+                    <MdContentCopy size={20} />
+                  </button>
+                  <button
+                    onClick={() => importToSingBox()}
+                    className="md:px-2 md:py-1 p-0  flex items-center justify-center gap-x-1"
+                  >
+                    Import
+                    <TiExportOutline size={25} />
+                  </button>
+                </div>
+              </div>
+              <div className="w-full max-w-full overflow-x-auto">
+                <CodeMirror
+                  value={singBoxConfig}
+                  extensions={editorExtensions}
+                  theme={aura}
+                  className="w-full font-mono min-h-max rounded-sm pb-3"
+                  onChange={(value, viewUpdate) => {
+                    setEditorContent(value);
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="relative w-full flex items-center justify-center h-full">
+            <div className="w-full h-full flex flex-col items-center justify-center gap-4">
+              <button
+                disabled={buttonDisabled}
+                type="button"
+                onClick={() => handleGenerate()}
+                className="relative transition-all   delay-100 ease-out w-fit h-fit flex items-center justify-center "
+              >
+                <div
+                  className={`w-40 h-40 rounded-full  ${
+                    generating && "shadow-md animate-spin shadow-red-500"
+                  } flex shadow-lg   items-center justify-center ${
+                    hasGenerated
+                      ? "bg-gradient-to-r from-green-300 to-green-500 "
+                      : "bg-gradient-to-r from-cyan-500 to-blue-500"
+                  }`}
+                ></div>
+                {generating ? (
+                  <p className="absolute flex flex-col text-center text-xl font-bold animate-pulse">
+                    <span>Generating</span>
+                    <span className="text-base">{progress}%</span>
+                  </p>
+                ) : (
+                  !hasGenerated && (
+                    <p className="absolute text-center text-xl font-bold ">
+                      Generate
+                    </p>
+                  )
+                )}
+                {hasGenerated && (
+                  <div className="flex flex-col absolute text-center items-center justify-center gap-2">
+                    <p className=" text-xl font-bold ">Success!</p>
+                    {isCoolDown && (
+                      <span className="text-center text-sm text-gray-600">
+                        Please wait {countdown} second
+                        {countdown !== 1 && "s"} to generate again.
+                      </span>
+                    )}
+                  </div>
+                )}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {showPrompt && (
+          <article className="max-w-80 absolute bg-black z-30  max-h-[80vh]  text-white border rounded-md px-4  overflow-hidden flex flex-col gap-y-3 items-center justify-center">
+            <div className="w-full h-fit flex justify-between items-center gap-2 pt-5">
+              <span className="w-fit h-fit text-white">Number of Servers</span>
+              <span className="w-fit h-fit text-white ">{numberOfServers}</span>
+            </div>
+            <div className="w-full h-full  flex flex-col gap-y-1  relative">
+              <input
+                onChange={(e) => setNumberOfServers(e.target.value)}
+                id="steps-range"
+                type="range"
+                min={25}
+                max={50}
+                defaultValue="25"
+                step="5"
+                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+              />
+              <div className="w-full h-fit flex flex-row justify-between">
+                <span className="text-sm text-white">25</span>
+                <span className="text-sm text-white">50</span>
+              </div>
+            </div>
+            <div className=" w-full h-fit  flex flex-col items-center justify-center">
+              <button
+                // disabled={randomServer?.length === 0}
+                // onClick={toggleDropdown}
+                className="inline-flex items-center justify-between w-full"
+              >
+                <span>Please Select Your Operator</span>
                 <svg
                   className={`ml-2 -mr-1 h-5 w-5 transition-all duration-200 ${
                     isOpen ? "rotate-0" : "-rotate-90"
@@ -256,17 +561,7 @@ const Home = () => {
                   />
                 </svg>
               </button>
-            </div>
-          </div>
-
-          {isOpen && (
-            <div
-              className="origin-top-right absolute right-2 mt-2 w-56 
-                    rounded-md shadow-lg bg-gray-800 ring-1 ring-black ring-opacity-85
-                    focus:outline-none"
-              role="menu"
-            >
-              <ul className="w-full text-sm font-medium text-white border border-blue-500 rounded-lg">
+              <ul className="w-full max-h-[30vh] overflow-y-scroll text-sm font-medium text-white ">
                 {ispTypes?.map((item) => (
                   <li
                     key={item}
@@ -293,75 +588,59 @@ const Home = () => {
                 ))}
               </ul>
             </div>
-          )}
-          <div className="p-2 h-70 overflow-y-auto">
-            <div className="mb-1">
-              <p className="text-blue-500">$./initialize_vpn_servers.sh</p>
-              <p className="text-blue-500">
-                Scanning for available VPN servers...
-              </p>
-            </div>
-            {randomServer?.map((ip, index) => (
-              <div
-                key={index}
-                className="flex flex-col sm:flex-row sm:items-center space-x-2 mb-2"
+            <div className="w-full h-fit flex justify-between items-center gap-2 pt-5 py-3">
+              <button className="w-fit h-fit px-3 py-2 rounded-md bg-red-400">
+                Cancel
+              </button>
+              <button
+                onClick={handleContinue}
+                className="w-fit h-fit px-3 py-2 rounded-md bg-green-400"
               >
-                <span className="text-yellow-500 text-xs sm:text-sm">
-                  [{new Date().toLocaleTimeString()}]
-                </span>
-                <div className="flex  items-center space-x-2">
-                  <span className="text-green-400 text-xs sm:text-sm">
-                    SERVER_IP
-                  </span>
-                  <span className="text-white">{ip}</span>
-                  <span className="text-gray-500 text-xs">
-                    PORT: {Math.floor(Math.random() * 65535)}
-                  </span>
-                </div>
-              </div>
-            ))}
-            <div className="text-green-600 mt-2 animate-pulse">
-              Establishing secure connection: {activityCode}
+                Continue
+              </button>
             </div>
-          </div>
-          <div className="bg-gray-800 py-2 px-2 flex gap-y-1  flex-col">
-            <div className="">
-              <div className="relative rounded-md shadow-sm">
-                <input
-                  type="text"
-                  name="config"
-                  id="config"
-                  className="block py-2 px-2 w-full pr-10 sm:text-sm rounded-md bg-gray-700 border-gray-600 text-blue-400 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500"
-                  value={config}
-                  readOnly
-                />
+          </article>
+        )}
+
+        {/* generated configure */}
+
+        {/* <div className="w-full h-full  bg-[#1A2331] rounded-sm flex items-center justify-center ">
+          <div className="w-full h-full rounded-md px-3  flex flex-col items-center justify-center  font-mono">
+            <div className="w-full h-fit flex py-2  justify-between items-center gap-2">
+              <div className="w-full h-full ">
+                <span>ExpireIn: </span>
+                <span>{timeLeft}</span>
+              </div>
+              <div className="w-full  h-full  flex items-center  justify-end  gap-x-2 md:gap-x-5 flex-row">
                 <button
-                  onClick={handleCopy}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white"
-                  aria-label="Copy configuration"
+                  onClick={() => handleCopy()}
+                  className="md:px-2 md:py-1 p-0 flex items-center justify-center gap-x-1"
                 >
-                  <FaRegCopy className="h-5 w-5" />
+                  Copy
+                  <MdContentCopy size={20} />
+                </button>
+                <button
+                  onClick={() => importToSingBox()}
+                  className="md:px-2 md:py-1 p-0  flex items-center justify-center gap-x-1"
+                >
+                  Import
+                  <TiExportOutline size={25} />
                 </button>
               </div>
-              {copied && (
-                <p className=" text-xs text-blue-400 animate-pulse">
-                  Copied to clipboard!
-                </p>
-              )}
             </div>
-            <button
-              // onClick={() => {
-              //   importToSingBox();
-              //   /* Handle Singbox import */
-              // }}
-              onClick={() => addCoinHandle()}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium sm:py-1 py-2 px-2 rounded-md transition duration-150 ease-in-out flex items-center justify-center space-x-2"
-            >
-              <span>Import Config</span>
-              <LuImport className="h-5 w-5" />
-            </button>
+            <div className="w-full max-w-full overflow-x-auto">
+              <CodeMirror
+                value={singBoxConfig}
+                extensions={editorExtensions}
+                theme={aura}
+                className="w-full font-mono min-h-max rounded-sm pb-3"
+                onChange={(value, viewUpdate) => {
+                  setEditorContent(value);
+                }}
+              />
+            </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

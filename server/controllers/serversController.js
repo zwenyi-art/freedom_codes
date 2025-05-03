@@ -4,7 +4,11 @@ const {
   vmess,
   public_servers,
   public_random_server,
+  myShadowSocks,
+  Isp_List,
 } = require("../models/Servers");
+
+const { client } = require("../configs/dbConn");
 
 // public servers
 const updatePublicServer = async (data) => {
@@ -158,27 +162,25 @@ const deleteServer = async (req, res) => {
 };
 
 const getRandomServers = async (req, res) => {
-  const { isp = "ooredoo" } = req.query;
-  const data = await public_random_server.findOne({ tag: "random_servers" });
   try {
-    const isp_public_server = data?.public_servers.filter((data) => {
-      const isp_list = data?.isp.toLowerCase();
-      if (isp_list?.includes(isp.toLowerCase())) {
-        return data;
-      }
-    });
-    const isp_list = data?.isp_list;
-    // console.log(isp_public_server);
-    res
-      .status(200)
-      .json({
-        serverList: isp_public_server[0]["random_server"],
-        ispList: isp_list,
-      });
+    const user_id = req.user_id;
+    if (!user_id) {
+      return res.status(400).json({ error: "Missing userId from middleware" });
+    }
+    const cache = await client.get(`userId:${user_id}`);
+    if (cache) {
+      const data = JSON.parse(cache);
+      return res.status(200).json({ msg: true, data });
+    }
+    const ispData = await Isp_List.find({}).exec();
+    const ispList = ispData.map((isp) => isp["_doc"]["isp"]);
+    res.status(200).json({ msg: false, ispList });
   } catch (err) {
-    res.status(200).json({ data: "unsupported isp" });
+    console.error(err);
+    res.status(200).json({ error: err });
   }
 };
+
 module.exports = {
   getAllPublicServers,
   getAllServers,

@@ -3,6 +3,15 @@ const router = express.Router();
 const servers = require("../../controllers/serversController");
 const verifyRoles = require("../../middleware/verifyRoles");
 const ROLES_LIST = require("../../configs/role_list");
+const singboxConfigController = require("../../controllers/singboxConfigController");
+const { cacheGenerator } = require("../../middleware/cacheConfigure");
+
+// router.get(
+//   "/serverList",
+//   verifyRoles(ROLES_LIST.Admin, ROLES_LIST.User),
+//   servers.getRandomServers
+// );
+
 router.get(
   "/serverList",
   verifyRoles(ROLES_LIST.Admin, ROLES_LIST.User),
@@ -22,4 +31,10 @@ router.get(
 );
 router.post("/", verifyRoles(ROLES_LIST.Admin), servers.createNewServer);
 router.delete("/", verifyRoles(ROLES_LIST.Admin), servers.deleteServer);
+
+router.post(
+  "/generateServers",
+  cacheGenerator,
+  singboxConfigController.generateRandomServers
+);
 module.exports = router;

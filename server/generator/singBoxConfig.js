@@ -404,7 +404,11 @@ class SingBoxConfigure {
   }
   async addOutBound(OutboundTag, objectArray) {
     try {
-      for (let data of objectArray) {
+      for (let z = 0; z < objectArray.length; z++) {
+        let data =
+          "_doc" in objectArray[z]
+            ? objectArray[z]["_doc"]["data"]
+            : objectArray[z];
         if (this.serverAnalyzer(data)) {
           const {
             tag,
