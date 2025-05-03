@@ -20,7 +20,7 @@ const LandingPage = () => {
   const listRef = useRef(null);
 
   useEffect(() => {
-    console.log("landing page", auth);
+    // console.log("landing page", auth);
     if (auth?.accessToken) {
       navigate("/home", { state: { from: location }, replace: true });
     }

@@ -84,7 +84,7 @@ const Home = () => {
         const result = response?.data?.msg;
 
         if (result) {
-          console.log("After Token Refresh", response?.data);
+          // console.log("After Token Refresh", response?.data);
 
           setButtonDisabled(true);
           setExpiresAt(response?.data?.data?.expiresAt);
@@ -94,7 +94,7 @@ const Home = () => {
 
           setGenerated(true);
         } else {
-          console.log("Configure hasn't created yet", response?.data?.ispList);
+          // console.log("Configure hasn't created yet", response?.data?.ispList);
           setButtonDisabled(false);
           setGenerated(false);
           setIspTypes(response?.data?.ispList);
@@ -224,7 +224,6 @@ const Home = () => {
   // };
 
   useEffect(() => {
-    console.log("Expires At:", expiresAt);
     if (expiresAt <= 0) return;
     const interval = setInterval(() => {
       const now = Date.now();
@@ -249,11 +248,11 @@ const Home = () => {
     setIsGenerating(true);
     setShowPrompt(false);
 
-    console.log("Generating...");
+    // console.log("Generating...");
     setButtonDisabled(true);
     setHasGenerated(false);
     intervalRef.current = setInterval(() => {
-      console.log("Interval running...");
+      // console.log("Interval running...");
       setProgress((prev) => {
         if (prev < 40) {
           return prev + 20;
@@ -274,9 +273,9 @@ const Home = () => {
     intervalRef.current = setInterval(() => {
       setProgress((prev) => {
         if (fetchStarted && !fetchCompleted) {
-          console.log(
-            `FetchStarted ${fetchStarted}- FetchCompleted ${fetchCompleted}`
-          );
+          // console.log(
+          //   `FetchStarted ${fetchStarted}- FetchCompleted ${fetchCompleted}`
+          // );
           return prev;
         }
         if (prev >= 100) {
@@ -290,9 +289,9 @@ const Home = () => {
         if (progress <= 50 && !fetchStarted) {
           fetchStarted = true;
           const innerInterval = setInterval(async () => {
-            console.log("Fetching data interval started...");
+            // console.log("Fetching data interval started...");
             try {
-              console.log("Generating servers...");
+              // console.log("Generating servers...");
               await axiosPrivate
                 .post(
                   "/generateServers",
@@ -314,7 +313,7 @@ const Home = () => {
                   );
 
                   clearInterval(innerInterval);
-                  console.log("Data Generated successfully");
+                  // console.log("Data Generated successfully");
                 }); // Replace with your endpoint
             } catch (err) {
               clearInterval(innerInterval);
@@ -338,7 +337,6 @@ const Home = () => {
 
     // localStorage.setItem("selectedISP", value);
     // window.location.reload();
-    console.log("Selected ISP:", value);
   };
 
   return (
