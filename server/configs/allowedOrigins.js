@@ -6,6 +6,7 @@ const allowedOrigins = [
   "http://localhost:4173",
   "http://192.168.1.103:5173",
   "https://www.netflow4mm.com",
+  "https://netflow4mm.com",
 ];
 
 module.exports = allowedOrigins;
