@@ -26,6 +26,9 @@ app.use(express.urlencoded({ extended: false }));
 // built-in middleware for json
 app.use(express.json());
 
+app.get("/", async (req, res) => {
+  res.status(200).json({ msg: "I love you.Take care of yourself." });
+});
 //good cron job
 app.use("/crons", require("./routes/cronRouter"));
 //authentication

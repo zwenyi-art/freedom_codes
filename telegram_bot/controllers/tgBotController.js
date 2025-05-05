@@ -216,8 +216,8 @@ const welcome_message = async (chatId) => {
   const msg = `🚀 *Hey there!*  
 You’ve just discovered me, your go-to assistant for managing your [NetFlow4MM](https://www.netflow4mm.com) account. Let’s get things rolling! 🤖  
   
-  🎈 *Create a new account* for NetFlow4MM  
-  🔐 *Reset your password* if you’ve forgotten it.  
+  🎈 /register - *Create a new account* for NetFlow4MM  
+  🔐 /forgot - *Reset your password* if you’ve forgotten it.  
   `;
   await sendMessage(chatId, msg);
 };
