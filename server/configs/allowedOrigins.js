@@ -7,6 +7,7 @@ const allowedOrigins = [
   "http://192.168.1.103:5173",
   "https://www.netflow4mm.com",
   "https://netflow4mm.com",
+  "https://client-netflow4mm.vercel.app",
 ];
 
 module.exports = allowedOrigins;
